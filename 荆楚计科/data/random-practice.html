@@ -1,0 +1,431 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>荆楚计科备考联盟-题库</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto Mono', monospace;
+        }
+
+        body {
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+            transition: background-color 0.5s;
+        }
+
+        body.festive {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+        }
+
+        .festive-decoration {
+            background-image:
+                    radial-gradient(circle, rgba(0, 255, 255, 0.3) 1px, transparent 1px),
+                    radial-gradient(circle, rgba(128, 0, 255, 0.3) 1px, transparent 1px);
+        }
+
+        .header {
+            background-color: #2d2d2d;
+            box-shadow: 0 2px 10px rgba(0, 255, 255, 0.1);
+            padding: 15px 30px; /* 优化内边距 */
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: #00ffff;
+            font-size: 1.5rem; /* 增大字体大小 */
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px; /* 优化链接间距 */
+        }
+
+        .nav-links a {
+            color: #e0e0e0;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #00ffff;
+            transform: translateY(-2px); /* 添加悬停动画 */
+        }
+
+        .container {
+            padding: 30px; /* 优化容器内边距 */
+        }
+
+        .page-title {
+            color: #00ffff;
+            margin-bottom: 20px; /* 优化底部边距 */
+        }
+
+        .content-wrapper {
+            display: flex;
+            gap: 20px; /* 优化侧边栏和主内容间距 */
+        }
+
+        .sidebar {
+            background-color: #2d2d2d;
+            box-shadow: 0 4px 12px rgba(0, 255, 255, 0.1);
+            padding: 20px;
+            min-width: 250px; /* 设置最小宽度 */
+            border-radius: 8px; /* 添加圆角 */
+            transition: transform 0.3s;
+        }
+
+        .sidebar:hover {
+            transform: scale(1.02); /* 添加悬停放大效果 */
+        }
+
+        .sidebar-title {
+            color: #00ffff;
+            border-bottom: 2px solid #4d4d4d;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .category-list li {
+            list-style: none;
+            margin-bottom: 10px;
+            transition: all 0.3s;
+        }
+
+        .category-list li:hover {
+            background-color: #4d4d4d;
+            transform: translateX(5px); /* 添加悬停位移效果 */
+        }
+
+        .category-list li.active {
+            background-color: #4d4d4d;
+            color: #00ffff;
+        }
+
+        .sprint-practice {
+            background: linear-gradient(135deg, #0077ff 0%, #00ffff 100%);
+            border-radius: 4px; /* 添加圆角 */
+        }
+
+        .sprint-practice:before {
+            background: linear-gradient(45deg, #0077ff, #00ffff, #0077ff);
+        }
+
+        .question-bank {
+            background-color: #2d2d2d;
+            box-shadow: 0 6px 15px rgba(0, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 8px; /* 添加圆角 */
+            margin-bottom: 20px; /* 优化底部边距 */
+            transition: all 0.3s;
+        }
+
+        .question-bank:hover {
+            transform: translateY(-5px) scale(1.02); /* 添加悬停位移和放大效果 */
+            box-shadow: 0 10px 20px rgba(0, 255, 255, 0.2);
+        }
+
+        .bank-title {
+            color: #00ffff;
+            border-bottom: 2px solid #4d4d4d;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .bank-description {
+            margin-bottom: 15px; /* 优化底部边距 */
+        }
+
+        .bank-stats {
+            display: flex;
+            gap: 20px; /* 优化统计项间距 */
+            margin-bottom: 15px; /* 优化底部边距 */
+        }
+
+        .stat-item {
+            flex: 1;
+        }
+
+        .stat-title {
+            font-size: 0.9rem;
+            color: #a0a0a0;
+        }
+
+        .stat-value {
+            color: #00ffff;
+            font-size: 1.2rem;
+        }
+
+        .practice-btn {
+            background-color: #0077ff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px; /* 添加圆角 */
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s;
+        }
+
+        .practice-btn:hover {
+            background-color: #0055cc;
+            transform: translateY(-2px); /* 添加悬停位移效果 */
+        }
+
+        .footer {
+            background-color: #2d2d2d;
+            border-top: 1px solid #4d4d4d;
+            padding: 20px 30px; /* 优化内边距 */
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px; /* 优化链接间距 */
+            margin-bottom: 10px; /* 优化底部边距 */
+        }
+
+        .footer-links a {
+            color: #e0e0e0;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #00ffff;
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            color: #a0a0a0;
+        }
+
+        .category-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-radius: 4px; /* 添加圆角 */
+        }
+
+        .category-item span {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .category-list li {
+    list-style: none;
+    margin-bottom: 10px;
+    transition: all 0.3s;
+    border-radius: 6px; /* 增加圆角 */
+}
+
+.category-list li a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #e0e0e0;
+    padding: 12px; /* 增加内边距 */
+}
+
+.category-list li:hover {
+    background: linear-gradient(90deg, rgba(0, 119, 255, 0.3) 0%, rgba(0, 255, 255, 0.1) 100%); 
+    transform: translateX(8px) scale(1.02); 
+    box-shadow: 0 2px 8px rgba(0, 255, 255, 0.2); 
+}
+
+.category-item span {
+    margin-right: 15px;
+    font-size: 1.4rem;
+    transition: transform 0.3s; /* 为图标添加过渡效果 */
+}
+
+.category-list li:hover .category-item span {
+    transform: rotate(360deg); /* 悬停时图标旋转 */
+}
+
+.sprint-practice {
+    background: linear-gradient(135deg, #0077ff 0%, #00ffff 100%);
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 255, 255, 0.3); 
+}
+
+.sprint-practice a {
+    color: #fff !important; 
+}
+
+    </style>
+</head>
+<body>
+<header class="header">
+    <div class="header-content">
+        <div class="logo">荆楚计科备考联盟-计算机工程学习平台</div>
+        <nav class="nav-links">
+            <a href="index.html">首页</a>
+            <a href="random-practice.html">题库</a>
+            <a href="exam_paper.html">试卷题库</a>
+            <a href="TK.html">非可视化题库</a>
+            <a href="About_us.html">关于我们</a>
+        </nav>
+    </div>
+</header>
+
+<div class="container">
+    <h2 class="page-title">计算机技能高考-题库</h2>
+
+    <div class="content-wrapper">
+        <div class="sidebar">
+            <h3 class="sidebar-title">题库分类</h3>
+            <ul class="category-list">
+                <li class="category-item" style="display: flex; align-items: center;">
+                    <span style="margin-right: 10px; font-size: 1.2rem;">🎯</span>
+                    <a href="random-practice.html">计算机基础知识</a>
+                </li>
+                <li><a href="Multiple_choice_questions.html">计算机单项练习</a></li>
+                <li><a href="Random_question_bank1.html">计算机随机练习</a></li>
+                <li><a href="Random_question_bank2.html">计算机试卷练习</a></li>
+                <li class="sprint-practice" style="display: none;">
+                    <a href="chongci\sprint_practice.html">冲刺练习</a>
+                </li>
+
+                <li class="category-item" style="display: flex; align-items: center;">
+                    <span style="margin-right: 10px; font-size: 1.2rem;">🛠️</span>
+                    <a href="random-practice.html">计算机实操部分</a>
+                </li>
+                <!-- <li><a href="Win\Win.html">【待建】操作系统的应用</a></li> -->
+                <!-- <li><a href="WR\WR.html">【待建】计算机网络应用</a></li> -->
+                <!-- <li><a href="WPS\WPS.html">【待建】WPS办公软件</a></li>  -->
+                
+                <li><a href="Cy\exercise.html">程序设计</a></li>
+                
+                <!-- <li><a href="SJK\SJK.html">【待建】数据库应用</a></li> -->
+                <!-- <li><a href="PS\PS.html">【待建】图像处理</a></li> -->
+
+            </ul>
+        </div>
+
+        <div class="main-content">
+            <div class="question-bank">
+                <h3 class="bank-title">计算机单项练习</h3>
+                <p class="bank-description">本题库包含计算机基础知识相关题目，涵盖硬件、软件、数据结构、算法等多个方面，帮助您全面掌握计算机基础知识。</p>
+
+                <div class="bank-stats">
+                    <div class="stat-item">
+                        <div class="stat-title">题目数量</div>
+                        <div class="stat-value">5,552</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-title">试卷数量</div>
+                        <div class="stat-value">随机</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-title">创建时间</div>
+                        <div class="stat-value">2025/06/10</div>
+                    </div>
+                </div>
+                <a href="Multiple_choice_questions.html" class="practice-btn">开始练习</a>
+            </div>
+
+            <div class="question-bank">
+                <h3 class="bank-title">计算机随机练习</h3>
+                <p class="bank-description">包含信息、编码、网络等综合题</p>
+
+                <div class="bank-stats">
+                    <div class="stat-item">
+                        <div class="stat-title">题目数量</div>
+                        <div class="stat-value">7,244</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-title">试卷数量</div>
+                        <div class="stat-value">随机</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-title">创建时间</div>
+                        <div class="stat-value">2025/04/10</div>
+                    </div>
+                </div>
+                <a href="Random_question_bank1.html" class="practice-btn">开始练习</a>
+            </div>
+
+            <div class="question-bank">
+                <h3 class="bank-title">计算机试卷练习</h3>
+                <p class="bank-description">涵盖计算机信息基础知识、网络基础知识、网络协议、网络安全等方面的内容。</p>
+
+                <div class="bank-stats">
+                    <div class="stat-item">
+                        <div class="stat-title">题目数量</div>
+                        <div class="stat-value">2,500</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-title">试卷数量</div>
+                        <div class="stat-value">50</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-title">创建时间</div>
+                        <div class="stat-value">2025/03/23</div>
+                    </div>
+                </div>
+                <a href="Random_question_bank2.html" class="practice-btn">开始练习</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="footer-content">
+        <div class="footer-links">
+            <a href="About_us.html">联系我们</a>
+            <a href="random-practice.html">隐私政策</a>
+            <a href="random-practice.html">使用条款</a>
+        </div>
+        <p class="copyright">© 荆楚计科备考联盟-计算机工程学习平台 版权所有</p>
+    </div>
+</footer>
+
+<script>
+    const currentPath = window.location.pathname;
+    const basePath = currentPath.substring(0, currentPath.lastIndexOf('/')) + '/';
+
+    document.addEventListener('DOMContentLoaded', function() {
+
+        const today = new Date();
+        const month = today.getMonth() + 1;
+        const day = today.getDate();
+
+        if (month === 4 && day >= 1 && day <= 20) {
+
+            const sprintPractice = document.querySelector('.sprint-practice');
+            if (sprintPractice) {
+                sprintPractice.style.display = 'block';
+            }
+
+
+            document.body.classList.add('festive');
+
+
+            const decoration = document.createElement('div');
+            decoration.className = 'festive-decoration';
+            document.body.appendChild(decoration);
+        }
+
+
+        const links = document.querySelectorAll('a[href]');
+        links.forEach(link => {
+            const href = link.getAttribute('href');
+            if (!href.startsWith('/') && !href.startsWith('http')) {
+                link.href = basePath + href;
+            }
+        });
+    });
+</script>
+</body>
+</html>
