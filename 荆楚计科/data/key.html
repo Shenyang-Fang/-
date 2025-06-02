@@ -1,0 +1,345 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>密钥获取 - 荆楚计科备考联盟</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        
+        .header {
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 15px 0;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            margin-left: 20px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .wave {
+            height: 50px;
+            margin-bottom: -1px;
+            overflow: hidden;
+        }
+        
+        .wave svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .key-content {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .key-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .key-title h2 {
+            font-size: 28px;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .key-title p {
+            color: #7f8c8d;
+            font-size: 16px;
+        }
+        
+        .key-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .form-group label {
+            font-weight: 500;
+            color: #2c3e50;
+        }
+        
+        .form-group input,
+        .form-group select {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            width: 100%;
+        }
+        
+        .form-group small {
+            font-size: 12px;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+        
+        .submit-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-align: center;
+            margin: 0 auto;
+            display: block;
+            width: 100%;
+        }
+        
+        .submit-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .key-info {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .key-info h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        
+        .key-info p {
+            color: #7f8c8d;
+            line-height: 1.6;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        
+        .preserve-stroke-width {
+            stroke-width: 1;
+        }
+        
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 4px;
+            text-align: center;
+            display: none;
+            width: 100%;
+        }
+        
+        .result.success {
+            background-color: #d4edda;
+            color: #155724;
+            display: block;
+        }
+        
+        .result.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            display: block;
+        }
+
+        /* 下拉框美化样式 */
+        .custom-select {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .custom-select select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg fill="black" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">荆楚计科备考联盟-计算机工程学习平台</div>
+            <nav class="nav-links">
+                <a href="index.html">首页</a>
+                <a href="login.html">题库</a>
+                <a href="exam_paper.html">试卷题库</a> 
+                <a href="TK.html">非可视化题库</a> 
+                <a href="About us.html">关于我们</a>
+            </nav>
+        </div>
+    </header>
+    
+    <div class="wave">
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none" class="preserve-stroke-width">
+            <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" fill="#a8d0ff" class="wave-path"></path>
+            <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" fill="#a8d0ff" class="wave-path"></path>
+            <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" fill="#a8d0ff" class="wave-path"></path>
+        </svg>
+    </div>
+    
+    <div class="container">
+        <div class="key-content">
+            <div class="key-title">
+                <h2>密钥获取</h2>
+                <p>请填写以下信息以获取您的学习平台密钥</p>
+            </div>
+            
+            <form class="key-form" id="keyForm">
+                <div class="form-group">
+                    <label for="school">学校名称</label>
+                    <div class="custom-select">
+                        <select id="school" name="school" required>
+                            <option value="" disabled selected>请选择您的学校</option>
+                            <option value="潜江职业教育(集团)学校-职教二部">潜江职业教育(集团)学校-职教二部</option>
+                            <option value="湖北广播电视学校">湖北广播电视学校</option>
+                            <option value="蔡甸职业教育中心学校">蔡甸职业教育中心学校</option>
+                            <option value="随县职业技术教育中心">随县职业技术教育中心</option>
+                            <option value="浠水理工中专">浠水理工中专</option>
+                            <option value="光谷英才技工学校">光谷英才技工学校</option>
+                            <option value="武汉第二职业教育中心">武汉第二职业教育中心</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="inviteCode">邀请码</label>
+                    <input type="text" id="inviteCode" name="inviteCode" required>
+                    <small>学生邀请码为 S 开头，教师邀请码为 T 开头</small>
+                </div>
+                
+                <button type="submit" class="submit-btn">提交申请</button>
+            </form>
+            
+            <div class="result" id="result"></div>
+            
+            <div class="key-info">
+                <h3>密钥使用说明</h3>
+                <p>提交申请后，系统将根据您填写的学校和邀请码类型自动分配密钥。请确保您填写的信息准确无误。如果您在使用过程中遇到任何问题，请及时与我们的客服人员联系。</p>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="footer">
+            <p>© 荆楚计科备考联盟-计算机工程学习平台 版权所有</p>
+            <p>联系我们 | 隐私政策 | 使用条款</p>
+    </footer>
+    
+    <script>
+        document.getElementById('keyForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const school = document.getElementById('school').value.trim();
+            const inviteCode = document.getElementById('inviteCode').value.trim();
+            
+            const schools = {
+                '潜江职业教育(集团)学校-职教二部': {
+                    student: '2501-AH576',
+                    teacher: 'js192'
+                },
+                '湖北广播电视学校': {
+                    student: '2502-AH657',
+                    teacher: 'js185'
+                },
+                '蔡甸职业教育中心学校': {
+                    student: '2503-AH684',
+                    teacher: 'js176'
+                },
+                '随县职业技术教育中心': {
+                    student: '2504-AH685',
+                    teacher: 'js196'
+                },
+                '浠水理工中专': {
+                    student: '2505-AH984',
+                    teacher: 'js176'
+                },
+                '光谷英才技工学校': {
+                    student: '2506-AH687',
+                    teacher: 'js165'
+                },
+                '武汉第二职业教育中心': {
+                    student: '2507-AH942',
+                    teacher: 'js154'
+                }
+            };
+            
+            if (!schools[school]) {
+                document.getElementById('result').innerHTML = '学校名称错误，请重新输入！';
+                document.getElementById('result').className = 'result error';
+                return;
+            }
+            
+            let keyType;
+            if (inviteCode.startsWith('S')) {
+                keyType = 'student';
+            } else if (inviteCode.startsWith('T')) {
+                keyType = 'teacher';
+            } else {
+                document.getElementById('result').innerHTML = '邀请码格式错误，请重新输入！';
+                document.getElementById('result').className = 'result error';
+                return;
+            }
+            
+            const key = schools[school][keyType];
+            document.getElementById('result').innerHTML = `您的密钥是：<strong>${key}</strong>，请妥善保存！`;
+            document.getElementById('result').className = 'result success';
+        });
+    </script>
+</body>
+</html>

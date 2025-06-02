@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>荆楚计科备考联盟-C语言</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        .header {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            background-color: #f8f9fa;
+        }
+
+        .header h1 {
+            font-size: 18px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .section {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-title::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 16px;
+            background-color: #4caf50;
+            margin-right: 8px;
+            border-radius: 2px;
+        }
+
+        .code-block {
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            border-radius: 6px;
+            padding: 10px;
+            margin: 10px 0;
+            position: relative;
+            overflow: auto;
+            font-family: 'Consolas', 'Courier New', monospace;
+            min-height: 150px;
+        }
+
+        .code-input {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            font-family: 'Consolas', 'Courier New', monospace;
+            resize: none;
+            outline: none;
+            font-size: 14px;
+            line-height: 1.5;
+            min-height: 100px;
+            overflow-x: auto;
+        }
+
+        .code-input:focus {
+            background-color: #252526;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(0, 0, 0, 0.3);
+            color: #ddd;
+            border: none;
+            border-radius: 4px;
+            padding: 3px 8px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .copy-btn:hover {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .note-list {
+            padding-left: 20px;
+            margin: 10px 0;
+        }
+
+        .note-list li {
+            margin-bottom: 5px;
+        }
+
+        .code-editor {
+            height: 300px;
+            margin-top: 10px;
+        }
+
+        .btn-group {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .submit-btn, .back-btn {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 16px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .submit-btn:hover, .back-btn:hover {
+            background-color: #45a049;
+        }
+
+        .back-btn {
+            background-color: #2196F3;
+        }
+
+        .back-btn:hover {
+            background-color: #0b7dda;
+        }
+
+        .preformatted {
+            white-space: pre-wrap;
+            font-family: 'Consolas', 'Courier New', monospace;
+        }
+
+        .code-block::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .code-block::-webkit-scrollbar-track {
+            background: #2c2c2e;
+            border-radius: 3px;
+        }
+
+        .code-block::-webkit-scrollbar-thumb {
+            background: #555;
+            border-radius: 3px;
+        }
+
+        .code-block::-webkit-scrollbar-thumb:hover {
+            background: #777;
+        }
+
+        .highlight {
+            color: #569cd6;
+        }
+
+        .highlight-keyword {
+            color: #d7ba7d;
+        }
+
+        .highlight-string {
+            color: #ce9178;
+        }
+
+        .highlight-comment {
+            color: #6a9955;
+        }
+
+        .score-card {
+            background-color: #f8f9fa;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .total-score {
+            font-size: 24px;
+            font-weight: 500;
+            color: #4caf50;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .score-details {
+            margin-top: 20px;
+        }
+
+        .score-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .score-item:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>十进制正数的二进制</h1>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">题目描述</h2>
+        <p>程序功能：编写函数实现用除二取余的方法，把任意一个十进制正数的二进制序列输出（不考虑溢出）</p>
+    </div>
+
+
+    <div class="section">
+        <h2 class="section-title">示例输出1：</h2>
+        <div class="code-block">
+                <textarea class="code-input" readonly>
+        Enter a decimal number: 2
+        The binary representation is: 10
+                </textarea>
+            <button class="copy-btn">复制代码</button>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">注意事项：</h2>
+        <ul class="note-list">
+            <li>部分源程序已给出，请勿修改main函数结构。</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">限制条件</h2>
+        <p>时间限制: 1 秒</p>
+        <p>空间限制: 256 MB</p>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">编写代码</h2>
+        <div class="code-block">
+            <textarea class="code-input" id="codeEditor"></textarea>
+            <button class="copy-btn">复制代码</button>
+        </div>
+        <div class="btn-group">
+            <button class="submit-btn" id="submitCode">提交代码</button>
+            <button class="back-btn" id="backToExercise">返回练习</button>
+        </div>
+    </div>
+
+    <div class="score-card" id="scoreCard">
+        <div class="total-score" id="totalScore">总分: 0</div>
+
+        <div class="score-details">
+            <div class="score-item">
+                <span>功能实现</span>
+                <span id="functionality">0</span>
+            </div>
+            <div class="score-item">
+                <span>边界条件处理</span>
+                <span id="boundaryConditions">0</span>
+            </div>
+            <div class="score-item">
+                <span>代码可读性</span>
+                <span id="codeReadability">0</span>
+            </div>
+            <div class="score-item">
+                <span>代码效率</span>
+                <span id="codeEfficiency">0</span>
+            </div>
+            <div class="score-item">
+                <span>代码规范性</span>
+                <span id="codeStandard">0</span>
+            </div>
+            <div class="score-item">
+                <span>代码注释</span>
+                <span id="codeComments">0</span>
+            </div>
+            <div class="score-item">
+                <span>错误处理</span>
+                <span id="errorHandling">0</span>
+            </div>
+            <div class="score-item">
+                <span>代码创新性</span>
+                <span id="codeInnovation">0</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    document.querySelectorAll('.copy-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const textarea = this.previousElementSibling;
+            textarea.select();
+            document.execCommand('copy');
+            alert('代码已复制到剪贴板');
+        });
+    });
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const codeEditor = document.getElementById('codeEditor');
+        codeEditor.value = `
+#include <stdio.h>
+#include <stdlib.h>
+void decimalToBinary(int decimal) {
+        int remainder;
+    int len = 0;
+    char binary[32];
+        int i;
+ if (decimal == 0) {
+        printf("0");
+        return;
+    }
+/**********Program**********/
+
+/**********  End  **********/
+
+     printf("%s\n", binary);
+}
+
+int main() {
+    int number;
+    printf("【Enter a decimal number: 】");
+    scanf("%d", &number);
+        printf("【The binary representation is: 】");
+        decimalToBinary(number);
+}
+`;
+    });
+
+
+    document.getElementById('submitCode').addEventListener('click', function() {
+        const code = document.getElementById('codeEditor').value;
+
+
+        const score = autoGradeCode(code);
+
+
+        document.getElementById('totalScore').textContent = `总分: ${score.total}`;
+        document.getElementById('functionality').textContent = score.functionality;
+        document.getElementById('boundaryConditions').textContent = score.boundaryConditions;
+        document.getElementById('codeReadability').textContent = score.codeReadability;
+        document.getElementById('codeEfficiency').textContent = score.codeEfficiency;
+        document.getElementById('codeStandard').textContent = score.codeStandard;
+        document.getElementById('codeComments').textContent = score.codeComments;
+        document.getElementById('errorHandling').textContent = score.errorHandling;
+        document.getElementById('codeInnovation').textContent = score.codeInnovation;
+
+
+        document.getElementById('scoreCard').style.display = 'block';
+    });
+
+
+    document.getElementById('backToExercise').addEventListener('click', function() {
+        window.location.href = 'exercise.html';
+    });
+
+
+    function autoGradeCode(code) {
+        let score = {
+            functionality: 0,
+            boundaryConditions: 0,
+            codeReadability: 0,
+            codeEfficiency: 0,
+            codeStandard: 0,
+            codeComments: 0,
+            errorHandling: 0,
+            codeInnovation: 0,
+            total: 0
+        };
+
+
+        const programStart = code.indexOf('/**********Program**********/');
+        const programEnd = code.indexOf('/**********  End  **********/');
+
+        if (programStart === -1 || programEnd === -1) {
+
+            return score;
+        }
+
+        const programCode = code.substring(programStart + 30, programEnd).trim();
+
+        if (programCode === '') {
+            return score;
+        }
+
+
+        if (programCode.includes('for') || programCode.includes('while')) {
+            score.functionality = 5;
+        } else {
+            score.functionality = 2;
+        }
+
+
+        if (programCode.includes('if') || programCode.includes('else')) {
+            score.boundaryConditions = 3;
+        } else {
+            score.boundaryConditions = 1;
+        }
+
+
+        if (programCode.includes('    ') || programCode.includes('\t')) {
+            score.codeReadability = 3;
+        } else {
+            score.codeReadability = 1;
+        }
+
+
+        if (programCode.includes('for') || programCode.includes('while')) {
+            score.codeEfficiency = 3;
+        } else {
+            score.codeEfficiency = 1;
+        }
+
+
+        if (code.includes('#include <stdio.h>') && code.includes('int main()')) {
+            score.codeStandard = 3;
+        } else {
+            score.codeStandard = 1;
+        }
+
+
+        if (programCode.includes('//') || programCode.includes('/*')) {
+            score.codeComments = 3;
+        } else {
+            score.codeComments = 1;
+        }
+
+
+        if (programCode.includes('if') || programCode.includes('else')) {
+            score.errorHandling = 2;
+        } else {
+            score.errorHandling = 1;
+        }
+
+
+        if (programCode.includes('function') || programCode.includes('void')) {
+            score.codeInnovation = 3;
+        } else {
+            score.codeInnovation = 1;
+        }
+
+
+        score.total = Math.min(20, score.functionality + score.boundaryConditions + score.codeReadability +
+            score.codeEfficiency + score.codeStandard + score.codeComments +
+            score.errorHandling + score.codeInnovation);
+
+        return score;
+    }
+</script>
+</body>
+</html>

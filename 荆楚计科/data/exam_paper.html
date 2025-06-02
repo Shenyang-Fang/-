@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>荆楚计科备考联盟-计算机工程学习平台-试卷题库</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f4f8;
+            color: #333;
+        }
+        .header {
+            background: linear-gradient(135deg, #4b6cb7, #182848);
+            color: #fff;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .header .logo {
+            font-size: 28px;
+            font-weight: 600;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+        .header .nav-links {
+            display: flex;
+            gap: 15px;
+        }
+        .header .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        .header .nav-links a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        .container h2 {
+            margin-top: 0;
+            text-align: center;
+            color: #2c3e50;
+            font-weight: 700;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        .container h2:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, #4b6cb7, #182848);
+        }
+        .search-bar {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+        .search-bar input {
+            padding: 12px 20px;
+            width: 300px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            outline: none;
+        }
+        .search-bar button {
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #4b6cb7, #182848);
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            margin-left: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .search-bar button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        .exam-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .exam-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .exam-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        .exam-header {
+            background: linear-gradient(135deg, #6c5ce7, #3a4775);
+            color: white;
+            padding: 20px;
+        }
+        .exam-header h3 {
+            margin: 0;
+            font-size: 20px;
+        }
+        .exam-header p {
+            margin: 5px 0 0 0;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        .exam-details {
+            padding: 20px;
+            background: white;
+        }
+        .exam-details p {
+            margin: 8px 0;
+            font-size: 14px;
+            color: #555;
+        }
+        .exam-footer {
+            padding: 15px 20px;
+            background: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #eee;
+        }
+        .exam-footer .stats {
+            display: flex;
+            gap: 15px;
+        }
+        .stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .stat-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2d3436;
+        }
+        .stat-label {
+            font-size: 12px;
+            color: #636e72;
+        }
+        .action-button {
+            display: inline-block;
+            padding: 8px 18px;
+            background: linear-gradient(135deg, #00b894, #00d2d3);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .action-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">荆楚计科备考联盟-计算机工程学习平台</div>
+        <nav class="nav-links">
+                <a href="index.html">首页</a>
+                <a href="login.html">题库</a>
+                <a href="exam_paper.html">试卷题库</a> 
+                <a href="TK.html">非可视化题库</a> 
+                <a href="About_us.html">关于我们</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h2>试卷题库</h2>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="搜索试卷...">
+            <button onclick="searchExams()">搜索</button>
+
+        </div>
+        <div class="exam-list">
+            <div class="exam-card">
+                <div class="exam-header">
+                    <h3>准易调考试卷组</h3>
+                    <p>难度：中等</p>
+                </div>
+                <div class="exam-details">
+                    <p class="description">计算机基础知识点综合测试</p>
+                    <p>创建时间：2025-4-10</p>
+                </div>
+                <div class="exam-footer">
+                    <div class="stats">
+                        <div class="stat">
+                            <span class="stat-value">25</span>
+                            <span class="stat-label">分钟</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value">150</span>
+                            <span class="stat-label">分</span>
+                        </div>
+                    </div>
+                    <a href="zhuenyi\DK.html" class="action-button">进入试卷</a>
+                </div>
+
+            </div>
+            <div class="exam-card">
+                <div class="exam-header">
+                    <h3>万维调考试卷组</h3>
+                    <p>难度：中等</p>
+                </div>
+                <div class="exam-details">
+                    <p class="description">计算机基础知识点综合测试</p>
+                    <p>创建时间：2025-04-10</p>
+                </div>
+                <div class="exam-footer">
+                    <div class="stats">
+                        <div class="stat">
+                            <span class="stat-value">25</span>
+                            <span class="stat-label">分钟</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value">150</span>
+                            <span class="stat-label">分</span>
+                        </div>
+                    </div>
+                    <a href="wanwei\DK.html" class="action-button">进入试卷</a>
+                </div>
+
+            </div>
+            <div class="exam-card">
+                <div class="exam-header">
+                    <h3>【偏题】计算机试卷组</h3>
+                    <p>难度：中上等</p>
+                </div>
+                <div class="exam-details">
+                    <p class="description">计算机基础知识点综合测试</p>
+                    <p>创建时间：2025-04-01</p>
+                </div>
+                <div class="exam-footer">
+                    <div class="stats">
+                        <div class="stat">
+                            <span class="stat-value">25</span>
+                            <span class="stat-label">分钟</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value">150</span>
+                            <span class="stat-label">分</span>
+                        </div>
+                    </div>
+                    <a href="Random_question_bank3.html" class="action-button">进入试卷</a>
+                </div>
+
+            </div>
+            <div class="exam-card">
+                <div class="exam-header">
+                    <h3>新技术及国产化</h3>
+                    <p>难度：中上等</p>
+                </div>
+                <div class="exam-details">
+                    <p class="description">新技术及国产化知识点综合测试</p>
+                    <p>创建时间：2025-04-01</p>
+                </div>
+                <div class="exam-footer">
+                    <div class="stats">
+                        <div class="stat">
+                            <span class="stat-value">25</span>
+                            <span class="stat-label">分钟</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value">150</span>
+                            <span class="stat-label">分</span>
+                        </div>
+                    </div>
+                    <a href="Random_question_bank3.html" class="action-button">进入试卷</a>
+                </div>
+
+            </div>
+            <div class="exam-card">
+                <div class="exam-header">
+                    <h3>试卷分配</h3>
+                    <p>难度：无</p>
+                </div>
+                <div class="exam-details">
+                    <p class="description">试卷分配测试</p>
+                    <p>创建时间：2025-06-10</p>
+                </div>
+                <div class="exam-footer">
+                    <div class="stats">
+                        <div class="stat">
+                            <span class="stat-value">25</span>
+                            <span class="stat-label">分钟</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value">150</span>
+                            <span class="stat-label">分</span>
+                        </div>
+                    </div>
+                    <a href="FP\assign_papers.html" class="action-button">进入试卷</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function searchExams() {
+            const searchInput = document.getElementById('searchInput').value.toLowerCase();
+            const examCards = document.querySelectorAll('.exam-card');
+            
+            examCards.forEach(card => {
+                const examTitle = card.querySelector('.exam-header h3').textContent.toLowerCase();
+                if (examTitle.includes(searchInput)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

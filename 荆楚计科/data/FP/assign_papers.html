@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>试卷分配 - 荆楚计科备考联盟</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .header {
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 15px 0;
+        }
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        .nav-links a {
+            margin-left: 20px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+        }
+        .nav-links a:hover {
+            color: #3498db;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .hero {
+            text-align: center;
+            width: 100%;
+            margin-bottom: 40px;
+        }
+        .hero h1 {
+            font-size: 28px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        .hero p {
+            font-size: 16px;
+            color: #7f8c8d;
+            margin-bottom: 25px;
+        }
+        .folder-select-container {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .folder-select-container input[type="file"] {
+            display: none;
+        }
+        .custom-file-upload {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: #f1f2f6;
+            color: #333;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.3s;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .custom-file-upload:hover {
+            background-color: #e9ecef;
+        }
+        select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            margin-bottom: 20px;
+            font-size: 16px;
+            background-color: white;
+        }
+        .unlock-button-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+        .download-button {
+            padding: 12px 35px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+            font-size: 16px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .download-button:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        .download-button:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+        .download-button:disabled:hover {
+            transform: none;
+            box-shadow: none;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-top: 40px;
+            width: 100%;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+            }
+            .nav-links {
+                margin-top: 15px;
+            }
+            .nav-links a {
+                margin: 0 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">荆楚计科备考联盟-计算机工程学习平台</div>
+            <nav class="nav-links">
+                <a href="..\index.html">首页</a>
+                <a href="..\login.html">题库</a>
+                <a href="..\exam_paper.html">试卷题库</a>
+                <a href="..\TK.html">非可视化题库</a>
+                <a href="..\About_us.html">关于我们</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <section class="hero">
+            <h1>试卷分配</h1>
+            <p>请选择当前文件夹中的练习文件</p>
+        </section>
+
+        <div class="folder-select-container">
+            <label for="folderInput" class="custom-file-upload">
+                <i class="fas fa-folder-open"></i> 选择文件夹
+            </label>
+            <input type="file" id="folderInput" webkitdirectory directory>
+            <select id="fileSelect">
+                <!-- 文件选择下拉列表将由JavaScript动态填充 -->
+            </select>
+            <div class="unlock-button-container">
+                <button id="unlockButton" class="download-button" disabled>
+                    <i class="fas fa-unlock"></i> 开始练习
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>© 荆楚计科备考联盟-计算机工程学习平台 版权所有</p>
+        <p>联系我们 | 隐私政策 | 使用条款</p>
+    </footer>
+
+    <script>
+        const fileSelect = document.getElementById('fileSelect');
+        const unlockButton = document.getElementById('unlockButton');
+        const folderInput = document.getElementById('folderInput');
+
+        // 处理文件夹选择
+        function handleFolderSelect(event) {
+            const files = event.target.files;
+            fileSelect.innerHTML = ''; // 清空下拉列表
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                if (file.name.endsWith('.html')) { // 只显示HTML文件
+                    const option = document.createElement('option');
+                    option.value = file.name;
+                    option.textContent = file.name;
+                    fileSelect.appendChild(option);
+                }
+            }
+
+            if (files.length > 0) {
+                unlockButton.disabled = false;
+            }
+        }
+
+        folderInput.addEventListener('change', handleFolderSelect);
+
+        // 解锁按钮点击事件
+        unlockButton.addEventListener('click', function() {
+            const selectedFileName = fileSelect.value;
+            const files = folderInput.files;
+
+            if (!selectedFileName) {
+                alert('请选择一个文件');
+                return;
+            }
+
+            for (let i = 0; i < files.length; i++) {
+                if (files[i].name === selectedFileName) {
+                    const file = files[i];
+                    const reader = new FileReader();
+
+                    reader.onload = function(e) {
+                        const blobUrl = URL.createObjectURL(new Blob([e.target.result], { type: 'text/html' }));
+                        window.location.href = blobUrl;
+                    };
+
+                    reader.readAsText(file);
+                    break;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

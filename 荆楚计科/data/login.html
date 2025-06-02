@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>荆楚计科备考联盟-登录</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            overflow: hidden;
+        }
+
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 40px;
+            width: 400px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .login-header {
+            margin-bottom: 30px;
+        }
+
+        .login-header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .login-header p {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: white;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(90deg, #00c6ff, #0072ff);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .login-btn:hover {
+            background: linear-gradient(90deg, #00b8e6, #0066e0);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 114, 255, 0.4);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+
+        .welcome-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 40px;
+            width: 400px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            display: none;
+        }
+
+        .welcome-header {
+            margin-bottom: 30px;
+        }
+
+        .welcome-header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            animation: fadeIn 1s ease;
+        }
+
+        .welcome-header p {
+            font-size: 18px;
+            opacity: 0.8;
+            animation: fadeIn 1.5s ease;
+        }
+
+        .user-info {
+            margin: 30px 0;
+            animation: fadeIn 2s ease;
+        }
+
+        .user-info h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #00c6ff, #0072ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .user-info p {
+            font-size: 16px;
+            opacity: 0.8;
+        }
+
+
+        .action-btn {
+            padding: 12px 25px;
+            margin: 10px;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .action-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            z-index: -1;
+            transition: all 0.3s ease;
+        }
+
+        .action-btn.enter-btn {
+            background: linear-gradient(90deg, #00c6ff, #0072ff);
+        }
+
+        .action-btn.enter-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 114, 255, 0.4);
+        }
+
+        .action-btn.enter-btn:hover::before {
+            opacity: 0.3;
+        }
+
+        .action-btn.logout-btn {
+            background: linear-gradient(90deg, #ff3b3b, #ff0000);
+        }
+
+        .action-btn.logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.4);
+        }
+
+        .action-btn.logout-btn:hover::before {
+            opacity: 0.3;
+        }
+
+        .action-btn.admin-btn {
+            background: linear-gradient(90deg, #ffa500, #ff8c00);
+        }
+
+        .action-btn.admin-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 140, 0, 0.4);
+        }
+
+        .action-btn.admin-btn:hover::before {
+            opacity: 0.3;
+        }
+
+        .action-btn:active {
+            transform: translateY(0);
+        }
+
+
+        .tech-animation {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .tech-animation::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1" fill="rgba(255,255,255,0.2)"/></svg>');
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+
+        .login-container::before, .welcome-container::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            left: -50px;
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            z-index: -1;
+        }
+
+        .login-container::after, .welcome-container::after {
+            content: '';
+            position: absolute;
+            bottom: -50px;
+            right: -50px;
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+<div class="tech-animation"></div>
+
+
+<div class="login-container" id="loginPage">
+    <div class="login-header">
+        <h1>荆楚计科备考联盟</h1>
+        <h1>用户登录</h1>
+        <p>请输入密钥登录系统</p>
+    </div>
+    <form id="loginForm">
+        <div class="form-group">
+            <label for="key">密钥</label>
+            <input type="password" id="key" placeholder="请输入密钥" required>
+        </div>
+        <button type="submit" class="login-btn">登录</button>
+    </form>
+</div>
+
+
+<div class="welcome-container" id="welcomePage">
+    <div class="welcome-header">
+        <h1>登录成功</h1>
+        <p>欢迎进入荆楚计科备考联盟</p>
+    </div>
+    <div class="user-info">
+        <h2 id="username">用户名</h2>
+        <p>您已成功登录系统</p>
+    </div>
+    <div id="button-container" style="display: flex; justify-content: center; gap: 15px; margin-top: 30px;">
+    </div>
+</div>
+
+<script>
+    const keyMap = {
+        'QC520': '工程师',
+        'QC620': '工程师',
+
+        '2501-AH576': '潜江职业教育(集团)学校-职教二部(油职)',
+        'js192': '【教师】潜江职业教育(集团)学校-职教二部(油职)',
+
+        '2502-AH657': '湖北广播电视学校',
+        'js185': '【教师】湖北广播电视学校',
+
+        '2503-AH684': '蔡甸职业教育中心学校',
+        'js176': '【教师】蔡甸职业教育中心学校',
+
+        '2504-AH685': '随县职业技术教育中心',
+        'js196': '【教师】随县职业技术教育中心',
+
+        '2505-AH984': '浠水理工中专',
+        'js177': '【教师】浠水理工中专',
+
+        '2506-AH687': '光谷英才技工学校',
+        'js165': '【教师】光谷英才技工学校',
+
+        '2507-AH942': '武汉第二职业教育中心',
+        'js154': '【教师】武汉第二职业教育中心',
+
+
+        'admin1': '计算机A组',
+        'admin2': '计算机B组',
+        'admin3': '荆楚计科财政组',
+        'admin4': '荆楚计科设计组'
+    };
+
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const key = document.getElementById('key').value;
+
+        if (key in keyMap) {
+            const username = keyMap[key];
+            localStorage.setItem('username', username);
+
+            if (key === 'admin1' || key === 'admin2' || key === 'admin3' || key === 'admin4') {
+                localStorage.setItem('isAdmin', 'true');
+            } else {
+                localStorage.removeItem('isAdmin');
+            }
+
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('welcomePage').style.display = 'block';
+            document.getElementById('username').textContent = username;
+
+            // 清空按钮容器
+            const buttonContainer = document.getElementById('button-container');
+            buttonContainer.innerHTML = '';
+
+            const isAdmin = localStorage.getItem('isAdmin') === 'true';
+            if (isAdmin) {
+                const adminBtn = document.createElement('button');
+                adminBtn.className = 'action-btn admin-btn';
+                adminBtn.innerHTML = '<span>进入管理</span>';
+                adminBtn.onclick = function() {
+                    window.location.href = 'exploitation/admin.html';
+                };
+                buttonContainer.appendChild(adminBtn);
+            } else {
+                // 普通用户按钮
+                const enterBtn = document.createElement('button');
+                enterBtn.className = 'action-btn enter-btn';
+                enterBtn.innerHTML = '<span>进入题库</span>';
+                enterBtn.onclick = function() {
+                    window.location.href = 'random-practice.html';
+                };
+                buttonContainer.appendChild(enterBtn);
+            }
+
+            // 添加退出登录按钮
+            const logoutBtn = document.createElement('button');
+            logoutBtn.className = 'action-btn logout-btn';
+            logoutBtn.innerHTML = '<span>退出登录</span>';
+            logoutBtn.onclick = logout;
+            buttonContainer.appendChild(logoutBtn);
+
+        } else {
+            alert('密钥错误，请重试！');
+        }
+    });
+
+    // 页面加载时检查登录状态
+    document.addEventListener('DOMContentLoaded', function() {
+        const username = localStorage.getItem('username');
+        if (username) {
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('welcomePage').style.display = 'block';
+            document.getElementById('username').textContent = username;
+
+            // 清空按钮容器
+            const buttonContainer = document.getElementById('button-container');
+            buttonContainer.innerHTML = '';
+
+            // 根据用户类型添加不同按钮
+            const isAdmin = localStorage.getItem('isAdmin') === 'true';
+            if (isAdmin) {
+                // 管理员按钮
+                const adminBtn = document.createElement('button');
+                adminBtn.className = 'action-btn admin-btn';
+                adminBtn.innerHTML = '<span>进入管理</span>';
+                adminBtn.onclick = function() {
+                    window.location.href = 'exploitation/admin.html';
+                };
+                buttonContainer.appendChild(adminBtn);
+            } else {
+                // 普通用户按钮
+                const enterBtn = document.createElement('button');
+                enterBtn.className = 'action-btn enter-btn';
+                enterBtn.innerHTML = '<span>进入题库</span>';
+                enterBtn.onclick = function() {
+                    window.location.href = 'random-practice.html';
+                };
+                buttonContainer.appendChild(enterBtn);
+            }
+
+            // 添加退出登录按钮
+            const logoutBtn = document.createElement('button');
+            logoutBtn.className = 'action-btn logout-btn';
+            logoutBtn.innerHTML = '<span>退出登录</span>';
+            logoutBtn.onclick = logout;
+            buttonContainer.appendChild(logoutBtn);
+        }
+    });
+
+    // 退出登录逻辑
+    function logout() {
+        localStorage.removeItem('username');
+        localStorage.removeItem('isAdmin');
+        document.getElementById('welcomePage').style.display = 'none';
+        document.getElementById('loginPage').style.display = 'block';
+        document.getElementById('key').value = '';
+    }
+</script>
+</body>
+</html>

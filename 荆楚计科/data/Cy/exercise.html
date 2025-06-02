@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C语言章节 - 学习平台</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #4b6cb7, #182848);
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+        
+        .nav-links {
+            display: flex;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 2rem;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+        
+        .nav-links a:hover {
+            color: #a8d0ff;
+        }
+        
+        /* 主要内容区域 */
+        .main-content {
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 0 20px;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: #182848;
+            margin-bottom: 1rem;
+        }
+        
+        .section-title p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        /* 章节内容区域 */
+        .chapter-content {
+            background-color: white;
+            padding: 2.5rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 4rem;
+        }
+        
+        .chapter-content h3 {
+            font-size: 1.5rem;
+            color: #182848;
+            margin-bottom: 1.5rem;
+        }
+        
+        .chapter-content p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        
+        .code-block {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+        }
+        
+        /* 例题卡片区域 */
+        .example-section {
+            margin-top: 4rem;
+        }
+        
+        .example-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .example-card {
+            background-color: white;
+            padding: 2.5rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+        
+        .example-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .example-card h3 {
+            color: #182848;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        
+        .example-card p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        
+        .example-card .example-button {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background: linear-gradient(135deg, #a8d0ff, #4b6cb7);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .example-card .example-button:hover {
+            background: linear-gradient(135deg, #4b6cb7, #182848);
+        }
+        
+        /* 页脚样式 */
+        .footer {
+            background-color: #182848;
+            color: #a8d0ff;
+            padding: 3rem 0;
+            margin-top: 4rem;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-column ul li a {
+            color: #a8d0ff;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-column ul li a:hover {
+            color: white;
+        }
+        
+        .footer-bottom {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .section-title h2 {
+                font-size: 2rem;
+            }
+            
+            .chapter-content h3 {
+                font-size: 1.3rem;
+            }
+            
+            .example-card h3 {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="..\index.html" class="logo">荆楚计科备考联盟-计算机工程学习平台</a>
+            <nav class="nav-links">
+                <a href="..\random-practice.html">题库</a>
+            </nav>
+        </div>
+    </header>
+    
+    <div class="main-content">
+        <!-- 页面标题 -->
+        <div class="section-title">
+            <h2>C语言章节</h2>
+            <p>掌握C语言基础知识，通过例题巩固学习成果。点击例题查看详细解析。</p>
+        </div>
+        
+        <!-- 章节内容 -->
+        <div class="chapter-content">
+            <h3>1. C语言简介</h3>
+            <p>C语言是一种通用的、过程式的编程语言，具有高效、灵活、可移植性强等特点。它广泛应用于系统软件、嵌入式系统开发等领域。</p>
+            
+            <h3>2. 数据类型与变量</h3>
+            <p>C语言提供了多种数据类型，如整型、浮点型、字符型等。变量是存储数据的容器，需要先声明再使用。</p>
+            
+            <div class="code-block">
+                int age = 20;<br>
+                float height = 175.5;<br>
+                char gender = 'M';
+            </div>
+            
+            <h3>3. 运算符与表达式</h3>
+            <p>运算符用于对数据进行操作，如算术运算符、关系运算符、逻辑运算符等。表达式是由运算符和操作数组成的。</p>
+            
+            <h3>4. 控制结构</h3>
+            <p>C语言提供了多种控制结构，如条件语句（if-else）、循环语句（for、while、do-while）等，用于控制程序的执行流程。</p>
+            
+            <h3>5. 函数</h3>
+            <p>函数是C语言中的基本模块，用于实现特定的功能。通过函数可以提高代码的可读性和可维护性。</p>
+            
+            <h3>6. 数组与指针</h3>
+            <p>数组是相同类型数据的集合，指针是存储变量内存地址的特殊变量。指针是C语言中非常重要的概念。</p>
+            
+            <h3>7. 结构体与联合体</h3>
+            <p>结构体允许将不同类型的数据组合在一起，联合体允许多个变量共享同一段内存。</p>
+        </div>
+        
+        <!-- 例题部分 -->
+        <div class="example-section">
+            <div class="section-title">
+                <h2>例题解析</h2>
+                <p>通过实际例题巩固C语言知识点，点击例题查看详细解析。</p>
+            </div>
+            
+            <div class="example-cards">
+                <div class="example-card">
+                    <h3>例题1：计算小球</h3>
+                    <p>计算小球从100米高度自由落下，第10次落地时总运动距离和第10次反弹高度</p>
+                    <a href="example1.html" class="example-button">查看解析</a>
+                </div>
+                
+                <div class="example-card">
+                    <h3>例题2：被5整除的数</h3>
+                    <p>把123～321之间的可以被5整除的数按照5个一行输出</p>
+                    <a href="example2.html" class="example-button">查看解析</a>
+                </div>
+                
+                <div class="example-card">
+                    <h3>例题3：求1到500以内所有的完数</h3>
+                    <p>如果一个数恰好等于除它本身外的所有因子之和，则这个数就称为完数</p>
+                    <a href="example3.html" class="example-button">查看解析</a>
+                </div>
+                
+                <div class="example-card">
+                    <h3>例题4：数字金字塔</h3>
+                    <p>实现打印一个数字金字塔</p>
+                    <a href="example4.html" class="example-button">查看解析</a>
+                </div>
+                
+                <div class="example-card">
+                    <h3>例题5：三位整数(100~999之间)</h3>
+                    <p>随机输入一个三位整数(100~999之间)，找出满足以下条件的数并输出</p>
+                    <a href="example5.html" class="example-button">查看解析</a>
+                </div>
+                
+                <div class="example-card">
+                    <h3>例题6：平方数</h3>
+                    <p>有一整数，如果加上100，则为一完全平方数。如果加上168，则为另一个完全平方数。求这个数</p>
+                    <a href="example6.html" class="example-button">查看解析</a>
+                </div>
+
+                <div class="example-card">
+                    <h3>例题7：1到100之间同时被3和4整除</h3>
+                    <p>编程计算1到100之间同时被3和4整除的所有整数的和</p>
+                    <a href="example7.html" class="example-button">查看解析</a>
+                </div>
+
+                <div class="example-card">
+                    <h3>例题8：小写转换成相应的大写字母</h3>
+                    <p>输入一字符串，将字符串中的小写英文字母转换成相应的大写字母</p>
+                    <a href="example8.html" class="example-button">查看解析</a>
+                </div>
+
+                <div class="example-card">
+                    <h3>例题9：所有自然数之和的平方根</h3>
+                    <p>求小于形参n同时能被3与7整除的所有自然数之和的平方根</p>
+                    <a href="example9.html" class="example-button">查看解析</a>
+                </div>
+
+                <div class="example-card">
+                    <h3>例题10：输出新的字符串</h3>
+                    <p>删除字符串中的重复的字符，然后输出新的字符串（重复字符保留第一次出现的字符）</p>
+                    <a href="example10.html" class="example-button">查看解析</a>
+                </div>
+
+                <div class="example-card">
+                    <h3>例题11：十进制正数的二进制</h3>
+                    <p>编写函数实现用除二取余的方法，把任意一个十进制正数的二进制序列输出（不考虑溢出）</p>
+                    <a href="example11.html" class="example-button">查看解析</a>
+                </div>
+
+                <div class="example-card">
+                    <h3>例题12：</h3>
+                    <p></p>
+                    <a href="example12.html" class="example-button">查看解析</a>
+                </div>
+
+                <div class="example-card">
+                    <h3>例题13：</h3>
+                    <p></p>
+                    <a href="example13.html" class="example-button">查看解析</a>
+                </div>
+
+                <div class="example-card">
+                    <h3>例题14：</h3>
+                    <p></p>
+                    <a href="example14.html" class="example-button">查看解析</a>
+                </div>
+
+                <div class="example-card">
+                    <h3>例题15：</h3>
+                    <p></p>
+                    <a href="example15.html" class="example-button">查看解析</a>
+                </div>
+
+                <div class="example-card">
+                    <h3>例题16：</h3>
+                    <p></p>
+                    <a href="example16.html" class="example-button">查看解析</a>
+                </div>
+
+                <div class="example-card">
+                    <h3>例题17：</h3>
+                    <p></p>
+                    <a href="example17.html" class="example-button">查看解析</a>
+                </div>
+
+                <div class="example-card">
+                    <h3>例题18：</h3>
+                    <p></p>
+                    <a href="example18.html" class="example-button">查看解析</a>
+                </div>
+
+                <div class="example-card">
+                    <h3>例题19：</h3>
+                    <p></p>
+                    <a href="example19.html" class="example-button">查看解析</a>
+                </div>
+
+                <div class="example-card">
+                    <h3>例题20：</h3>
+                    <p></p>
+                    <a href="example20.html" class="example-button">查看解析</a>
+                </div>
+
+                <div class="example-card">
+                    <h3>例题21：</h3>
+                    <p></p>
+                    <a href="example21.html" class="example-button">查看解析</a>
+                </div>
+
+                <div class="example-card">
+                    <h3>例题22：</h3>
+                    <p></p>
+                    <a href="example22.html" class="example-button">查看解析</a>
+                </div>
+
+                <div class="example-card">
+                    <h3>例题23：</h3>
+                    <p></p>
+                    <a href="Cy-data\example23.html" class="example-button">查看解析</a>
+                </div>
+
+                <div class="example-card">
+                    <h3>例题24：</h3>
+                    <p></p>
+                    <a href="example24.html" class="example-button">查看解析</a>
+                </div>
+
+                <div class="example-card">
+                    <h3>例题25：</h3>
+                    <p></p>
+                    <a href="example25.html" class="example-button">查看解析</a>
+                </div>
+
+                <div class="example-card">
+                    <h3>例题26：</h3>
+                    <p></p>
+                    <a href="example26.html" class="example-button">查看解析</a>
+                </div>
+
+                <div class="example-card">
+                    <h3>例题27：</h3>
+                    <p></p>
+                    <a href="example27.html" class="example-button">查看解析</a>
+                </div>
+
+                <div class="example-card">
+                    <h3>例题28：</h3>
+                    <p></p>
+                    <a href="example28.html" class="example-button">查看解析</a>
+                </div>
+
+                <div class="example-card">
+                    <h3>例题29：</h3>
+                    <p></p>
+                    <a href="example29.html" class="example-button">查看解析</a>
+                </div>
+
+                <div class="example-card">
+                    <h3>例题30：</h3>
+                    <p></p>
+                    <a href="example30.html" class="example-button">查看解析</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+        
+        <div class="footer-bottom">
+            <p>© 荆楚计科备考联盟-计算机工程学习平台 版权所有</p>
+            <p>联系我们 | 隐私政策 | 使用条款</p>
+        </div>
+    </footer>
+</body>
+</html>

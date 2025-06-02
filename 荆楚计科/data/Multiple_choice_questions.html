@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>题目选择 - 荆楚计科备考联盟</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        
+        .header {
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 15px 0;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            margin-left: 20px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .wave {
+            height: 50px;
+            margin-bottom: -1px;
+            overflow: hidden;
+        }
+        
+        .wave svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .hero {
+            text-align: center;
+            padding: 60px 0;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            margin-bottom: 40px;
+        }
+        
+        .hero h1 {
+            font-size: 32px;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        
+        .hero p {
+            font-size: 18px;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .download-button {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .download-button:hover {
+            background-color: #2980b9;
+        }
+        
+        .question-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .question-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            padding: 30px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .question-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+        }
+        
+        .question-card h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .question-card p {
+            color: #7f8c8d;
+            margin-bottom: 20px;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-top: 40px;
+        }
+        
+        .preserve-stroke-width {
+            stroke-width: 1;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">荆楚计科备考联盟-计算机工程学习平台</div>
+            <nav class="nav-links">
+                <a href="index.html">首页</a>
+                <a href="random-practice.html">题库</a>
+                <a href="exam_paper.html">试卷题库</a>
+                <a href="TK.html">非可视化题库</a> 
+                <a href="About_us.html">关于我们</a>
+            </nav>
+        </div>
+    </header>
+    
+    <div class="wave">
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none" class="preserve-stroke-width">
+            <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" fill="#a8d0ff" class="wave-path"></path>
+            <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" fill="#a8d0ff" class="wave-path"></path>
+            <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" fill="#a8d0ff" class="wave-path"></path>
+        </svg>
+    </div>
+    
+    <div class="container">
+        <section class="hero">
+            <h1>选择练习题目</h1>
+            <p>以下是为您准备的练习题目，请选择您感兴趣的题目开始练习。</p>
+        </section>
+        
+        <div class="question-list">
+            <!-- 题目1 -->
+            <div class="question-card">
+                <h3>计算机概述与信息理论</h3>
+                <p>题目数量：704</p>
+                <p>信息与数据的概念、通信的基本概念与通信方式、计算机发展史与我国计算机发展、计算机发展趋势、计算机特点与分类、计算机应用领域</p>
+                <a href="practice/chapter1.html" class="download-button">开始练习</a>
+            </div>
+            
+            <!-- 题目2 -->
+            <div class="question-card">
+                <h3>进制与编码</h3>
+                <p>题目数量：474</p>
+                <p>数据数值在计算机中表示方法、二进制编码：奇偶检效、西文字符编码：ASCII码、汉字编码：输入码、机内码、字形码、常用存储容量与换算、进制数的基本概念、进制相互转换</p>
+                <a href="practice/chapter2.html" class="download-button">开始练习</a>
+            </div>
+            
+            <!-- 题目3 -->
+            <div class="question-card">
+                <h3>信息安全</h3>
+                <p>题目数量：545</p>
+                <p>信息安全的基本知识、病毒的定义、特征、分类、社会信息道德的定义与特征、版权、知识产权的相关知识、网络安全与相关技术</p>
+                <a href="practice/chapter3.html" class="download-button">开始练习</a>
+            </div>
+            
+            <!-- 题目4 -->
+            <div class="question-card">
+                <h3>计算机基本工作原理</h3>
+                <p>题目数量：633</p>
+                <p>计算机基本工作原理、计算机硬件组成、计算机基本维护和相关诊断</p>
+                <a href="practice/chapter4.html" class="download-button">开始练习</a>
+            </div>
+            
+            <!-- 题目5 -->
+            <div class="question-card">
+                <h3>计算机软件、指令、程序</h3>
+                <p>题目数量：331</p>
+                <p>计算机软件、指令、程序、计算机软件的分类、计算机程序设计语言的分类、软件开发过程与软件危机</p>
+                <a href="practice/chapter5.html" class="download-button">开始练习</a>
+            </div>
+            
+            <!-- 题目6 -->
+            <div class="question-card">
+                <h3>操作系统</h3>
+                <p>题目数量：375</p>
+                <p>操作系统基本概念和WINDOWS、文件与文件扩展名</p>
+                <a href="practice/chapter6.html" class="download-button">开始练习</a>
+            </div>
+
+            <!-- 题目7 -->
+            <div class="question-card">
+                <h3>计算机网络</h3>
+                <p>题目数量：1,038</p>
+                <p>计算机网络的概念、组成与功能、计算机网络的拓扑结构、计算机网络的基本硬件设备、计算机网络体系结构：OSI模型、计算机网络协议：IP地址、局域网概念与组建、广域网相关技术与IE、IE的相关应用、相关概念</p>
+                <a href="practice/chapter7.html" class="download-button">开始练习</a>
+            </div>
+
+            <!-- 题目8 -->
+            <div class="question-card">
+                <h3>多媒体</h3>
+                <p>题目数量：351</p>
+                <p>多媒体信息的概念、特征、多媒体元素的处理方法、多媒体处理软件的使用、平面设计基础知识</p>
+                <a href="practice/chapter8.html" class="download-button">开始练习</a>
+            </div>
+
+            <!-- 题目９ -->
+            <div class="question-card">
+                <h3>大数据、云计算、物联网</h3>
+                <p>题目数量：157</p>
+                <p>涵盖大数据、数据挖掘、云计算、云存储、人工智能等相关练习题</p>
+                <a href="practice/chapter9.html" class="download-button">开始练习</a>
+            </div>
+
+            <!-- 题目10 -->
+            <div class="question-card">
+                <h3>办公软件</h3>
+                <p>题目数量：824</p>
+                <p>OFFICE办公软件、数据库、数据库系统</p>
+                <a href="practice/chapter10.html" class="download-button">开始练习</a>
+            </div>
+
+            <!-- 题目11 -->
+            <div class="question-card">
+                <h3>信创产业及国产化</h3>
+                <p>题目数量：120</p>
+                <p>国产硬件、软件</p>
+                <a href="practice/chapter11.html" class="download-button">开始练习</a>
+            </div>
+
+        </div>
+    </div>
+    
+    <footer class="footer">
+        <p>© 荆楚计科备考联盟-计算机工程学习平台 版权所有</p>
+        <p>联系我们 | 隐私政策 | 使用条款</p>
+    </footer>
+</body>
+</html>

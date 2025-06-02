@@ -1,0 +1,1778 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>荆楚计科备考联盟-计算机工程学习平台</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #1a73e8;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #616161;
+            font-size: 1.1rem;
+        }
+
+        .page {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            display: none;
+            animation: fadeIn 0.5s ease;
+            position: relative;
+        }
+
+        .active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .login-form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #e8eaf6;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .error-message {
+            color: #c62828;
+            margin-top: 5px;
+            font-size: 0.9rem;
+        }
+
+        .instructions {
+            text-align: left;
+            margin-bottom: 30px;
+        }
+
+        .instructions h2 {
+            color: #1a73e8;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #e8eaf6;
+            padding-bottom: 10px;
+        }
+
+        .instructions ul {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        .instructions li {
+            margin-bottom: 8px;
+            padding-left: 10px;
+            position: relative;
+        }
+
+        .instructions li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #1a73e8;
+        }
+
+        button {
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.1s;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        button:hover {
+            background-color: #1557b0;
+            transform: translateY(-1px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .question-container {
+            display: flex;
+            margin-top: 20px;
+        }
+
+        .question-list {
+            flex: 0 0 20%;
+            padding-right: 20px;
+            border-right: 1px solid #e8eaf6;
+            height: 600px;
+            overflow-y: auto;
+        }
+
+        .question-list::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .question-list::-webkit-scrollbar-thumb {
+            background-color: #90caf9;
+            border-radius: 4px;
+        }
+
+        .question-list-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 5px;
+        }
+
+        .question-item {
+            background-color: #e8eaf6;
+            border-radius: 4px;
+            padding: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .question-item:hover {
+            background-color: #90caf9;
+            transform: scale(1.05);
+        }
+
+        .question-item.active {
+            background-color: #1a73e8;
+            color: white;
+        }
+
+        .question-item.marked {
+            background-color: #ffeb3b;
+            color: #333;
+        }
+
+        .question-item.selected {
+            background-color: #81c784;
+            color: white;
+        }
+
+        .question-content {
+            flex: 0 0 80%;
+        }
+
+        .question {
+            margin-bottom: 25px;
+        }
+
+        .question h3 {
+            color: #1a73e8;
+            margin-bottom: 15px;
+            font-size: 1.25rem;
+        }
+
+        .options {
+            list-style: none;
+        }
+
+        .options li {
+            background-color: #f5f7fa;
+            border: 1px solid #e8eaf6;
+            border-radius: 5px;
+            padding: 12px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+        }
+
+        .options li:hover {
+            background-color: #e8eaf6;
+            border-color: #90caf9;
+        }
+
+        .option-label {
+            margin-right: 10px;
+            font-weight: bold;
+            color: #1a73e8;
+        }
+
+        .selected {
+            background-color: #90caf9;
+            border-color: #1a73e8;
+            color: white;
+        }
+
+        .correct {
+            background-color: #a5d6a7;
+            border-color: #2e7d32;
+            color: #1b5e20;
+        }
+
+        .wrong {
+            background-color: #ffcdd2;
+            border-color: #c62828;
+            color: #b71c1c;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e8eaf6;
+        }
+
+        .result {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .result h2 {
+            color: #1a73e8;
+            margin-bottom: 20px;
+        }
+
+        .score-display {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #2e7d32;
+            margin-bottom: 20px;
+        }
+
+        .score-display span {
+            font-size: 1.5rem;
+            color: #616161;
+        }
+
+        .explanation {
+            background-color: #f5f7fa;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+
+        .explanation h4 {
+            color: #1a73e8;
+            margin-bottom: 10px;
+        }
+
+        .explanation p {
+            margin-bottom: 10px;
+        }
+
+        .back-btn {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .back-btn:hover {
+            background-color: #1557b0;
+        }
+
+        .timer {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #1a73e8;
+        }
+
+        .keyboard-tip {
+            font-size: 0.9rem;
+            color: #616161;
+            margin-top: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>荆楚计科备考联盟-试卷类</h1>
+        <p>2025~2026年计算机分析模拟试卷-计算机基础提升题</p>
+        <p>计算机工程A组命题/覆盖知识点:计算机基础.硬件.网络/适用:中职高二</p>
+    </div>
+
+    <div id="login-page" class="page active">
+        <div class="login-form">
+            <h2>准考证密钥登录</h2>
+            <div class="form-group">
+                <label for="admission-ticket">准考证号</label>
+                <input type="text" id="admission-ticket" placeholder="请输入您的准考证号">
+            </div>
+            <div class="form-group">
+                <label for="admission-key">准考证密钥</label>
+                <input type="password" id="admission-key" placeholder="请输入您的准考证密钥">
+            </div>
+            <p id="login-error" class="error-message"></p>
+            <button id="login-btn">登录</button>
+        </div>
+    </div>
+
+
+    <div id="instructions-page" class="page">
+        <div class="instructions">
+            <h2>考试须知</h2>
+            <ul>
+                <li>考试时间为25分钟，满分为150分，请合理安排时间</li>
+                <li>每道题有四个选项，只有一个正确答案，每题3分</li>
+                <li>答题过程中请勿刷新、切屏、滚动等一切操作页面，否则将导致考试异常</li>
+                <li>点击题目列表中的题目编号可以快速切换题目</li>
+                <li>完成答题后，请点击"交卷"按钮提交试卷</li>
+                <li>键盘快捷键：数字键1=上一题，数字键2=下一题，数字键3=标记/取消标记</li>
+                <li>标记的题目在列表中显示为黄色</li>
+            </ul>
+            <div class="random-info">
+                <h4>试卷说明</h4>
+                <p>2025~2026年计算机分析模拟试卷-计算机基础提升题</p>
+            </div>
+            <button id="start-btn">开始考试</button>
+        </div>
+    </div>
+
+    <!-- 做题页面 -->
+    <div id="questions-page" class="page">
+        <div class="timer" id="timer">25:00</div>
+        <div class="question-container">
+            <div class="question-list">
+                <div class="question-list-grid" id="question-list">
+                </div>
+            </div>
+            <div class="question-content">
+                <div id="question-content">
+
+                </div>
+                <div class="navigation">
+                    <button id="prev-btn">上一题</button>
+                    <button id="mark-btn">标记</button>
+                    <button id="next-btn">下一题</button>
+                    <button id="submit-btn">交卷</button>
+                </div>
+                <p class="keyboard-tip">快捷键：数字键1=上一题，数字键2=下一题，数字键3=标记/取消标记</p>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="submit-page" class="page">
+        <h2>确认交卷</h2>
+        <p>您确定要交卷吗？交卷后将无法修改答案。</p>
+        <div class="navigation">
+            <button id="cancel-submit-btn">取消</button>
+            <button id="confirm-submit-btn">确认交卷</button>
+        </div>
+    </div>
+
+
+    <div id="result-page" class="page">
+        <div class="result">
+            <h2>考试成绩</h2>
+            <div class="score-display">
+                <span>您的得分：</span>0<span>分</span>
+            </div>
+            <button id="view-explanation-btn">查看题目解析</button>
+        </div>
+    </div>
+
+
+    <div id="explanation-page" class="page">
+        <h2>题目解析</h2>
+        <div id="explanation-content">
+
+        </div>
+        <button class="back-btn" id="back-to-instructions-btn">返回</button>
+    </div>
+</div>
+
+<script>
+    let tabChangeCount = 0;
+    const MAX_TAB_CHANGES = 3;
+
+    // 监听页面可见性变化
+    document.addEventListener('visibilitychange', () => {
+        if (document.getElementById('questions-page').classList.contains('active') && document.hidden) {
+            tabChangeCount++;
+            if (tabChangeCount >= MAX_TAB_CHANGES) {
+                alert('您切换页面次数过多，系统将自动交卷！');
+                showPage('submit');
+            }
+        }
+    });
+
+    // 禁止复制粘贴
+    document.addEventListener('copy', (e) => e.preventDefault());
+    document.addEventListener('paste', (e) => e.preventDefault());
+</script>
+
+<script>
+    // 新增防作弊功能
+    let screenshotAttempts = 0;
+    let windowResizeCount = 0;
+    let networkChangeCount = 0;
+
+    // 阻止开发者工具快捷键
+    document.addEventListener('keydown', (e) => {
+        // 禁用F12、Ctrl+Shift+I、Ctrl+Shift+C、Ctrl+Shift+J
+        if (e.key === 'F12' || 
+            (e.ctrlKey && e.shiftKey && e.key === 'I') || 
+            (e.ctrlKey && e.shiftKey && e.key === 'C') ||
+            (e.ctrlKey && e.shiftKey && e.key === 'J')) {
+            e.preventDefault();
+            alert('考试期间禁止使用开发者工具！');
+            return false;
+        }
+    });
+
+    // 增强页面切换检测
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            tabChangeCount++;
+            if (tabChangeCount >= MAX_TAB_CHANGES) {
+                alert('您切换页面次数过多，系统将自动交卷！');
+                showPage('submit');
+                forceSubmit();
+            } else {
+                alert(`页面切换警告！剩余允许切换次数：${MAX_TAB_CHANGES - tabChangeCount}`);
+            }
+        }
+    });
+
+    // 禁止右键菜单
+    document.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
+        screenshotAttempts++;
+        if (screenshotAttempts > 2) {
+            alert('检测到多次截图尝试，系统将自动交卷！');
+            forceSubmit();
+        }
+        return false;
+    });
+
+    // 窗口大小变化检测（防分屏）
+    window.addEventListener('resize', () => {
+        if (document.getElementById('questions-page').classList.contains('active')) {
+            windowResizeCount++;
+            if (windowResizeCount > 3) {
+                alert('检测到多次窗口调整，系统将自动交卷！');
+                forceSubmit();
+            }
+        }
+    });
+
+    // 网络状态检测
+    window.addEventListener('offline', () => {
+        alert('网络连接已断开，考试暂停！');
+        clearInterval(timerInterval);
+    });
+
+    window.addEventListener('online', () => {
+        networkChangeCount++;
+        if (networkChangeCount > 1) {
+            alert('检测到网络切换，系统将自动交卷！');
+            forceSubmit();
+        } else {
+            alert('网络已恢复，考试继续！');
+            startTimer();
+        }
+    });
+
+    // 强制交卷功能
+    function forceSubmit() {
+        clearInterval(timerInterval);
+        saveExamState();
+        showPage('result');
+        document.removeEventListener('contextmenu', () => {});
+        document.removeEventListener('keydown', () => {});
+    }
+
+    // 修改原来的保存状态功能
+    function saveExamState() {
+        localStorage.setItem('userAnswers', JSON.stringify(userAnswers));
+        localStorage.setItem('questionMarks', JSON.stringify(questionMarks));
+        localStorage.setItem('currentQuestionIndex', currentQuestionIndex);
+        localStorage.setItem('remainingTime', remainingTime);
+        localStorage.setItem('securityLogs', JSON.stringify({
+            screenshotAttempts,
+            windowResizeCount,
+            networkChangeCount,
+            tabChangeCount
+        }));
+    }
+</script>
+
+<script>
+    function exportResults() {
+        let csvContent = "data:text/csv;charset=utf-8,";
+        csvContent += "题目编号,题目内容,正确答案,您的答案,是否正确\n";
+
+        questions.forEach((question, index) => {
+            const userAnswer = userAnswers[index] !== undefined ? userAnswers[index] : '未作答';
+            const isCorrect = userAnswer === question.correctAnswer;
+            csvContent += `${index + 1},"${question.question.replace(/"/g, '""')}",${question.correctAnswer},${userAnswer},${isCorrect ? '正确' : '错误'}\n`;
+        });
+
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "考试结果.csv");
+        document.body.appendChild(link);
+        link.click();
+    }
+
+    // 在结果页面添加导出按钮
+    const resultPage = document.getElementById('result-page');
+    const exportBtn = document.createElement('button');
+    exportBtn.textContent = '导出结果';
+    exportBtn.addEventListener('click', exportResults);
+    resultPage.querySelector('.result').appendChild(exportBtn);
+</script>
+
+
+<script>
+
+    const loginBtn = document.getElementById('login-btn');
+    const loginError = document.getElementById('login-error');
+    const loginPage = document.getElementById('login-page');
+    const instructionsPage = document.getElementById('instructions-page');
+    const startBtn = document.getElementById('start-btn');
+
+
+    const validAdmissionKeys = {
+        '20250001': 'ks001',
+        'QC580': 'QC580',
+    };
+
+    let isLoggedIn = false;
+    let currentAdmissionTicket = '';
+
+    loginBtn.addEventListener('click', () => {
+        const admissionTicket = document.getElementById('admission-ticket').value;
+        const admissionKey = document.getElementById('admission-key').value;
+        loginError.textContent = '';
+
+        if (!admissionTicket || !admissionKey) {
+            loginError.textContent = '请填写完整的登录信息。';
+            return;
+        }
+
+        if (validAdmissionKeys[admissionTicket] === admissionKey) {
+            isLoggedIn = true;
+            currentAdmissionTicket = admissionTicket;
+            showPage('instructions');
+        } else {
+            loginError.textContent = '准考证号或密钥错误，请重试。';
+        }
+    });
+
+    function showPage(pageId) {
+        const pages = {
+            login: loginPage,
+            instructions: document.getElementById('instructions-page'),
+            questions: document.getElementById('questions-page'),
+            submit: document.getElementById('submit-page'),
+            result: document.getElementById('result-page'),
+            explanation: document.getElementById('explanation-page')
+        };
+
+        for (const page in pages) {
+            if (pages[page]) {
+                pages[page].classList.remove('active');
+            }
+        }
+
+        if (pages[pageId]) {
+            pages[pageId].classList.add('active');
+        }
+    }
+
+
+
+
+    const questionBank = [
+        {
+            "question": "在某个品牌PC出现蓝屏，无法进入系统，维修人员判定为内存损坏。可维修人员更换非同品牌同频率的新内存时，也是无法进入系统，更换同品牌同频率的新内存时，进入系统，不可能的是（   ）",
+            "options": [
+                { "value": "A", "text": "该品牌PC主板对内存品牌适配性存在特殊优化" },
+                { "value": "B", "text": "更换的非同品牌内存存在兼容性问题" },
+                { "value": "C", "text": "该品牌内存与该品牌PC主板有独特的适配机制" },
+                { "value": "D", "text": "内存频率过低导致无法正常启动" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "题目描述中明确提到更换同品牌同频率内存可以正常启动，说明频率不是问题，因此选项D不可能是原因。"
+        },
+        {
+            "question": "笔记本电脑充电时，充电指示灯不亮且无法开机，维修人员更换了充电器后，笔记本可以正常充电并开机，不可能的因素是（   ）",
+            "options": [
+                { "value": "A", "text": "原充电器输出电压不稳定" },
+                { "value": "B", "text": "笔记本充电接口松动" },
+                { "value": "C", "text": "笔记本电池损坏" },
+                { "value": "D", "text": "笔记本主板电源管理芯片故障" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "更换充电器后可以正常充电并开机，说明问题出在充电器相关部分，而主板电源管理芯片故障不会因更换充电器而解决，因此选项D不可能是原因。"
+        },
+        {
+            "question": "在某个品牌中，BIOS降级安装低版本系统，CMOS电池在掉电时，电脑出现“3FC”的提示，维修人员应该（   ）",
+            "options": [
+                { "value": "A", "text": "更换CMOS电池" },
+                { "value": "B", "text": "进入BIOS重置相关设置" },
+                { "value": "C", "text": "检查主板供电电路" },
+                { "value": "D", "text": "更换硬盘" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "出现“3FC”提示通常与CMOS电池掉电有关，更换CMOS电池是直接解决此类问题的常见方法。"
+        },
+        {
+            "question": "在现代计算机体系结构中，CPU流水线技术主要用于提高指令执行效率。以下关于CPU流水线技术的描述，正确的是（    ）",
+            "options": [
+                { "value": "A", "text": "流水线技术通过增加CPU的时钟频率来提高指令执行速度" },
+                { "value": "B", "text": "流水线技术允许在同一个时间点，多个指令在不同的流水线阶段同时执行" },
+                { "value": "C", "text": "流水线技术可以完全消除指令之间的数据相关性问题" },
+                { "value": "D", "text": "使用流水线技术后，单个指令的执行时间会显著减少" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "流水线技术的核心是允许多条指令在不同阶段同时执行，而不是通过增加时钟频率或消除数据相关性问题来实现效率提升。"
+        },
+        {
+            "question": "以下关于同构计算机和异构计算机的描述，正确的是（   ）",
+            "options": [
+                { "value": "A", "text": "同构计算机系统中的所有处理器必须具有相同的架构，而异构计算机系统中的处理器可以有不同的架构" },
+                { "value": "B", "text": "同构计算机系统中的处理器可以有不同的架构，而异构计算机系统中的所有处理器必须具有相同的架构" },
+                { "value": "C", "text": "异构计算机系统无法利用多种类型的处理器来提高性能" },
+                { "value": "D", "text": "同构计算机系统中的处理器必须来自同一个制造商" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "同构计算机系统要求所有处理器具有相同的架构，而异构计算机系统可以包含不同架构的处理器，这是它们的核心区别。"
+        },
+        {
+            "question": "以下关于同构CPU和异构CPU的描述，正确的是（   ）",
+            "options": [
+                { "value": "A", "text": "同构CPU系统中的所有CPU必须来自同一个制造商，而异构CPU系统中的CPU可以来自不同的制造商" },
+                { "value": "B", "text": "同构CPU系统中的所有CPU具有相同的架构和指令集，而异构CPU系统中的CPU可以有不同的架构和指令集" },
+                { "value": "C", "text": "异构CPU系统无法通过结合不同类型CPU的优势来提高性能" },
+                { "value": "D", "text": "同构CPU系统中的CPU必须具有相同的时钟频率" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "同构CPU系统的关键在于所有CPU具有相同的架构和指令集，而异构CPU系统则可以包含不同架构和指令集的CPU，以实现性能优化。"
+        },
+        {
+            "question": "CD光驱的数据传输率通常用“数字X”来表示，那么40X倍速光驱，其传输速率为（   ）",
+            "options": [
+                { "value": "A", "text": "6000KB/s" },
+                { "value": "B", "text": "3000KB/s" },
+                { "value": "C", "text": "6000Kb/s" },
+                { "value": "D", "text": "3000Kb/s" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "1X光驱的传输速率为150KB/s，因此40X光驱的传输速率是40×150KB/s=6000KB/s。"
+        },
+        {
+            "question": "主板上的（   ）决定了能够支持的CPU和内存的类型。",
+            "options": [
+                { "value": "A", "text": "北桥芯片" },
+                { "value": "B", "text": "内存芯片" },
+                { "value": "C", "text": "内存颗粒" },
+                { "value": "D", "text": "南桥芯片" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "北桥芯片主要负责管理CPU、内存等高速设备的连接和通信，决定了主板支持的CPU和内存类型。"
+        },
+        {
+            "question": "下列属于目前主流内存的类型是（   ）",
+            "options": [
+                { "value": "A", "text": "DDRSDRAM" },
+                { "value": "B", "text": "RDRAM" },
+                { "value": "C", "text": "DDRIII" },
+                { "value": "D", "text": "SDRAM" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "目前主流的内存类型是DDR4，而DDRIII（DDR3）是之前较为常见的内存类型，其他选项如DDRSDRAM、RDRAM和SDRAM已经逐渐被淘汰。"
+        },
+        {
+            "question": "机械硬盘容量大小的计算公式为0。",
+            "options": [
+                { "value": "A", "text": "磁头数×柱面数×扇区数×512字节" },
+                { "value": "B", "text": "磁头数×柱面数×扇区数×128字节" },
+                { "value": "C", "text": "磁头数×柱面数×扇区数×80×512字节" },
+                { "value": "D", "text": "磁头数×柱面数×扇区数×15×128字节" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "机械硬盘容量的计算公式是磁头数×柱面数×扇区数×每扇区字节数，而每扇区的标准字节数是512字节。"
+        },
+        {
+            "question": "计算机中的“火线接口”通常是指（   ）",
+            "options": [
+                { "value": "A", "text": "显卡接口" },
+                { "value": "B", "text": "IEEE1394接口" },
+                { "value": "C", "text": "键盘接口" },
+                { "value": "D", "text": "网卡接口" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "火线接口是Apple公司开发的一种高速串行总线接口，后来被标准化为IEEE1394接口，常用于连接高速数据传输设备。"
+        },
+        {
+            "question": "主频是衡量CPU的主要指标,下列说法正确的是（   ）",
+            "options": [
+                { "value": "A", "text": "主频是指CPU的时钟频率" },
+                { "value": "B", "text": "主频是指交流电源的频率" },
+                { "value": "C", "text": "主频是指主板的工作频率" },
+                { "value": "D", "text": "主频是指内存的存取频率" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "主频通常指的是CPU的时钟频率，以MHz或GHz为单位，是衡量CPU运算速度的重要指标之一。"
+        },
+        {
+            "question": "内存条金手指是指内存与主板插槽连接的,排列整齐的一排触点,一般是镀金处理的。目前主流内存条DDR3的金手指为（   ）线",
+            "options": [
+                { "value": "A", "text": "240" },
+                { "value": "B", "text": "284" },
+                { "value": "C", "text": "276" },
+                { "value": "D", "text": "288" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "DDR3内存的金手指触点数为240个，这是DDR3内存条的典型特征之一。"
+        },
+        {
+            "question": "CPU进行数据处理时,一次存取.加工和传送的数据长度称为字(word),一个字的长度通常是（   ）",
+            "options": [
+                { "value": "A", "text": "16个二进制位" },
+                { "value": "B", "text": "32个二进制位" },
+                { "value": "C", "text": "64个二进制位" },
+                { "value": "D", "text": "与微处理器芯片的型号有关" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "字的长度通常取决于CPU的架构和型号，例如16位、32位或64位处理器，因此一个字的长度与微处理器芯片的型号密切相关。"
+        },
+        {
+            "question": "Celeron系列CPU是由（   ）生产的",
+            "options": [
+                { "value": "A", "text": "AMD" },
+                { "value": "B", "text": "Intel" },
+                { "value": "C", "text": "SIS" },
+                { "value": "D", "text": "Cyrix" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "Celeron是Intel公司推出的一个面向低端市场的CPU系列，旨在与AMD的低阶处理器竞争。"
+        },
+        {
+            "question": "某计算机的字长为4个字节,表示（    ）。",
+            "options": [
+                { "value": "A", "text": "该计算机能处理的字符串最多为8个ASCII字符" },
+                { "value": "B", "text": "该计算机能处理的数值最大为4位9999D" },
+                { "value": "C", "text": "该计算机的CPU运算结果最大为8的32次方" },
+                { "value": "D", "text": "该计算机的CPU中作为一个整体加以传送处理的二进制码为32位" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "字长为4个字节即32位，这意味着CPU一次可以处理32位的二进制数据，因此选项D正确描述了字长的意义。"
+        },
+        {
+            "question": "计算机之所以能自动连续运算,是由于采用了（   ）工作原理",
+            "options": [
+                { "value": "A", "text": "布尔逻辑" },
+                { "value": "B", "text": "超大规模集成电路" },
+                { "value": "C", "text": "存储程序" },
+                { "value": "D", "text": "数字电路" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "存储程序原理是冯·诺依曼体系结构的核心，它使得计算机能够自动顺序执行存储在内存中的程序指令，从而实现自动连续运算。"
+        },
+        {
+            "question": "按照（   ）可将计算机分为286.386.486.Pentium等",
+            "options": [
+                { "value": "A", "text": "CPU芯片" },
+                { "value": "B", "text": "结构" },
+                { "value": "C", "text": "字长" },
+                { "value": "D", "text": "容量" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "这些名称（如286、386、486、Pentium）都是Intel CPU芯片的型号，因此按照CPU芯片的不同可以将计算机分为这些类别。"
+        },
+        {
+            "question": "下面关于BIOS和CMOS的说法中,错误的是（   ）",
+            "options": [
+                { "value": "A", "text": "BIOS芯片CMOS芯片都能长时间保存信息" },
+                { "value": "B", "text": "BIOS芯片是ROM芯片,CMOS芯片是RAM芯片" },
+                { "value": "C", "text": "BIOS中的程序可以设置CMOS参数" },
+                { "value": "D", "text": "BIOS是程序,CMOS是参数" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "CMOS芯片需要依靠主板上的电池供电来保存信息，一旦断电信息就会丢失，因此不能长时间保存信息，选项A错误。"
+        },
+        {
+            "question": "SATA接口的驱动器的信号电缆插座有（   ）针",
+            "options": [
+                { "value": "A", "text": "40" },
+                { "value": "B", "text": "7" },
+                { "value": "C", "text": "34" },
+                { "value": "D", "text": "80" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "SATA接口是一种串行接口，其信号电缆插座通常有7针，包括3个地线和4个数据线。"
+        },
+        {
+            "question": "执行一条指令所需的时钟周期数,术语简称（   ）,也是衡量计算机运算速度的指标之一",
+            "options": [
+                { "value": "A", "text": "CPI" },
+                { "value": "B", "text": "MIPS" },
+                { "value": "C", "text": "MHZ" },
+                { "value": "D", "text": "BPS" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "CPI（Clocks Per Instruction）表示执行一条指令所需的时钟周期数，是衡量计算机运算效率的重要指标。"
+        },
+        {
+            "question": "目前固态硬盘和机械硬盘对比,（   ）不是它的优点",
+            "options": [
+                { "value": "A", "text": "开机速度.文件复制速度.程序软件加载或打开速度都快" },
+                { "value": "B", "text": "固态硬盘几乎零噪音,机械硬盘噪音较大" },
+                { "value": "C", "text": "性能方面,固态硬盘几乎完胜机械硬盘" },
+                { "value": "D", "text": "固态硬盘容量大,价格相对低" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "固态硬盘的容量通常比机械硬盘小，且价格相对较高，因此选项D不是固态硬盘的优点。"
+        },
+        {
+            "question": "运算器的组成部分不包括（   ）",
+            "options": [
+                { "value": "A", "text": "控制线路" },
+                { "value": "B", "text": "译码器" },
+                { "value": "C", "text": "加法器" },
+                { "value": "D", "text": "寄存器" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "运算器主要由算术逻辑单元（ALU）、寄存器和控制线路组成，而译码器属于控制器的组成部分，不属于运算器。"
+        },
+        {
+            "question": "下面关于微机上的各种接口的叙述中,不正确的是（   ）",
+            "options": [
+                { "value": "A", "text": "SATA接口主要用来接硬盘,它使用串行通信方式传输数据" },
+                { "value": "B", "text": "HDMI可以提供高清数字化图像和模拟声音信号" },
+                { "value": "C", "text": "RJ-45接口是8芯线,主要用来连接双绞线" },
+                { "value": "D", "text": "USB接口支持设备的即插即用和热插拔功能,USB接口可用于连接多达127种电脑外设" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "HDMI接口可以传输高清数字化图像和数字化声音信号，而不是模拟声音信号，因此选项B不正确。"
+        },
+        {
+            "question": "计算机的性能在很大程度上是由CPU决定的,CPU的性能主要体现为它的运算速度,下列有关计算机性能的叙述正确是（   ）",
+            "options": [
+                { "value": "A", "text": "计算机中cache 存储器的有无和容量的大小对计算机的性能影响不大" },
+                { "value": "B", "text": "CPU中寄存器数目的多少不影响计算机性能的发挥" },
+                { "value": "C", "text": "计算机指令系统的功能不影响计算机的性能" },
+                { "value": "D", "text": "在CPU内部采用流水线方式处理指令,目的是为了提高计算机的性能" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "流水线技术是提高CPU性能的重要手段之一，它允许多条指令重叠执行，从而提高整体运算速度，因此选项D正确。"
+        },
+        {
+            "question": "机械硬盘在技术上主流采用（   ）技术来提高存储密度",
+            "options": [
+                { "value": "A", "text": "RAID技术" },
+                { "value": "B", "text": "SMR技术" },
+                { "value": "C", "text": "PRML读取通道技术" },
+                { "value": "D", "text": "S.M.A.R.T." }
+            ],
+            "correctAnswer": "B",
+            "explanation": "SMR（Shingled Magnetic Recording，叠瓦式磁记录）技术是一种通过部分重叠磁道来提高存储密度的技术，目前在机械硬盘中广泛应用。"
+        },
+        {
+            "question": "以下（   ）是中国自主研发的云计算平台",
+            "options": [
+                { "value": "A", "text": "阿里云" },
+                { "value": "B", "text": "亚马逊AWS" },
+                { "value": "C", "text": "微软Azure" },
+                { "value": "D", "text": "谷歌云平台" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "阿里云是中国自主研发的云计算平台"
+        },
+        {
+            "question": "主流市场一代神U的i5-12500 ，其中CPU核心/线程.主频为（   ）",
+            "options": [
+                { "value": "A", "text": "6C/12T 3.00GHz" },
+                { "value": "B", "text": "6C/12T 3.10GHz" },
+                { "value": "C", "text": "6C/12T 3.50GHz" },
+                { "value": "D", "text": "6C/12T 3.20GHz" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Intel i5-12500是第12代酷睿处理器，具有6个核心和12个线程，基础频率为3.00GHz。"
+        },
+        {
+            "question": "维修人员在计算机维修中出现“Hard disk not present”，其意思时（   ）",
+            "options": [
+                { "value": "A", "text": "加载硬盘失败" },
+                { "value": "B", "text": "内存定位错误" },
+                { "value": "C", "text": "硬盘不存在" },
+                { "value": "D", "text": "硬盘控制器错误" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "“Hard disk not present”错误通常表示系统检测不到硬盘的存在，可能是因为硬盘未正确连接或硬盘本身出现故障。"
+        },
+        {
+            "question": "（   ）年，“龙芯3A4000+统信UOS”在浙江金华开启大规模落地应用",
+            "options": [
+                { "value": "A", "text": "2019年" },
+                { "value": "B", "text": "2020年" },
+                { "value": "C", "text": "2021年" },
+                { "value": "D", "text": "2022年" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "龙芯3A4000处理器与统信UOS操作系统的结合在2020年开始在浙江金华进行大规模应用推广。"
+        },
+        {
+            "question": "在计算机历史中，（   ）事件标志着GPU正式进入通用计算领域",
+            "options": [
+                { "value": "A", "text": "1999年，NVIDIA发布GeForce 256并首次提出GPU概念。" },
+                { "value": "B", "text": "2001年，微软在DirectX 8中引入渲染单元模式（shader model）概念。" },
+                { "value": "C", "text": "2006年，NVIDIA发布GeForce 8800 GTX，采用统一渲染架构。" },
+                { "value": "D", "text": "2007年，NVIDIA正式发布CUDA 1.0，全面适配GeForce 8800系列GPU。" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "NVIDIA在2007年发布的CUDA 1.0平台首次使GPU能够广泛用于通用计算任务，标志着GPU正式进入通用计算领域。"
+        },
+        {
+            "question": "对于我国计算机发展历史叙述错误的是（   ）",
+            "options": [
+                { "value": "A", "text": "1958年中科院研制出103型计算机，标志我国第一台电子计算机诞生（第一代）" },
+                { "value": "B", "text": "1983年国防科技大学研制出银河-1，这是我国巨型计算机研制的重要里程碑（第四代）" },
+                { "value": "C", "text": "2002年开始我国研发的“龙芯”系列CPU，包括龙芯一号.二号.三号都是巨型机.CPU" },
+                { "value": "D", "text": "华罗庚教授是我国计算机技术的主要奠基人之一" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "龙芯系列CPU主要是面向通用领域的处理器，而非专门的巨型机CPU，因此选项C叙述错误。"
+        },
+        {
+            "question": "下列（   ）企业目前是芯片国产替代领域的领军企业",
+            "options": [
+                { "value": "A", "text": "中芯国际" },
+                { "value": "B", "text": "长鑫存储" },
+                { "value": "C", "text": "华润微电子" },
+                { "value": "D", "text": "兆易创新" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "中芯国际是中国大陆规模最大、技术最先进的集成电路芯片制造企业之一，在芯片国产替代领域处于领先地位。"
+        },
+        {
+            "question": "在虚拟现实（VR）技术中，哪种技术可以提供更真实的沉浸式体验（   ）",
+            "options": [
+                { "value": "A", "text": "第一人称视角VR体验。" },
+                { "value": "B", "text": "第三人称视角VR体验。" },
+                { "value": "C", "text": "2D图像VR体验。" },
+                { "value": "D", "text": "无所谓第一人称或第三人称视角，只要能提供沉浸式体验即可。" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "第一人称视角的VR体验能够让用户感觉自己置身于虚拟环境中，提供更真实的沉浸式体验。"
+        },
+        {
+            "question": "下列进制的概念有误的是（   ）",
+            "options": [
+                { "value": "A", "text": "进制也就是进位制，是人们规定的一种进位方法" },
+                { "value": "B", "text": "十进制是逢十进一，十六进制是逢十六进一，二进制就是逢二进一，以此类推，x进制就是逢x进位" },
+                { "value": "C", "text": "对于任何一种进制X进制，就表示某一位置上的数运算时是逢X进一位" },
+                { "value": "D", "text": "二进制数有两个特点：它由两个基本数字1,2组成" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "二进制数由两个基本数字0和1组成，而不是1和2，因此选项D概念有误。"
+        },
+        {
+            "question": "ATX结构的主板上一般有两个6芯的PS/2口，其接法为（   ）",
+            "options": [
+                { "value": "A", "text": "绿色接键盘" },
+                { "value": "B", "text": "紫色接键盘" },
+                { "value": "C", "text": "紫色接鼠标" },
+                { "value": "D", "text": "随意接都行" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "在ATX主板上，通常紫色PS/2口用于连接键盘，绿色PS/2口用于连接鼠标。"
+        },
+        {
+            "question": "内存参数“台式机/DDR II/256M/DDR 533/TinyBGA/CL=4“533MHz”是指（ ）",
+            "options": [
+                { "value": "A", "text": "内存的实际工作频率为533MHz" },
+                { "value": "B", "text": "内存的数据传输率为533MB/s" },
+                { "value": "C", "text": "内存的数据传输率为533Mb/s" },
+                { "value": "D", "text": "内存的理想工作频率为533MHz" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "DDR 533指的是内存的实际工作频率为533MHz，这是DDR II内存的一种常见频率规格。"
+        },
+        {
+            "question": "维修人员在某台机器总是开机一段时间后死机，关机后一段时间又能正常启动，故障原因很可能是（ ）",
+            "options": [
+                { "value": "A", "text": "COMS设置错误" },
+                { "value": "B", "text": "CPU散热不良，导致CPU过热而自动保护" },
+                { "value": "C", "text": "计算机病毒" },
+                { "value": "D", "text": "主板短路" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "开机一段时间后死机通常与过热有关，尤其是CPU散热不良会导致温度过高，触发自动保护机制而死机。"
+        },
+        {
+            "question": "系统配置错误或丢失属于“软”故障,一般进行（ ）处理",
+            "options": [
+                { "value": "A", "text": "关闭计算机的电源" },
+                { "value": "B", "text": "设置计算机的参数" },
+                { "value": "C", "text": "使计算机重新启动" },
+                { "value": "D", "text": "双击鼠标的左键" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "系统配置错误或丢失属于软件故障，通常需要通过重新设置计算机参数来解决。"
+        },
+        {
+            "question": "显示器分辨率一般用（ ）表示",
+            "options": [
+                { "value": "A", "text": "能显示多少字符" },
+                { "value": "B", "text": "横向像素x纵向像素" },
+                { "value": "C", "text": "能显示的信息量" },
+                { "value": "D", "text": "能显示的颜色数" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "显示器分辨率通常表示为横向像素数乘以纵向像素数，例如1920x1080。"
+        },
+        {
+            "question": "下列关于精简指令集和复杂指令集的说法中错误的是（ ）",
+            "options": [
+                { "value": "A", "text": "RISC是指精简指令集，CISC是指复杂指令集" },
+                { "value": "B", "text": "RISC是指复杂指令集，CISC是指精简指令集" },
+                { "value": "C", "text": "RISC和CISC是设计制造CPU的两种典型技术" },
+                { "value": "D", "text": "二者各有优缺点" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "RISC代表精简指令集，CISC代表复杂指令集，选项B颠倒了两者的定义，因此错误。"
+        },
+        {
+            "question": "下列关系指令系统的说法中错误的是（ ）",
+            "options": [
+                { "value": "A", "text": "指令系统是指令的集合" },
+                { "value": "B", "text": "一条指令就是机器语言的一个语句，它是一组有意义的高级语言代码" },
+                { "value": "C", "text": "各计算机公司设计生产的计算机，其指令系统可能不同" },
+                { "value": "D", "text": "用机器语言编写的程序直接移植到其它机器上几乎是不可能的" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "指令是机器语言的语句，由操作码和操作数组成，而不是高级语言代码，因此选项B错误。"
+        },
+        {
+            "question": "只有当程序要执行时，它才会将源程序翻译成机器语言，并且一次只能读取、翻译并执行源程序中的一行语句，此程序称为（ ）",
+            "options": [
+                { "value": "A", "text": "目标程序错误" },
+                { "value": "B", "text": "编辑程序" },
+                { "value": "C", "text": "解释程序" },
+                { "value": "D", "text": "汇编程序" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "解释程序逐行翻译并执行源程序，与编译程序不同，编译程序是将整个源程序一次性翻译成目标程序。"
+        },
+        {
+            "question": "关于“指令”，正确的说法是（ ）",
+            "options": [
+                { "value": "A", "text": "指令就是计算机语言" },
+                { "value": "B", "text": "指令是全部命令的集合" },
+                { "value": "C", "text": "指令是专门用于人机交互的命令" },
+                { "value": "D", "text": "指令通常由操作码和操作数组成" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "指令是计算机硬件能够识别和执行的命令，通常由操作码（指示操作类型）和操作数（指示操作对象）组成。"
+        },
+        {
+            "question": "”红绿灯能根据实时路况自动调整信号时长“,这种智能交通系统最可能采用哪种计算架构?()",
+            "options": [
+                { "value": "A", "text": "云计算架构,所有数据传输至中心服务器处理" },
+                { "value": "B", "text": "边缘计算架构,数据在靠近采集点的设备上处理" },
+                { "value": "C", "text": "分布式计算架构,多台服务器协同计算" },
+                { "value": "D", "text": "量子计算架构,利用量子叠加态处理复杂路况" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "边缘计算架构将数据处理靠近数据采集点，能够实现实时响应，适合需要快速决策的智能交通系统。"
+        },
+        {
+            "question": "从初代计算机ENIAC到现代量子计算机,计算机架构的本质变化是（ ）",
+            "options": [
+                { "value": "A", "text": "从电子管到超导材料,仅是物理元件的升级" },
+                { "value": "B", "text": "从串行到并行,计算模式的根本转变" },
+                { "value": "C", "text": "从确定性计算到概率计算,信息处理范式的革命" },
+                { "value": "D", "text": "从专用到通用,应用场景的扩展" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "量子计算机采用量子比特进行概率计算，与传统计算机的确定性计算有本质区别，代表了信息处理范式的革命性变化。"
+        },
+        {
+            "question": "在计算机存储技术的演进中,从磁带、软盘到硬盘、固态硬盘(SSD),其发展主线最能体现以下（ ）特性的变化",
+            "options": [
+                { "value": "A", "text": "从易损到耐用" },
+                { "value": "B", "text": "从机械部件到无机械部件" },
+                { "value": "C", "text": "从随机访问到顺序访问" },
+                { "value": "D", "text": "从便携到固定" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "从磁带到SSD的发展过程中，存储设备逐渐从依赖机械部件（如磁头、盘片）转变为无机械部件的固态存储，显著提高了可靠性和性能。"
+        },
+        {
+            "question": "比较早期磁带存储、磁盘存储和现代固态硬盘(SSD),它们在数据存取方式上最显著的变化是（ ）",
+            "options": [
+                { "value": "A", "text": "存储介质的材料变化" },
+                { "value": "B", "text": "从顺序访问到随机访问" },
+                { "value": "C", "text": "存储容量的指数级增长" },
+                { "value": "D", "text": "能耗的显著降低" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "磁带是典型的顺序访问存储介质，而磁盘和SSD支持随机访问，SSD更是将随机访问性能提升到新的高度，这是它们在数据存取方式上的最显著变化。"
+        },
+        {
+            "question": "20世纪70年代的（ ）技术革新最直接促成了个人计算机时代的到来",
+            "options": [
+                { "value": "A", "text": "图形用户界面的发明" },
+                { "value": "B", "text": "磁盘存储技术的完善" },
+                { "value": "C", "text": "微处理器的商业化" },
+                { "value": "D", "text": "计算机网络的建立" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "微处理器的商业化（如Intel 4004）使得计算机能够以较低成本集成到小型设备中，直接推动了个人计算机的普及。"
+        },
+        {
+            "question": "在冯·诺依曼计算机体系结构中,数据在CPU内部传输的关键通道是（ ）",
+            "options": [
+                { "value": "A", "text": "网络总线" },
+                { "value": "B", "text": "数据总线" },
+                { "value": "C", "text": "地址总线" },
+                { "value": "D", "text": "控制总线" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "数据总线是CPU内部用于传输数据的关键通道，负责在CPU各部件之间传递数据。"
+        }
+    ];
+
+    let questions = [];
+    function getRandomQuestions() {
+        const shuffled = [...questionBank].sort(() => 0.5 - Math.random());
+        return shuffled.slice(0, 50);
+    }
+
+    let userAnswers = [];
+    let questionMarks = [];
+    let currentQuestionIndex = 0;
+    let remainingTime = 25 * 60;
+    const timer = document.getElementById('timer');
+    let timerInterval;
+    let multiInstanceCount = 0;
+    let browserFingerprint = '';
+    let cameraErrorCount = 0;
+    let lastMouseX = 0;
+    let lastMouseY = 0;
+    let lastMouseMoveTime = 0;
+    let abnormalMouseMoveCount = 0;
+    let keyPressCount = 0;
+    let keyPressTimer;
+    let scrollCount = 0;
+    let lastScrollTime = 0;
+    let focusLostTime = 0;
+
+    // 异常焦点转移检测
+    const MAX_FOCUS_LOST_TIME = 30000; // 30秒
+
+    window.addEventListener('blur', () => {
+        if (document.getElementById('questions-page').classList.contains('active')) {
+            focusLostTime = Date.now();
+        }
+    });
+
+    window.addEventListener('focus', () => {
+        if (document.getElementById('questions-page').classList.contains('active')) {
+            const lostDuration = Date.now() - focusLostTime;
+            if (lostDuration > MAX_FOCUS_LOST_TIME) {
+                alert('页面焦点长时间丢失，系统将自动交卷！');
+                forceSubmit();
+            }
+            focusLostTime = 0;
+        }
+    });
+
+
+    function saveExamState() {
+        localStorage.setItem('userAnswers', JSON.stringify(userAnswers));
+        localStorage.setItem('questionMarks', JSON.stringify(questionMarks));
+        localStorage.setItem('currentQuestionIndex', currentQuestionIndex);
+        localStorage.setItem('remainingTime', remainingTime);
+        localStorage.setItem('securityLogs', JSON.stringify({
+            screenshotAttempts,
+            windowResizeCount,
+            networkChangeCount,
+            tabChangeCount,
+            keyPressCount,
+            scrollCount
+        }));
+    }
+
+    window.addEventListener('scroll', () => {
+        if (document.getElementById('questions-page').classList.contains('active')) {
+            const currentTime = Date.now();
+            if (currentTime - lastScrollTime < 500) {
+                scrollCount++;
+                if (scrollCount > 1000) {
+                    alert('检测到异常自动滚动行为，系统将自动交卷！');
+                    forceSubmit();
+                }
+            } else {
+                scrollCount = 0;
+            }
+            lastScrollTime = currentTime;
+        }
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (document.getElementById('questions-page').classList.contains('active')) {
+            keyPressCount++;
+            if (!keyPressTimer) {
+                keyPressTimer = setTimeout(() => {
+                    if (keyPressCount > 30) {
+                        alert('检测到异常键盘输入频率，系统将自动交卷！');
+                        forceSubmit();
+                    }
+                    keyPressCount = 0;
+                    clearTimeout(keyPressTimer);
+                    keyPressTimer = null;
+                }, 1000);
+            }
+        }
+    });
+
+    async function checkCamera() {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            stream.getTracks().forEach(track => track.stop());
+        } catch (error) {
+            cameraErrorCount++;
+            if (cameraErrorCount > 1) {
+                alert('摄像头检测异常，系统将自动交卷！');
+                forceSubmit();
+            } else {
+                alert('请确保摄像头正常工作，再次检测失败将自动交卷！');
+            }
+        }
+    }
+    startBtn.addEventListener('click', async () => {
+        loadExamState();
+        await checkCamera();
+    });
+
+    document.addEventListener('mousemove', (e) => {
+        if (document.getElementById('questions-page').classList.contains('active')) {
+            const currentTime = Date.now();
+            const timeDiff = currentTime - lastMouseMoveTime;
+            const distance = Math.sqrt(Math.pow(e.clientX - lastMouseX, 2) + Math.pow(e.clientY - lastMouseY, 2));
+
+            if (timeDiff > 0) {
+                const speed = distance / timeDiff;
+                if (speed > 5) {
+                    abnormalMouseMoveCount++;
+                }
+            }
+
+            if (timeDiff > 30000) {
+                abnormalMouseMoveCount++;
+            }
+
+            if (abnormalMouseMoveCount > 10000) {
+                alert('检测到异常鼠标移动，系统将自动交卷！');
+                forceSubmit();
+            }
+
+            lastMouseX = e.clientX;
+            lastMouseY = e.clientY;
+            lastMouseMoveTime = currentTime;
+        }
+    });
+
+    function saveExamState() {
+        localStorage.setItem('userAnswers', JSON.stringify(userAnswers));
+        localStorage.setItem('questionMarks', JSON.stringify(questionMarks));
+        localStorage.setItem('currentQuestionIndex', currentQuestionIndex);
+        localStorage.setItem('remainingTime', remainingTime);
+        localStorage.setItem('securityLogs', JSON.stringify({
+            screenshotAttempts,
+            windowResizeCount,
+            networkChangeCount,
+            tabChangeCount,
+            cameraErrorCount,
+            abnormalMouseMoveCount
+        }));
+    }
+
+    function generateBrowserFingerprint() {
+        const canvas = document.createElement('canvas');
+        const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+        let fingerprint = '';
+
+        try {
+            // 基础指纹信息
+            fingerprint += navigator.userAgent + '|';
+            fingerprint += navigator.platform + '|';
+            fingerprint += screen.colorDepth + '|';
+            fingerprint += new Date().getTimezoneOffset() + '|';
+
+            // Canvas指纹
+            const ctx = canvas.getContext('2d');
+            ctx.textBaseline = 'top';
+            ctx.fillText('BrowserFingerprint', 2, 2);
+            fingerprint += canvas.toDataURL().substr(-20);
+
+            // WebGL指纹
+            if (gl) {
+                const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+                fingerprint += gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL) + '|';
+                fingerprint += gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
+            }
+        } catch (e) {
+            console.error('指纹生成失败:', e);
+        }
+
+        return btoa(fingerprint).substr(0, 32);
+    }
+
+    let detectionWorker;
+    function initMultiInstanceDetection() {
+        if (window.SharedWorker) {
+            detectionWorker = new SharedWorker('data:,onconnect=function(e){e.ports[0].postMessage("ping")}');
+            detectionWorker.port.onmessage = (e) => {
+                if (e.data === 'duplicate') {
+                    alert('检测到多个考试窗口，系统将自动交卷！');
+                    forceSubmit();
+                }
+            };
+        }
+
+        // 本地存储心跳检测
+        setInterval(() => {
+            const lastActive = localStorage.getItem('examActive');
+            const currentTime = new Date().getTime();
+
+            if (lastActive && currentTime - lastActive < 5000) {
+                multiInstanceCount++;
+                if (multiInstanceCount > 2) {
+                    alert('检测到多开行为，系统将自动交卷！');
+                    forceSubmit();
+                }
+            }
+            localStorage.setItem('examActive', currentTime.toString());
+        }, 3000);
+
+        browserFingerprint = generateBrowserFingerprint();
+    }
+
+    startBtn.addEventListener('click', () => {
+        loadExamState();
+        initMultiInstanceDetection();
+    });
+
+    // 修改强制交卷功能
+    function forceSubmit() {
+        if (detectionWorker) {
+            detectionWorker.port.close();
+        }
+        localStorage.removeItem('examActive');
+        clearInterval(timerInterval);
+    }
+
+
+    function saveExamState() {
+        localStorage.setItem('securityLogs', JSON.stringify({
+            screenshotAttempts,
+            windowResizeCount,
+            networkChangeCount,
+            tabChangeCount,
+            multiInstanceCount,
+            browserFingerprint
+        }));
+    }
+
+    function initQuestionList() {
+        const questionList = document.getElementById('question-list');
+        questionList.innerHTML = '';
+
+        for (let i = 0; i < questions.length; i++) {
+            const questionItem = document.createElement('div');
+            questionItem.className = 'question-item';
+            questionItem.dataset.index = i;
+            questionItem.textContent = i + 1;
+
+            if (questionMarks[i]) {
+                questionItem.classList.add('marked');
+            }
+
+            if (userAnswers[i] !== undefined) {
+                questionItem.classList.add('selected');
+            }
+
+            questionItem.addEventListener('click', () => {
+                currentQuestionIndex = i;
+                updateQuestionContent();
+                updateQuestionList();
+            });
+
+            questionList.appendChild(questionItem);
+        }
+    }
+
+    function clearLoginInfo() {
+        document.getElementById('admission-ticket').value = '';
+        document.getElementById('admission-key').value = '';
+        loginError.textContent = '';
+    }
+
+    document.getElementById('back-to-instructions-btn').addEventListener('click', () => {
+        clearLoginInfo();
+        showPage('login');
+    });
+
+    function forceSubmit() {
+        clearLoginInfo();
+    }
+
+    function updateQuestionList() {
+        const questionItems = document.querySelectorAll('.question-item');
+        questionItems.forEach((item, index) => {
+            if (index === currentQuestionIndex) {
+                item.classList.add('active');
+            } else {
+                item.classList.remove('active');
+            }
+
+            if (userAnswers[index] !== undefined) {
+                item.classList.add('selected');
+            } else {
+                item.classList.remove('selected');
+            }
+        });
+    }
+
+    function updateQuestionContent() {
+        const question = questions[currentQuestionIndex];
+        const questionContent = document.getElementById('question-content');
+        questionContent.innerHTML = `
+                <h3>第${currentQuestionIndex + 1}题：${question.question}</h3>
+                <ul class="options">
+                    ${question.options.map((option) => `
+                        <li data-value="${option.value}">
+                            <span class="option-label">${option.value}</span>
+                            ${option.text}
+                        </li>
+                    `).join('')}
+                </ul>
+            `;
+
+        const options = questionContent.querySelectorAll('.options li');
+        options.forEach((option) => {
+            const value = option.dataset.value;
+            if (userAnswers[currentQuestionIndex] === value) {
+                option.classList.add('selected');
+            } else {
+                option.classList.remove('selected');
+            }
+
+            option.addEventListener('click', () => {
+                userAnswers[currentQuestionIndex] = value;
+                options.forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
+                updateQuestionList();
+            });
+        });
+
+        updateQuestionList();
+    }
+
+    function calculateScore() {
+        let score = 0;
+        for (let i = 0; i < questions.length; i++) {
+            if (userAnswers[i] === questions[i].correctAnswer) {
+                score += 3;
+            }
+        }
+        return score;
+    }
+
+    function showExplanations() {
+        const explanationContent = document.getElementById('explanation-content');
+        explanationContent.innerHTML = '';
+
+        for (let i = 0; i < questions.length; i++) {
+            const question = questions[i];
+            const userAnswer = userAnswers[i];
+            const isCorrect = userAnswer === question.correctAnswer;
+
+            const questionDiv = document.createElement('div');
+            questionDiv.innerHTML = `
+                    <h3>第${i + 1}题：${question.question}</h3>
+                    <p>正确答案：${question.correctAnswer}</p>
+                    <p>您的答案：${userAnswer !== undefined ? userAnswer : '未作答'}</p>
+                    <p>${isCorrect ? '回答正确' : '回答错误'}</p>
+                    <div class="explanation">
+                        <h4>解析：</h4>
+                        <p>${question.explanation}</p>
+                    </div>
+                `;
+
+            explanationContent.appendChild(questionDiv);
+        }
+    }
+
+    function updateTimerDisplay() {
+        const minutes = Math.floor(remainingTime / 60);
+        const seconds = remainingTime % 60;
+        timer.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }
+
+    function startTimer() {
+        timerInterval = setInterval(() => {
+            remainingTime--;
+            // 添加随机答题时间检测
+            if (Math.random() < 0.1) {
+                const currentTime = new Date().getTime();
+                if (currentTime - lastInteractionTime < 500) {
+                    alert('检测到异常答题速度！');
+                    forceSubmit();
+                }
+                lastInteractionTime = currentTime;
+            }
+
+            if (remainingTime <= 0) {
+                forceSubmit();
+                clearInterval(timerInterval);
+            }
+            updateTimerDisplay();
+        }, 1000);
+    }
+
+    function stopTimer() {
+        clearInterval(timerInterval);
+    }
+
+    document.addEventListener('keydown', (event) => {
+        if (document.getElementById('questions-page').classList.contains('active')) {
+            if (event.key === '1') {
+                if (currentQuestionIndex > 0) {
+                    currentQuestionIndex--;
+                    updateQuestionContent();
+                }
+            } else if (event.key === '2') {
+                if (currentQuestionIndex < questions.length - 1) {
+                    currentQuestionIndex++;
+                    updateQuestionContent();
+                }
+            } else if (event.key === '3') {
+                questionMarks[currentQuestionIndex] = !questionMarks[currentQuestionIndex];
+                const questionItems = document.querySelectorAll('.question-item');
+                questionItems[currentQuestionIndex].classList.toggle('marked');
+            }
+        }
+    });
+
+    const markBtn = document.getElementById('mark-btn');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const submitBtn = document.getElementById('submit-btn');
+    const cancelSubmitBtn = document.getElementById('cancel-submit-btn');
+    const confirmSubmitBtn = document.getElementById('confirm-submit-btn');
+    const viewExplanationBtn = document.getElementById('view-explanation-btn');
+    const backToInstructionsBtn = document.getElementById('back-to-instructions-btn');
+
+    markBtn.addEventListener('click', () => {
+        questionMarks[currentQuestionIndex] = !questionMarks[currentQuestionIndex];
+        const questionItems = document.querySelectorAll('.question-item');
+        questionItems[currentQuestionIndex].classList.toggle('marked');
+    });
+
+    prevBtn.addEventListener('click', () => {
+        if (currentQuestionIndex > 0) {
+            currentQuestionIndex--;
+            updateQuestionContent();
+        }
+    });
+
+    nextBtn.addEventListener('click', () => {
+        if (currentQuestionIndex < questions.length - 1) {
+            currentQuestionIndex++;
+            updateQuestionContent();
+        }
+    });
+
+    submitBtn.addEventListener('click', () => {
+        stopTimer();
+        showPage('submit');
+    });
+
+    cancelSubmitBtn.addEventListener('click', () => {
+        showPage('questions');
+    });
+
+    confirmSubmitBtn.addEventListener('click', () => {
+        const score = calculateScore();
+        document.querySelector('.score-display').innerHTML = `
+                <span>您的得分：</span>${score}<span>分</span>
+            `;
+        showPage('result');
+    });
+
+    viewExplanationBtn.addEventListener('click', () => {
+        showExplanations();
+        showPage('explanation');
+    });
+
+    backToInstructionsBtn.addEventListener('click', () => {
+        stopTimer();
+        // 修改返回按钮的点击事件
+        const backToInstructionsBtn = document.getElementById('back-to-instructions-btn');
+        backToInstructionsBtn.addEventListener('click', () => {
+        // 原代码调用 showPage('instructions')，现改为 showPage('login')
+        showPage('login'); 
+        });
+    });
+
+    startBtn.addEventListener('click', () => {
+        if (!isLoggedIn) {
+            loginError.textContent = '您尚未登录，请先使用准考证密钥登录。';
+            showPage('login');
+            return;
+        }
+        // 随机抽取50题
+        questions = getRandomQuestions();
+        // 重置用户答案
+        userAnswers.length = 0;
+        questionMarks.length = 0;
+        for (let i = 0; i < questions.length; i++) {
+            userAnswers.push(undefined);
+            questionMarks.push(false);
+        }
+        currentQuestionIndex = 0;
+        remainingTime = 25 * 60;
+        updateTimerDisplay();
+        startTimer();
+        showPage('questions');
+        initQuestionList();
+        updateQuestionContent();
+    });
+
+    // 增强开发者工具禁用（新增Ctrl+U屏蔽）
+    document.addEventListener('keydown', (e) => {
+    // 新增禁用Ctrl+U查看源代码
+    if ((e.ctrlKey && e.key === 'u') || 
+    (e.ctrlKey && e.key === 'U') || 
+    (e.metaKey && e.key === 'u')) {
+    e.preventDefault();
+    alert('考试期间禁止查看页面源代码！');
+    return false;
+    }
+    // 原有快捷键禁用保持不变...
+    });
+
+    // 强制交卷功能
+    function forceSubmit() {
+        clearInterval(timerInterval);
+        saveExamState();
+        showPage('result');
+        document.removeEventListener('contextmenu', () => {});
+        document.removeEventListener('keydown', () => {});
+    }
+
+    // 修改原来的保存状态功能
+    function saveExamState() {
+        localStorage.setItem('userAnswers', JSON.stringify(userAnswers));
+        localStorage.setItem('questionMarks', JSON.stringify(questionMarks));
+        localStorage.setItem('currentQuestionIndex', currentQuestionIndex);
+        localStorage.setItem('remainingTime', remainingTime);
+        localStorage.setItem('securityLogs', JSON.stringify({
+            screenshotAttempts,
+            windowResizeCount,
+            networkChangeCount,
+            tabChangeCount
+        }));
+    }
+
+    // 新增源代码保护初始化
+    function initSourceProtection() {
+    // 禁用文本选择
+    document.body.style.userSelect = 'none';
+    document.body.style.webkitUserSelect = 'none';
+    
+    // 阻止iframe嵌套
+    if (window.location !== window.parent.location) {
+    window.top.location = window.location;
+    }
+    
+    // 定时检测DOM修改
+    setInterval(() => {
+    if (document.documentElement.outerHTML !== document.documentElement.originalHTML) {
+    alert('检测到DOM篡改，系统将自动交卷！');
+    forceSubmit();
+    }
+    }, 5000);
+    
+    // 保存原始HTML
+    document.documentElement.originalHTML = document.documentElement.outerHTML;
+    }
+
+    // 在考试开始时初始化
+    startBtn.addEventListener('click', () => {
+    loadExamState();
+    initSourceProtection(); // 新增初始化
+    showPage('questions');
+    startTimer();
+    });
+</script>
+</body>
+</html>
