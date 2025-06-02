@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WPS实操练习 - 学习平台</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4b6cb7, #182848);
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 2rem;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: #a8d0ff;
+        }
+
+        /* 主要内容区域 */
+        .main-content {
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: #182848;
+            margin-bottom: 1rem;
+        }
+
+        .section-title p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        /* 章节内容区域 */
+        .chapter-content {
+            background-color: white;
+            padding: 2.5rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 4rem;
+        }
+
+        .chapter-content h3 {
+            font-size: 1.5rem;
+            color: #182848;
+            margin-bottom: 1.5rem;
+        }
+
+        .chapter-content p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .code-block {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+        }
+
+        /* 例题卡片区域 */
+        .example-section {
+            margin-top: 4rem;
+        }
+
+        .example-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .example-item {
+            background-color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .example-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .example-item h3 {
+            color: #182848;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .example-item p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .example-item .example-button {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background: linear-gradient(135deg, #a8d0ff, #4b6cb7);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .example-item .example-button:hover {
+            background: linear-gradient(135deg, #4b6cb7, #182848);
+        }
+
+        .example-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            z-index: -1;
+            transition: transform 0.3s;
+        }
+
+        .example-item:hover::before {
+            transform: scale(1.1);
+        }
+
+        /* 页脚样式 */
+        .footer {
+            background-color: #182848;
+            color: #a8d0ff;
+            padding: 3rem 0;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-column ul li a {
+            color: #a8d0ff;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-column ul li a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .section-title h2 {
+                font-size: 2rem;
+            }
+
+            .chapter-content h3 {
+                font-size: 1.3rem;
+            }
+
+            .example-item h3 {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="..\index.html" class="logo">荆楚计科备考联盟-计算机工程学习平台</a>
+            <nav class="nav-links">
+                <a href="..\random-practice.html">题库</a>
+                <a href="WPS.html">WPS实操练习</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <!-- 页面标题 -->
+        <div class="section-title">
+            <h2>WPS Office 文字处理练习</h2>
+            <p>通过实际操作练习，巩固WPS文字的常用功能，点击练习查看详细步骤。</p>
+        </div>
+
+        <!-- 章节内容 -->
+        <div class="chapter-content">
+            <h3>1. WPS文字基础操作</h3>
+            <p>学习WPS文字的基本操作，包括文档创建、文字输入、格式设置等。</p>
+        </div>
+
+        <!-- 例题部分 -->
+        <div class="example-section">
+            <div class="section-title">
+                <h2>实操练习</h2>
+                <p>通过实际操作练习，巩固WPS文字的常用功能，点击练习查看详细步骤。</p>
+            </div>
+
+            <div class="example-list">
+                <div class="example-item">
+                    <h3>练习1：</h3>
+                    <a href="exercise1.html" class="example-button">查看步骤</a>
+                </div>
+
+                <div class="example-item">
+                    <h3>练习2：</h3>
+                    <a href="exercise2.html" class="example-button">查看步骤</a>
+                </div>
+
+                <div class="example-item">
+                    <h3>练习3：</h3>
+                    <a href="exercise3.html" class="example-button">查看步骤</a>
+                </div>
+
+                <div class="example-item">
+                    <h3>练习4：</h3>
+                    <a href="exercise4.html" class="example-button">查看步骤</a>
+                </div>
+
+                <div class="example-item">
+                    <h3>练习5：</h3>
+                    <a href="exercise5.html" class="example-button">查看步骤</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-bottom">
+            <p>© 荆楚计科备考联盟-计算机工程学习平台 版权所有</p>
+            <p>联系我们 | 隐私政策 | 使用条款</p>
+        </div>
+    </footer>
+</body>
+</html>

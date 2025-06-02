@@ -1,0 +1,1773 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>荆楚计科备考联盟-计算机工程学习平台</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: sticky;
+            top: 0;
+            background-color: #fff;
+            z-index: 100;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            color: #1a73e8;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #616161;
+            font-size: 1.1rem;
+        }
+
+        .page {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            display: none;
+            animation: fadeIn 0.5s ease;
+            position: relative;
+        }
+
+        .active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .instructions {
+            text-align: left;
+            margin-bottom: 30px;
+        }
+
+        .instructions h2 {
+            color: #1a73e8;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #e8eaf6;
+            padding-bottom: 10px;
+        }
+
+        .instructions ul {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        .instructions li {
+            margin-bottom: 8px;
+            padding-left: 10px;
+            position: relative;
+        }
+
+        .instructions li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #1a73e8;
+        }
+
+        button {
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.1s;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        button:hover {
+            background-color: #1557b0;
+            transform: translateY(-1px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .question-container {
+            display: flex;
+            margin-top: 20px;
+        }
+
+        .question-list {
+            flex: 0 0 20%;
+            padding-right: 20px;
+            border-right: 1px solid #e8eaf6;
+            height: 600px;
+            overflow-y: auto;
+        }
+
+        .question-list::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .question-list::-webkit-scrollbar-thumb {
+            background-color: #90caf9;
+            border-radius: 4px;
+        }
+
+        .question-list-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 5px;
+        }
+
+        .question-item {
+            background-color: #e8eaf6;
+            border-radius: 4px;
+            padding: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .question-item:hover {
+            background-color: #90caf9;
+            transform: scale(1.05);
+        }
+
+        .question-item.active {
+            background-color: #1a73e8;
+            color: white;
+        }
+
+        .question-item.marked {
+            background-color: #ffeb3b;
+            color: #333;
+        }
+
+        .question-item.selected {
+            background-color: #81c784;
+            color: white;
+        }
+
+        .question-content {
+            flex: 0 0 80%;
+        }
+
+        .question {
+            margin-bottom: 25px;
+            background-color: #e3f2fd; /* 题目背景为蓝色 */
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .question h3 {
+            color: #1a73e8;
+            margin-bottom: 15px;
+            font-size: 1.25rem;
+        }
+
+        .options {
+            list-style: none;
+        }
+
+        .options li {
+            background-color: #f5f7fa;
+            border: 1px solid #e8eaf6;
+            border-radius: 5px;
+            padding: 12px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+        }
+
+        .options li:hover {
+            background-color: #e8eaf6;
+            border-color: #90caf9;
+        }
+
+        .option-label {
+            margin-right: 10px;
+            font-weight: bold;
+            color: #1a73e8;
+        }
+
+        .selected {
+            background-color: #90caf9;
+            border-color: #1a73e8;
+            color: white;
+        }
+
+        .correct {
+            background-color: #a5d6a7;
+            border-color: #2e7d32;
+            color: #1b5e20;
+        }
+
+        .wrong {
+            background-color: #ffcdd2;
+            border-color: #c62828;
+            color: #b71c1c;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e8eaf6;
+        }
+
+        .result {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .result h2 {
+            color: #1a73e8;
+            margin-bottom: 20px;
+        }
+
+        .score-display {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #2e7d32;
+            margin-bottom: 20px;
+        }
+
+        .score-display span {
+            font-size: 1.5rem;
+            color: #616161;
+        }
+
+        .explanation {
+            background-color: #f5f7fa;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+
+        .explanation h4 {
+            color: #1a73e8;
+            margin-bottom: 10px;
+        }
+
+        .explanation p {
+            margin-bottom: 10px;
+        }
+
+        .back-btn {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .back-btn:hover {
+            background-color: #1557b0;
+        }
+
+        .random-info {
+            background-color: #fff3e0;
+            border-left: 3px solid #ff9800;
+            padding: 10px 15px;
+            margin-bottom: 20px;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .random-info h4 {
+            color: #ff9800;
+            margin-bottom: 5px;
+        }
+
+        .keyboard-tip {
+            font-size: 0.9rem;
+            color: #616161;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .timer {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #1a73e8;
+        }
+
+        .return-btn {
+            margin-top: 20px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>荆楚计科备考联盟-计算机工程学习平台</h1>
+        <p>试卷名：准易2025年05月29日全省计算机调考</p>
+    </div>
+
+    <!-- 考试须知页面 -->
+    <div id="instructions-page" class="page active">
+        <div class="instructions">
+            <h2>考试须知</h2>
+            <ul>
+                <li>本场考试将从题库中随机抽取50道选择题</li>
+                <li>考试时间为25分钟，请合理安排时间</li>
+                <li>每道题有四个选项，只有一个正确答案，每题3分</li>
+                <li>答题过程中请勿刷新页面，否则将导致考试异常</li>
+                <li>点击题目列表中的题目编号可以快速切换题目</li>
+                <li>完成答题后，请点击"交卷"按钮提交试卷</li>
+                <li>键盘快捷键：数字键1=上一题，数字键2=下一题，数字键3=标记/取消标记</li>
+                <li>标记的题目在列表中显示为黄色</li>
+            </ul>
+            <div class="random-info">
+                <h4>随机抽题说明</h4>
+                <p>系统将从题库中随机抽取50道题，确保每次考试题目不同</p>
+            </div>
+            <button id="start-btn">开始考试</button>
+            <button id="return-btn" class="return-btn">返回首页</button>
+        </div>
+    </div>
+
+    <!-- 做题页面 -->
+    <div id="questions-page" class="page">
+        <div class="timer" id="timer">25:00</div>
+        <div class="question-container">
+            <div class="question-list">
+                <div class="question-list-grid" id="question-list">
+                    <!-- 题目列表将通过JavaScript动态生成 -->
+                </div>
+            </div>
+            <div class="question-content">
+                <div id="question-content">
+
+                </div>
+                <div class="navigation">
+                    <button id="prev-btn">上一题</button>
+                    <button id="mark-btn">标记</button>
+                    <button id="next-btn">下一题</button>
+                    <button id="submit-btn">交卷</button>
+                </div>
+                <p class="keyboard-tip">快捷键：数字键1=上一题，数字键2=下一题，数字键3=标记/取消标记</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 交卷页面 -->
+    <div id="submit-page" class="page">
+        <h2>确认交卷</h2>
+        <p>您确定要交卷吗？交卷后将无法修改答案。</p>
+        <div class="navigation">
+            <button id="cancel-submit-btn">取消</button>
+            <button id="confirm-submit-btn">确认交卷</button>
+        </div>
+    </div>
+
+    <!-- 成绩结算页面 -->
+    <div id="result-page" class="page">
+        <div class="result">
+            <h2>考试成绩</h2>
+            <div class="score-display">
+                <span>您的得分：</span>0<span>分</span>
+            </div>
+            <button id="view-explanation-btn">查看题目解析</button>
+        </div>
+    </div>
+
+    <!-- 题目解析页面 -->
+    <div id="explanation-page" class="page">
+        <h2>题目解析</h2>
+        <div id="explanation-content">
+        </div>
+        <button class="back-btn" id="back-to-instructions-btn">返回考试须知</button>
+    </div>
+</div>
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const returnBtn = document.getElementById('return-btn');
+        const currentPath = window.location.pathname;
+        const pathSegments = currentPath.split('/');
+        pathSegments.pop(); // 移除当前文件名
+        if (pathSegments.length > 0) {
+            pathSegments.pop(); // 移除当前文件夹名
+        }
+        const newPath = pathSegments.join('/') + '/index.html';
+        returnBtn.href = newPath;
+    });
+
+    // 题库
+    const questionBank = [
+        {
+            "id": 1,
+            "question": "在公共电脑登录账号后,正确的操作是()",
+            "options": [
+                {
+                    "value": "A",
+                    "text": "修改密码"
+                },
+                {
+                    "value": "B",
+                    "text": "保存密码方便下次使用"
+                },
+                {
+                    "value": "C",
+                    "text": "退出账号并清除记录"
+                },
+                {
+                    "value": "D",
+                    "text": "直接关闭浏览器"
+                }
+            ],
+            "correctAnswer": "C",
+            "explanation": "在公共电脑登录账号后，为保障账号安全，应退出账号并清除记录，防止他人获取账号信息。直接关闭浏览器可能无法完全退出账号，保存密码会带来安全隐患，修改密码并非登录后的必要操作。"
+        },
+        {
+            "id": 2,
+            "question": "按照覆盖范围划分, 校园网通常属于()",
+            "options": [
+                {
+                    "value": "A",
+                    "text": "WAN"
+                },
+                {
+                    "value": "B",
+                    "text": "MAN"
+                },
+                {
+                    "value": "C",
+                    "text": "LAN"
+                },
+                {
+                    "value": "D",
+                    "text": "PAN"
+                }
+            ],
+            "correctAnswer": "C",
+            "explanation": "按覆盖范围划分，WAN是广域网，覆盖范围大；MAN是城域网，覆盖城市范围；LAN是局域网，覆盖较小区域，如校园、企业等；PAN是个人区域网。校园网覆盖范围较小，属于局域网（LAN）。"
+        },
+        {
+            "id": 3,
+            "question": "若重置了\"Internet Explorer设置\",会影响的配置是()",
+            "options": [
+                {
+                    "value": "A",
+                    "text": "代理服务器配置"
+                },
+                {
+                    "value": "B",
+                    "text": "收藏夹内容"
+                },
+                {
+                    "value": "C",
+                    "text": "临时文件存储路径"
+                },
+                {
+                    "value": "D",
+                    "text": "主页设置与加载项"
+                }
+            ],
+            "correctAnswer": "D",
+            "explanation": "重置Internet Explorer设置会将其恢复为默认状态，主页设置、加载项等用户自定义配置会被重置。而代理服务器配置、收藏夹内容、临时文件存储路径通常不会因重置设置而改变。"
+        },
+        {
+            "id": 4,
+            "question": "补码的作用是()",
+            "options": [
+                {
+                    "value": "A",
+                    "text": "加快除法速度"
+                },
+                {
+                    "value": "B",
+                    "text": "简化乘法运算"
+                },
+                {
+                    "value": "C",
+                    "text": "提高存储容量"
+                },
+                {
+                    "value": "D",
+                    "text": "统一加减法操作"
+                }
+            ],
+            "correctAnswer": "D",
+            "explanation": "在计算机中，补码的主要作用是将减法运算转换为加法运算，从而统一加减法操作，简化计算机硬件的设计。补码与除法、乘法速度及存储容量无直接关联。"
+        },
+        {
+            "id": 5,
+            "question": "下列应用中,未使用人工智能技术的是()",
+            "options": [
+                {
+                    "value": "A",
+                    "text": "无人机灯光秀表演"
+                },
+                {
+                    "value": "B",
+                    "text": "车牌识别"
+                },
+                {
+                    "value": "C",
+                    "text": "人脸识别签到"
+                },
+                {
+                    "value": "D",
+                    "text": "自动驾驶"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "车牌识别、人脸识别签到、自动驾驶均涉及模式识别、机器学习等人工智能技术。无人机灯光秀表演通常是按照预设的程序和路线进行，未体现人工智能的自主学习和决策能力。"
+        },
+        {
+            "id": 6,
+            "question": "制作双绞线的正确步骤是()",
+            "options": [
+                {
+                    "value": "A",
+                    "text": "剪断→剪齐→剥皮→插入→压线→测试"
+                },
+                {
+                    "value": "B",
+                    "text": "剥皮→剪断→排序→插入→压线→测试"
+                },
+                {
+                    "value": "C",
+                    "text": "剥皮→排序→剪断→插入→压线→剪齐→测试"
+                },
+                {
+                    "value": "D",
+                    "text": "剪断→剥皮→排序→剪齐→插入→压线→测试"
+                }
+            ],
+            "correctAnswer": "D",
+            "explanation": "制作双绞线的正确流程是：先剪断双绞线，去除一定长度的外皮（剥皮），将线芯按标准顺序排序，剪齐线端使其长度一致，插入水晶头，用压线钳压线固定，最后进行测试。选项D符合这一流程。"
+        },
+        {
+            "id": 7,
+            "question": "虚拟现实(VR) 的核心技术目标是()",
+            "options": [
+                {
+                    "value": "A",
+                    "text": "替代智能手机"
+                },
+                {
+                    "value": "B",
+                    "text": "增强现实世界的图像"
+                },
+                {
+                    "value": "C",
+                    "text": "创造完全沉浸的虚拟环境"
+                },
+                {
+                    "value": "D",
+                    "text": "仅用于游戏开发"
+                }
+            ],
+            "correctAnswer": "C",
+            "explanation": "虚拟现实（VR）的核心目标是通过技术手段为用户创造一个完全沉浸的虚拟环境，使用户仿佛身临其境。增强现实世界的图像是AR（增强现实）的特点，VR并非为了替代智能手机，其应用也不仅限于游戏开发。"
+        },
+        {
+            "id": 8,
+            "question": "软件危机的主要表现是()",
+            "options": [
+                {
+                    "value": "A",
+                    "text": "测试覆盖率不足"
+                },
+                {
+                    "value": "B",
+                    "text": "开发效率高且质量稳定"
+                },
+                {
+                    "value": "C",
+                    "text": "用户需求易动态调整"
+                },
+                {
+                    "value": "D",
+                    "text": "开发成本高且软件质量难以控制"
+                }
+            ],
+            "correctAnswer": "D",
+            "explanation": "软件危机主要表现为软件开发过程中面临的一系列问题，如开发成本高、进度难以控制、软件质量差、可维护性低等。开发效率高且质量稳定不是危机表现，用户需求动态调整是开发面临的挑战而非危机主要表现，测试覆盖率不足是可能导致质量问题的因素之一，但不是主要表现。"
+        },
+        {
+            "id": 9,
+            "question": "目前连接主板电源的接口通常是()",
+            "options": [
+                {
+                    "value": "A",
+                    "text": "HDMI接口"
+                },
+                {
+                    "value": "B",
+                    "text": "24针ATX接口"
+                },
+                {
+                    "value": "C",
+                    "text": "USB接口"
+                },
+                {
+                    "value": "D",
+                    "text": "SATA接口"
+                }
+            ],
+            "correctAnswer": "B",
+            "explanation": "HDMI接口用于音视频传输，USB接口用于连接外部设备，SATA接口用于连接存储设备。目前，连接主板电源的通常是24针ATX接口，为主板及板载设备提供电力。"
+        },
+        {
+            "id": 10,
+            "question": "计算机执行指令的正确流程是()",
+            "options": [
+                {
+                    "value": "A",
+                    "text": "执行指令→分析指令→取指令→存储结果"
+                },
+                {
+                    "value": "B",
+                    "text": "分析指令→取指令→执行指令→存储结果"
+                },
+                {
+                    "value": "C",
+                    "text": "取指令→分析指令→执行指令→存储结果"
+                },
+                {
+                    "value": "D",
+                    "text": "存储结果→取指令→分析指令→执行指令"
+                }
+            ],
+            "correctAnswer": "C",
+            "explanation": "计算机执行指令的基本流程是：首先从内存中取出指令（取指令），然后对指令进行解码分析（分析指令），接着根据指令要求进行操作（执行指令），最后将执行结果存储（存储结果）。选项C符合这一流程。"
+        },
+        {
+            "id": 11,
+            "question": "十六进制数A+B的结果是()",
+            "options": [
+                {
+                    "value": "A",
+                    "text": "15"
+                },
+                {
+                    "value": "B",
+                    "text": "21"
+                },
+                {
+                    "value": "C",
+                    "text": "17"
+                },
+                {
+                    "value": "D",
+                    "text": "25"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "在十六进制中，A表示十进制的10，B表示十进制的11，A+B=10+11=21（十进制）。将十进制21转换为十六进制：21÷16=1余5，所以结果为15（十六进制）。"
+        },
+        {
+            "id": 12,
+            "question": "操作系统的主要功能不包括()",
+            "options": [
+                {
+                    "value": "A",
+                    "text": "进程调度"
+                },
+                {
+                    "value": "B",
+                    "text": "文件管理"
+                },
+                {
+                    "value": "C",
+                    "text": "内存管理"
+                },
+                {
+                    "value": "D",
+                    "text": "硬件驱动开发"
+                }
+            ],
+            "correctAnswer": "D",
+            "explanation": "操作系统的主要功能包括进程管理（如进程调度）、内存管理、文件管理、设备管理等。硬件驱动开发是针对硬件设备编写驱动程序的工作，属于开发范畴，并非操作系统本身的主要功能。"
+        },
+        {
+            "id": 13,
+            "question": "流媒体技术的关键支撑是()",
+            "options": [
+                {
+                    "value": "A",
+                    "text": "数据压缩与流式传输"
+                },
+                {
+                    "value": "B",
+                    "text": "区块链加密技术"
+                },
+                {
+                    "value": "C",
+                    "text": "高性能图形渲染"
+                },
+                {
+                    "value": "D",
+                    "text": "本地存储容量扩展"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "流媒体技术需要将音视频等数据实时传输并播放，数据压缩技术可减少数据量，便于传输；流式传输技术可使数据边传输边播放，无需完全下载。区块链加密、高性能图形渲染、本地存储扩展与流媒体技术的核心需求关联不大。"
+        },
+        {
+            "id": 14,
+            "question": "物联网(loT) 的核心目标是()",
+            "options": [
+                {
+                    "value": "A",
+                    "text": "实现设备与互联网的互联互通"
+                },
+                {
+                    "value": "B",
+                    "text": "优化图形渲染效率"
+                },
+                {
+                    "value": "C",
+                    "text": "提供高性能计算能力"
+                },
+                {
+                    "value": "D",
+                    "text": "替代传统数据库技术"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "物联网（IoT）的核心目标是通过各种技术手段，实现各类设备与互联网的连接和相互通信，从而实现智能化的管理和控制。优化图形渲染、提供高性能计算、替代传统数据库均不是其核心目标。"
+        },
+        {
+            "id": 15,
+            "question": "电脑频繁蓝屏可能的原因不包括()",
+            "options": [
+                {
+                    "value": "A",
+                    "text": "硬盘坏道"
+                },
+                {
+                    "value": "B",
+                    "text": "内存故障"
+                },
+                {
+                    "value": "C",
+                    "text": "显示器分辨率设置错误"
+                },
+                {
+                    "value": "D",
+                    "text": "驱动程序冲突"
+                }
+            ],
+            "correctAnswer": "C",
+            "explanation": "硬盘坏道、内存故障、驱动程序冲突都可能导致系统不稳定，引发蓝屏。而显示器分辨率设置错误主要影响显示效果，不会导致电脑频繁蓝屏。"
+        },
+        {
+            "id": 16,
+            "question": "以下属于电子邮件发送协议的是()",
+            "options": [
+                {
+                    "value": "A",
+                    "text": "HTTP"
+                },
+                {
+                    "value": "B",
+                    "text": "POP3"
+                },
+                {
+                    "value": "C",
+                    "text": "SMTP"
+                },
+                {
+                    "value": "D",
+                    "text": "IMAP"
+                }
+            ],
+            "correctAnswer": "C",
+            "explanation": "HTTP是超文本传输协议，用于网页传输；POP3和IMAP是电子邮件接收协议；SMTP（简单邮件传输协议）是用于发送电子邮件的协议。"
+        },
+        {
+            "id": 17,
+            "question": "下列关于文件主名和扩展名叙述中,正确的是()",
+            "options": [
+                {
+                    "value": "A",
+                    "text": "主文件名最多256个字符"
+                },
+                {
+                    "value": "B",
+                    "text": "扩展名最多3个字符"
+                },
+                {
+                    "value": "C",
+                    "text": "分隔符\"=\"可多次出现"
+                },
+                {
+                    "value": "D",
+                    "text": "主文件名必须以字母开头"
+                }
+            ],
+            "correctAnswer": "C",
+            "explanation": "在文件系统中，主文件名的长度限制因系统而异，通常远大于256字符，A错误；扩展名长度也不限于3个字符，B错误；分隔符“.”可多次出现，用于多个扩展名的情况，如“file.txt.zip”，C正确；主文件名可以以字母、数字、下划线等开头，并非必须以字母开头"
+        },
+        {
+            "id": 18,
+            "question": "应用软件与系统软件的关系是()",
+            "options": [
+                {
+                    "value": "A",
+                    "text": "应用软件以系统软件为基础运行"
+                },
+                {
+                    "value": "B",
+                    "text": "系统软件依赖应用软件"
+                },
+                {
+                    "value": "C",
+                    "text": "两者无关联"
+                },
+                {
+                    "value": "D",
+                    "text": "两者功能完全相同"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "系统软件（如操作系统）是计算机系统的基础，负责管理和控制硬件资源，为应用软件提供运行环境。应用软件必须依赖系统软件才能运行，而系统软件不依赖应用软件。两者功能不同，存在紧密关联。"
+        },
+        {
+            "id": 19,
+            "question": "虚拟内存的主要目的是()",
+            "options": [
+                {
+                    "value": "A",
+                    "text": "优化显卡性能"
+                },
+                {
+                    "value": "B",
+                    "text": "扩展物理内存容量"
+                },
+                {
+                    "value": "C",
+                    "text": "增加硬盘存储空间"
+                },
+                {
+                    "value": "D",
+                    "text": "提高CPU速度"
+                }
+            ],
+            "correctAnswer": "B",
+            "explanation": "虚拟内存通过将部分硬盘空间模拟为内存使用，在物理内存不足时，暂时存储数据，从而扩展了系统可用的内存容量，缓解内存紧张问题。虚拟内存与显卡性能、CPU速度无关，也不是为了增加硬盘存储空间（硬盘空间本身未增加，只是利用其部分空间模拟内存）。"
+        },
+        {
+            "id": 20,
+            "question": "C 语言属于 ()",
+            "options": [
+                {
+                    "value": "A",
+                    "text": "高级语言"
+                },
+                {
+                    "value": "B",
+                    "text": "机器语言"
+                },
+                {
+                    "value": "C",
+                    "text": "汇编语言"
+                },
+                {
+                    "value": "D",
+                    "text": "自然语言"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "C 语言是面向过程的高级语言，需编译成机器语言执行。机器语言是二进制代码，汇编语言是低级语言，自然语言是人类语言，均与 C 语言不符。"
+        },
+        {
+            "id": 21,
+            "question": "IPv4地址192.168.1.1属于()类地址",
+            "options": [
+                {
+                    "value": "A",
+                    "text": "D"
+                },
+                {
+                    "value": "B",
+                    "text": "A"
+                },
+                {
+                    "value": "C",
+                    "text": "C"
+                },
+                {
+                    "value": "D",
+                    "text": "B"
+                }
+            ],
+            "correctAnswer": "C",
+            "explanation": "IPv4地址中，C类地址的范围是192.0.0.0-223.255.255.255，192.168.1.1在此范围内，因此属于C类地址。A类地址范围是1.0.0.0-126.255.255.255，B类地址范围是128.0.0.0-191.255.255.255，D类为组播地址（224.0.0.0-239.255.255.255），均不符合该地址特征。"
+        },
+        { id: 22, question: "湖北准易调考专用的服务器网络现需划分6个子网，每个子网至少支持25台主机，那么应选择的子网掩码是(   )", options: [{ value: 'A', text: '255.255.255.248' }, { value: 'B', text: '255.255.255.192' }, { value: 'C', text: '255.255.255.240' }, { value: 'D', text: '255.255.255.224' }],   "correctAnswer": "D",
+            "explanation": "需要至少6个子网，每个子网至少支持25台主机。计算过程如下：每个子网至少需要5位主机位（因为2^5=32，减去网络地址和广播地址后有30个可用主机地址，大于25），因此需要借用3位来划分子网（因为2^3=8，大于6）。子网掩码应为255.255.255.224（即11100000），这样每个子网有30个可用主机地址，可以满足要求。"},
+        { id: 23, question: "以下属于视频编码标准的文件格式是(   )", options: [{ value: 'A', text: 'TXT' }, { value: 'B', text: 'BMF' }, { value: 'C', text: 'AVI' }, { value: 'D', text: 'AVI' }], correctAnswer: 'D', explanation: 'TXT 是文本文件格式，与视频无关；BMF 并非标准视频格式；AVI 是封装格式（含视频流和音频流），其内部视频编码可能采用 MPEG-4 等标准，但 AVI 本身不是编码标准；MP4 是常用的视频封装格式，支持 H.264、H.265 等主流视频编码标准。若选项 D 为 MP4 等明确关联视频编码的格式' },
+        {
+            "id": 24,
+            "question": "当计算机无法启动时, 首先应该检查()",
+            "options": [
+                {
+                    "value": "A",
+                    "text": "显示器是否正常"
+                },
+                {
+                    "value": "B",
+                    "text": "电源线是否插好"
+                },
+                {
+                    "value": "C",
+                    "text": "内存条是否损坏"
+                },
+                {
+                    "value": "D",
+                    "text": "硬盘是否有问题"
+                }
+            ],
+            "correctAnswer": "B",
+            "explanation": "计算机无法启动时，应先从最简单的硬件连接入手检查。电源线未插好是常见且易排查的问题，若电源线连接正常，再进一步检查显示器、内存条、硬盘等部件。因此首先应检查电源线是否插好。"
+        },
+        {
+            "id": 25,
+            "question": "局域网中IP地址冲突会导致()",
+            "options": [
+                {
+                    "value": "A",
+                    "text": "局域网崩溃"
+                },
+                {
+                    "value": "B",
+                    "text": "网速变快"
+                },
+                {
+                    "value": "C",
+                    "text": "所有设备自动重启"
+                },
+                {
+                    "value": "D",
+                    "text": "部分设备无法上网"
+                }
+            ],
+            "correctAnswer": "D",
+            "explanation": "在局域网中，若两台或多台设备使用相同的IP地址，会导致网络通信异常。冲突的设备可能无法正常获取网络资源，出现部分设备无法上网的情况，但通常不会导致整个局域网崩溃，也不会使网速变快或所有设备自动重启。"
+        },
+        {
+            "id": 26,
+            "question": "以下不属于ASCII编码范围的是()",
+            "options": [
+                {
+                    "value": "A",
+                    "text": "空格符"
+                },
+                {
+                    "value": "B",
+                    "text": "数字0"
+                },
+                {
+                    "value": "C",
+                    "text": "汉字五"
+                },
+                {
+                    "value": "D",
+                    "text": "符号$"
+                }
+            ],
+            "correctAnswer": "C",
+            "explanation": "ASCII编码主要用于表示英文字母、数字、标点符号等字符，包括空格符、数字0、符号$等。而汉字“五”属于中文字符，不在ASCII编码范围内，通常需要用Unicode等扩展编码来表示。"
+        },
+        {
+            "id": 27,
+            "question": "源程序与目标程序的关系是()",
+            "options": [
+                {
+                    "value": "A",
+                    "text": "源程序通过编译生成目标程序"
+                },
+                {
+                    "value": "B",
+                    "text": "两者均为二进制机器码"
+                },
+                {
+                    "value": "C",
+                    "text": "源程序由目标程序反编译生成"
+                },
+                {
+                    "value": "D",
+                    "text": "目标程序通过解释直接执行"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "源程序是用高级语言编写的代码，需要通过编译过程将其转换为二进制形式的目标程序，目标程序是计算机可直接执行的机器码。源程序不是由目标程序反编译生成（反编译是逆向过程，不常用于正常开发流程），且目标程序通常是编译后直接执行，而非通过解释执行。只有选项A正确描述了源程序与目标程序的关系。"
+        },
+        {
+            "id": 28,
+            "question": "汉字机内码与国际码的关系是()",
+            "options": [
+                {
+                    "value": "A",
+                    "text": "机内码=国际码-2020H"
+                },
+                {
+                    "value": "B",
+                    "text": "机内码=国际码+2020H"
+                },
+                {
+                    "value": "C",
+                    "text": "机内码=国际码x2"
+                },
+                {
+                    "value": "D",
+                    "text": "机内码=国际码+8080H"
+                }
+            ],
+            "correctAnswer": "D",
+            "explanation": "汉字的国际码是汉字在标准信息交换中的编码，而机内码是计算机内部存储和处理汉字的编码。为了避免与ASCII码冲突，汉字机内码通常是在国际码的基础上，每个字节加上8080H（十六进制）。因此，机内码与国际码的关系是机内码=国际码+8080H，选项D正确。"
+        },
+        {
+            "id": 29,
+            "question": "关于信息与数据的关系,正确的是()",
+            "options": [
+                {
+                    "value": "A",
+                    "text": "数据即信息"
+                },
+                {
+                    "value": "B",
+                    "text": "信息是数据的原始形式"
+                },
+                {
+                    "value": "C",
+                    "text": "数据是信息的载体"
+                },
+                {
+                    "value": "D",
+                    "text": "两者无关联"
+                }
+            ],
+            "correctAnswer": "C",
+            "explanation": "数据是对客观事物的符号表示，如数字、字符、图像等，而信息是数据所表达的含义。数据是信息的载体，信息通过数据来呈现和传递，两者密切相关但不等同。因此，正确的关系是数据是信息的载体，选项C正确。"
+        },
+        {
+            "id": 30,
+            "question": "主板上的北桥芯片组主要负责连接()部件",
+            "options": [
+                {
+                    "value": "A",
+                    "text": "以上都是"
+                },
+                {
+                    "value": "B",
+                    "text": "CPU与内存"
+                },
+                {
+                    "value": "C",
+                    "text": "CPU与南桥"
+                },
+                {
+                    "value": "D",
+                    "text": "CPU与显卡"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "北桥芯片组是主板上的重要组件，主要负责连接CPU、内存、显卡（部分情况）以及南桥芯片组等高速设备。它直接与CPU通信，并控制内存、PCI-E接口（用于连接显卡）等的工作。因此，北桥芯片组负责连接CPU与内存、CPU与南桥、CPU与显卡等部件，选项A“以上都是”正确。"
+        },
+        {
+            "id": 31,
+            "question": "信创国产化的主要方向不包括()",
+            "options": [
+                {
+                    "value": "A",
+                    "text": "操作系统替换"
+                },
+                {
+                    "value": "B",
+                    "text": "高端数据库"
+                },
+                {
+                    "value": "C",
+                    "text": "CPU替换"
+                },
+                {
+                    "value": "D",
+                    "text": "人工智能应用"
+                }
+            ],
+            "correctAnswer": "D",
+            "explanation": "信创（信息技术应用创新）国产化的核心是实现信息技术领域的自主可控，主要方向包括CPU、操作系统、数据库、中间件等基础软硬件的国产化替代。人工智能应用属于上层应用领域，并非信创国产化的主要方向。因此，选项D“人工智能应用”不属于信创国产化的主要方向。"
+        },
+        {
+            "id": 32,
+            "question": "以下不属于信息安全三要素的是()",
+            "options": [
+                {
+                    "value": "A",
+                    "text": "完整性"
+                },
+                {
+                    "value": "B",
+                    "text": "机密性"
+                },
+                {
+                    "value": "C",
+                    "text": "可追溯性"
+                },
+                {
+                    "value": "D",
+                    "text": "可用性"
+                }
+            ],
+            "correctAnswer": "C",
+            "explanation": "信息安全的三要素（CIA三元组）包括机密性（Confidentiality）、完整性（Integrity）和可用性（Availability）。机密性确保信息不被未授权访问，完整性确保信息未被篡改，可用性确保信息在需要时可访问。可追溯性不属于信息安全三要素，因此选项C正确。"
+        },
+        { id: 33, question: "以下读写速度最快的存储设备是(   )", options: [{ value: 'A', text: 'U盘' }, { value: 'B', text: 'HDD' }, { value: 'C', text: 'NVMe SSD' }, { value: 'D', text: '.SATA SSD' }], correctAnswer: 'C', explanation: 'NVMe SSD（基于 PCIe 接口）通过高速通道直接与 CPU 通信，读写速度可达数千 MB/s；SATA SSD 受限于 SATA 接口带宽，速度通常在 500MB/s 左右；U 盘依赖 USB 接口且主控性能较弱，速度一般低于 500MB/s；HDD（机械硬盘）基于机械寻址，速度最慢（约 100-200MB/s）。因此，读写速度最快的是 NVMe SSD' },
+        {
+            "id": 34,
+            "question": "分组交换可进一步细分为()两种子类型",
+            "options": [
+                {
+                    "value": "A",
+                    "text": "数据报交换与虚电路交换"
+                },
+                {
+                    "value": "B",
+                    "text": "电路交换与虚电路交换"
+                },
+                {
+                    "value": "C",
+                    "text": "报文交换与信元交换"
+                },
+                {
+                    "value": "D",
+                    "text": "物理交换与逻辑交换"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "分组交换是将数据分成若干分组进行传输的技术，根据传输方式的不同，可细分为数据报交换和虚电路交换。数据报交换中每个分组独立传输，虚电路交换则先建立逻辑连接再传输分组。电路交换是另一种独立的交换方式，报文交换以完整报文为单位传输，物理交换和逻辑交换不属于分组交换的子类型。因此，正确答案为选项A。"
+        },
+        {
+            "id": 35,
+            "question": "计算机中存储数据的最小单位是()",
+            "options": [
+                {
+                    "value": "A",
+                    "text": "兆(MB)"
+                },
+                {
+                    "value": "B",
+                    "text": "字节(Byte)"
+                },
+                {
+                    "value": "C",
+                    "text": "位(Bit)"
+                },
+                {
+                    "value": "D",
+                    "text": "字(word)"
+                }
+            ],
+            "correctAnswer": "C",
+            "explanation": "在计算机中，存储数据的最小单位是位（Bit），它表示一个二进制数字（0或1）。字节（Byte）是常用的基本存储单位，1字节等于8位。兆（MB）是更大的存储单位，字（word）的长度因计算机架构而异，通常为多个字节。因此，存储数据的最小单位是位（Bit），选项C正确。"
+        },
+        {
+            "id": 36,
+            "question": "计算机频繁重启,可能的原因是()",
+            "options": [
+                {
+                    "value": "A",
+                    "text": "键盘按键卡住"
+                },
+                {
+                    "value": "B",
+                    "text": "电源功率不足"
+                },
+                {
+                    "value": "C",
+                    "text": "显示器刷新率过高"
+                },
+                {
+                    "value": "D",
+                    "text": "鼠标驱动程序冲突"
+                }
+            ],
+            "correctAnswer": "B",
+            "explanation": "计算机频繁重启可能是由于电源功率不足，导致硬件无法获得稳定供电，从而引发系统重启。键盘按键卡住可能导致输入异常，但通常不会引发重启；显示器刷新率过高影响显示，与重启无关；鼠标驱动程序冲突可能导致设备异常，但一般不会导致频繁重启。因此，最可能的原因是电源功率不足，选项B正确。"
+        },
+        {
+            "id": 37,
+            "question": "下列关于文件和文件夹的描述,正确的是()",
+            "options": [
+                {
+                    "value": "A",
+                    "text": "同一文件夹中允许存在主文件名相同但扩展名不同的文件"
+                },
+                {
+                    "value": "B",
+                    "text": "所有字符均可用于文件名"
+                },
+                {
+                    "value": "C",
+                    "text": "同一层级允许存在同名文件与文件夹"
+                },
+                {
+                    "value": "D",
+                    "text": "文件名中允许使用 \"/\"或\"?\" 符号"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "在同一文件夹中，允许存在主文件名相同但扩展名不同的文件，如“file.txt”和“file.docx”是不同的文件，选项A正确。文件名中不能使用某些特殊字符（如/、?、\等），因此选项B和D错误；同一层级的文件夹中，文件和文件夹不能同名，否则会产生冲突，选项C错误。"
+        },
+        {
+            "id": 38,
+            "question": "MAC地址的作用是(),其长度是()位",
+            "options": [
+                {
+                    "value": "A",
+                    "text": "存储用户密码、54"
+                },
+                {
+                    "value": "B",
+                    "text": "标识网络设备、48"
+                },
+                {
+                    "value": "C",
+                    "text": "加密数据传输、32"
+                },
+                {
+                    "value": "D",
+                    "text": "定位网站服务器、16"
+                }
+            ],
+            "correctAnswer": "B",
+            "explanation": "MAC地址（媒体访问控制地址）是网络设备（如网卡）的唯一标识符，用于在数据链路层标识设备，其长度为48位二进制数，通常表示为12位十六进制数。MAC地址与存储用户密码、加密数据传输、定位网站服务器无关，因此选项B正确。"
+        },
+        { id: 39, question: "“程序”是指(   )", options: [{ value: 'A', text: '网络连接协议' }, { value: 'B', text: '计算机的硬件组成' }, { value: 'c', text: '用户操作手册' }, { value: 'D', text: '按特定顺序组织的指令序列' }], correctAnswer: 'D', explanation: '程序是为实现特定目标或解决特定问题，由计算机指令按一定顺序组织而成的序列。网络连接协议是通信规则（如 TCP/IP），硬件组成是计算机物理设备，用户操作手册是指导文档，均与程序的定义无关' },
+        { id: 40, question: "冯·诺依曼体系结构的核心是(    )", options: [{ value: 'A', text: '采用二进制' }, { value: 'B', text: '使用晶体管' }, { value: 'c', text: '存储程序控制' }, { value: 'D', text: '并行计算' }], correctAnswer: 'C', explanation: '冯・诺依曼体系结构的核心思想是 “存储程序控制”，即程序和数据统一存储在存储器中，计算机自动按顺序执行程序指令。采用二进制是其重要特征之一，但非核心；晶体管是硬件实现的元件，与体系结构核心无关；并行计算是现代计算机发展的方向，并非冯・诺依曼体系的核心。因此，核心是 “存储程序控制”。' },
+        {
+            "id": 41,
+            "question": "浮点数表示中, 阶码的作用是()",
+            "options": [
+                {
+                    "value": "A",
+                    "text": "决定数值的精度"
+                },
+                {
+                    "value": "B",
+                    "text": "表示小数点的位置"
+                },
+                {
+                    "value": "C",
+                    "text": "确定数值的范围"
+                },
+                {
+                    "value": "D",
+                    "text": "确定数值的符号"
+                }
+            ],
+            "correctAnswer": "C",
+            "explanation": "在浮点数表示中，阶码（指数部分）用于表示小数点的位置移动，从而确定数值的范围。阶码越大，数值的范围越大。数值的精度由尾数决定，符号由符号位确定。因此，阶码的主要作用是确定数值的范围，选项C正确。"
+        },
+        {
+            "id": 42,
+            "question": "OSI参考模型中, 传输层的作用是()",
+            "options": [
+                {
+                    "value": "A",
+                    "text": "数据压缩"
+                },
+                {
+                    "value": "B",
+                    "text": "数据加密"
+                },
+                {
+                    "value": "C",
+                    "text": "物理寻址"
+                },
+                {
+                    "value": "D",
+                    "text": "端到端可靠传输"
+                }
+            ],
+            "correctAnswer": "D",
+            "explanation": "在OSI参考模型中，传输层的主要作用是为两台主机上的应用程序提供端到端的可靠数据传输服务，确保数据准确无误地到达目的地。数据压缩和加密通常在表示层处理，物理寻址在数据链路层完成。因此，选项D“端到端可靠传输”正确描述了传输层的作用。"
+        },
+
+        {
+            "id": 43,
+            "question": "以下关于进制的描述, 错误的是()",
+            "options": [
+                {
+                    "value": "A",
+                    "text": "十进制是计算机最常用的内部表示方式"
+                },
+                {
+                    "value": "B",
+                    "text": "二进制逢二进一"
+                },
+                {
+                    "value": "C",
+                    "text": "十六进制用字母A-F表示10-15"
+                },
+                {
+                    "value": "D",
+                    "text": "八进制包含数字0-7"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "计算机内部以二进制形式存储和处理数据，而非十进制。二进制遵循逢二进一规则，十六进制用A-F表示10-15，八进制由0-7组成，选项B、C、D描述均正确。因此错误的是选项A。"
+        },
+        { id: 44, question: "防火墙的主要功能是(     )", options: [{ value: 'A', text: '分配IP地址' }, { value: 'B', text: '加快网速' }, { value: 'c', text: '控制网络访问' }, { value: 'D', text: '防止病毒传播' }], correctAnswer: 'C', explanation: '防火墙的核心功能是依据预设的安全策略，对进出网络的流量进行监控和过滤，实现对网络访问的控制，以保护内部网络安全。分配 IP 地址通常由 DHCP 服务器完成；防火墙可能因流量过滤带来轻微延迟，而非加快网速；虽然部分防火墙具备一定病毒防护功能，但控制网络访问是其主要功能，防止病毒传播属于附加或扩展功能。' },
+        {
+            "id": 45,
+            "question": "计算机病毒的典型特征是()",
+            "options": [
+                {
+                    "value": "A",
+                    "text": "自动卸载"
+                },
+                {
+                    "value": "B",
+                    "text": "自我复制"
+                },
+                {
+                    "value": "C",
+                    "text": "提升系统性能"
+                },
+                {
+                    "value": "D",
+                    "text": "加密文件"
+                }
+            ],
+            "correctAnswer": "B",
+            "explanation": "计算机病毒的典型特征是自我复制，通过复制自身代码感染其他程序或文件。病毒通常会破坏系统功能而非提升性能，也不会自动卸载，加密文件可能是勒索软件的行为，但非所有病毒的典型特征。因此正确答案为B。"
+        },
+        {
+            "id": 46,
+            "question": "数字图像的颜色深度是指()",
+            "options": [
+                {
+                    "value": "A",
+                    "text": "图像分辨率"
+                },
+                {
+                    "value": "B",
+                    "text": "文件大小"
+                },
+                {
+                    "value": "C",
+                    "text": "像素位数"
+                },
+                {
+                    "value": "D",
+                    "text": "压缩率"
+                }
+            ],
+            "correctAnswer": "C",
+            "explanation": "数字图像的颜色深度（位深）指每个像素所使用的二进制位数，用于表示像素的颜色种类。例如，8位颜色深度表示每个像素有256种颜色。分辨率是像素数量，文件大小与像素数和颜色深度相关，压缩率是数据压缩程度，均与颜色深度无关。因此正确答案为C。"
+        },
+        {
+            "id": 47,
+            "question": "计算机能Ping通IP但无法访问网页,可能的原因是()",
+            "options": [
+                {
+                    "value": "A",
+                    "text": "DNS配置错误"
+                },
+                {
+                    "value": "B",
+                    "text": "网卡故障"
+                },
+                {
+                    "value": "C",
+                    "text": "网线断开"
+                },
+                {
+                    "value": "D",
+                    "text": "防火墙关闭"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "能Ping通IP说明网络连接正常（网卡、网线、防火墙未阻止ICMP协议），但无法访问网页可能是因为DNS配置错误——DNS负责将域名解析为IP地址，若配置错误则无法通过域名访问网站。防火墙关闭通常不会导致无法访问网页，因此正确答案为A。"
+        },
+        { id: 48, question: "放大后图像边缘出现锯齿的原因是(    )", options: [{ value: 'A', text: '色彩深度不足' }, { value: 'B', text: '图像分辨率过低' }, { value: 'c', text: '使用位图格式' }, { value: 'D', text: '显示设备性能差' }], correctAnswer: 'B', explanation: '图像分辨率过低意味着单位面积内像素数量不足，放大时像素被拉伸，边缘无法平滑过渡，导致锯齿状边缘。色彩深度影响颜色种类，与边缘锯齿无关；位图格式（如 JPG、PNG）本身由像素构成，放大出现锯齿本质上是因为分辨率不足，而非格式本身；显示设备性能差可能导致显示延迟，但不会直接造成边缘锯齿。因此，核心原因是图像分辨率过低。' },
+        {
+            "id": 49,
+            "question": "目前国产CPU主要面临的挑战不包括()",
+            "options": [
+                {
+                    "value": "A",
+                    "text": "技术封锁"
+                },
+                {
+                    "value": "B",
+                    "text": "性能差距"
+                },
+                {
+                    "value": "C",
+                    "text": "研发成本低"
+                },
+                {
+                    "value": "D",
+                    "text": "生态不完善"
+                }
+            ],
+            "correctAnswer": "C",
+            "explanation": "国产CPU面临的主要挑战包括技术封锁（如架构授权限制）、性能与国际先进水平的差距、软件生态不完善（如操作系统和应用适配）等。研发成本低并非挑战，反而可能是优势，因此正确答案为C。"
+        },
+        { id: 50, question: "目前国产CPU主要面临的挑战不包括(   )", options: [{ value: 'A', text: '技术封锁' }, { value: 'B', text: '性能差距' }, { value: 'c', text: '研发成本低' }, { value: 'D', text: '生态不完善' }], correctAnswer: 'C', explanation: '国产 CPU 发展面临的主要挑战包括技术封锁（如架构授权限制、核心技术壁垒）、性能与国际主流产品的差距、软件生态不完善（操作系统适配、应用兼容性等）。研发成本低并非挑战，相反，合理控制成本是产业发展的优势之一。因此，“研发成本低” 不属于国产 CPU 面临的挑战。' },
+    ];
+
+    // 随机抽取50题
+    let questions = [];
+    function getRandomQuestions() {
+        // 打乱题库顺序
+        const shuffled = [...questionBank].sort(() => 0.5 - Math.random());
+        // 取前50题
+        return shuffled.slice(0, 50);
+    }
+
+    // 用户答案存储
+    const userAnswers = [];
+
+    // 题目标记状态
+    const questionMarks = [];
+
+    // 当前题目索引
+    let currentQuestionIndex = 0;
+
+
+    let remainingTime = 25 * 60;
+
+
+    let timerInterval;
+
+    // 页面元素
+    const pages = {
+        instructions: document.getElementById('instructions-page'),
+        questions: document.getElementById('questions-page'),
+        submit: document.getElementById('submit-page'),
+        result: document.getElementById('result-page'),
+        explanation: document.getElementById('explanation-page')
+    };
+
+    // 按钮元素
+    const startBtn = document.getElementById('start-btn');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const submitBtn = document.getElementById('submit-btn');
+    const cancelSubmitBtn = document.getElementById('cancel-submit-btn');
+    const confirmSubmitBtn = document.getElementById('confirm-submit-btn');
+    const viewExplanationBtn = document.getElementById('view-explanation-btn');
+    const backToInstructionsBtn = document.getElementById('back-to-instructions-btn');
+    const markBtn = document.getElementById('mark-btn');
+    const returnBtn = document.getElementById('return-btn');
+
+    // 页面切换函数
+    function showPage(pageId) {
+        for (const page in pages) {
+            pages[page].classList.remove('active');
+        }
+        pages[pageId].classList.add('active');
+    }
+
+    // 初始化题目列表
+    function initQuestionList() {
+        const questionList = document.getElementById('question-list');
+        questionList.innerHTML = '';
+
+        for (let i = 0; i < questions.length; i++) {
+            const questionItem = document.createElement('div');
+            questionItem.className = 'question-item';
+            questionItem.dataset.index = i;
+            questionItem.textContent = i + 1; // 按顺序显示题目编号
+
+            // 根据标记状态设置样式
+            if (questionMarks[i]) {
+                questionItem.classList.add('marked');
+            }
+
+            // 根据是否已选择设置样式
+            if (userAnswers[i] !== undefined) {
+                questionItem.classList.add('selected');
+            }
+
+            questionItem.addEventListener('click', () => {
+                currentQuestionIndex = i;
+                updateQuestionContent();
+                updateQuestionList();
+            });
+
+            questionList.appendChild(questionItem);
+        }
+    }
+
+    // 更新题目列表的选中状态
+    function updateQuestionList() {
+        const questionItems = document.querySelectorAll('.question-item');
+        questionItems.forEach((item, index) => {
+            if (index === currentQuestionIndex) {
+                item.classList.add('active');
+            } else {
+                item.classList.remove('active');
+            }
+
+            // 根据是否已选择设置样式
+            if (userAnswers[index] !== undefined) {
+                item.classList.add('selected');
+            } else {
+                item.classList.remove('selected');
+            }
+        });
+    }
+
+    // 更新题目内容
+    function updateQuestionContent() {
+        const question = questions[currentQuestionIndex];
+        const questionContent = document.getElementById('question-content');
+        questionContent.innerHTML = `
+                <div class="question">
+                    <span class="question-number">第${currentQuestionIndex + 1}题</span>
+                    <h3>${question.question}</h3>
+                    <ul class="options">
+                        ${question.options.map((option) => `
+                            <li data-value="${option.value}">
+                                <span class="option-label">${option.value}</span>
+                                ${option.text}
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+            `;
+
+        // 设置已选选项的样式
+        const options = questionContent.querySelectorAll('.options li');
+        options.forEach((option) => {
+            const value = option.dataset.value;
+            if (userAnswers[currentQuestionIndex] === value) {
+                option.classList.add('selected');
+            } else {
+                option.classList.remove('selected');
+            }
+
+            option.addEventListener('click', () => {
+                userAnswers[currentQuestionIndex] = value;
+                options.forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
+                updateQuestionList();
+            });
+        });
+
+        updateQuestionList();
+    }
+
+    // 计算分数（每题3分）
+    function calculateScore() {
+        let score = 0;
+        for (let i = 0; i < questions.length; i++) {
+            if (userAnswers[i] === questions[i].correctAnswer) {
+                score += 3; // 每题3分
+            }
+        }
+        return score;
+    }
+
+    // 显示题目解析
+    function showExplanations() {
+        const explanationContent = document.getElementById('explanation-content');
+        explanationContent.innerHTML = '';
+
+        for (let i = 0; i < questions.length; i++) {
+            const question = questions[i];
+            const userAnswer = userAnswers[i];
+            const isCorrect = userAnswer === question.correctAnswer;
+
+            const questionDiv = document.createElement('div');
+            questionDiv.innerHTML = `
+                    <h3>第${i + 1}题：${question.question}</h3>
+                    <p>正确答案：${question.correctAnswer}</p>
+                    <p>您的答案：${userAnswer !== undefined ? userAnswer : '未作答'}</p>
+                    <p>${isCorrect ? '回答正确' : '回答错误'}</p>
+                    <div class="explanation">
+                        <h4>解析：</h4>
+                        <p>${question.explanation}</p>
+                    </div>
+                `;
+
+            // 设置正确/错误样式
+            const options = questionDiv.querySelectorAll('.options li');
+            options.forEach((option) => {
+                const value = option.dataset.value;
+                if (value === question.correctAnswer) {
+                    option.classList.add('correct');
+                }
+                if (value === userAnswer && !isCorrect) {
+                    option.classList.add('wrong');
+                }
+            });
+
+            explanationContent.appendChild(questionDiv);
+        }
+    }
+
+    // 更新倒计时显示
+    function updateTimerDisplay() {
+        const minutes = Math.floor(remainingTime / 60);
+        const seconds = remainingTime % 60;
+        const timerDisplay = document.getElementById('timer');
+        timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }
+
+    // 开始倒计时
+    function startTimer() {
+        timerInterval = setInterval(() => {
+            remainingTime--;
+            updateTimerDisplay();
+
+            if (remainingTime <= 0) {
+                clearInterval(timerInterval);
+                // 时间到，自动交卷
+                showPage('submit');
+            }
+        }, 1000);
+    }
+
+    // 停止倒计时
+    function stopTimer() {
+        clearInterval(timerInterval);
+    }
+
+    // 键盘快捷键功能
+    document.addEventListener('keydown', (event) => {
+        if (pages.questions.classList.contains('active')) {
+            if (event.key === '1') { // 数字键1=上一题
+                if (currentQuestionIndex > 0) {
+                    currentQuestionIndex--;
+                    updateQuestionContent();
+                }
+            } else if (event.key === '2') { // 数字键2=下一题
+                if (currentQuestionIndex < questions.length - 1) {
+                    currentQuestionIndex++;
+                    updateQuestionContent();
+                }
+            } else if (event.key === '3') { // 数字键3=标记/取消标记
+                questionMarks[currentQuestionIndex] = !questionMarks[currentQuestionIndex];
+                const questionItems = document.querySelectorAll('.question-item');
+                questionItems[currentQuestionIndex].classList.toggle('marked');
+            }
+        }
+    });
+
+    // 标记按钮功能
+    markBtn.addEventListener('click', () => {
+        questionMarks[currentQuestionIndex] = !questionMarks[currentQuestionIndex];
+        const questionItems = document.querySelectorAll('.question-item');
+        questionItems[currentQuestionIndex].classList.toggle('marked');
+    });
+
+    // 事件监听
+    startBtn.addEventListener('click', () => {
+        // 随机抽取50题
+        questions = getRandomQuestions();
+        // 重置用户答案
+        userAnswers.length = 0;
+        questionMarks.length = 0;
+        for (let i = 0; i < questions.length; i++) {
+            userAnswers.push(undefined);
+            questionMarks.push(false);
+        }
+        currentQuestionIndex = 0;
+        remainingTime = 25 * 60;
+        updateTimerDisplay();
+        startTimer();
+        showPage('questions');
+        initQuestionList();
+        updateQuestionContent();
+    });
+
+    prevBtn.addEventListener('click', () => {
+        if (currentQuestionIndex > 0) {
+            currentQuestionIndex--;
+            updateQuestionContent();
+        }
+    });
+
+    nextBtn.addEventListener('click', () => {
+        if (currentQuestionIndex < questions.length - 1) {
+            currentQuestionIndex++;
+            updateQuestionContent();
+        }
+    });
+
+    submitBtn.addEventListener('click', () => {
+        stopTimer();
+        showPage('submit');
+    });
+
+    cancelSubmitBtn.addEventListener('click', () => {
+        showPage('questions');
+    });
+
+    confirmSubmitBtn.addEventListener('click', () => {
+        const score = calculateScore();
+        document.querySelector('.score-display').innerHTML = `
+                <span>您的得分：</span>${score}<span>分</span>
+            `;
+        showPage('result');
+    });
+
+    viewExplanationBtn.addEventListener('click', () => {
+        showExplanations();
+        showPage('explanation');
+    });
+
+    backToInstructionsBtn.addEventListener('click', () => {
+        stopTimer();
+        showPage('instructions');
+    });
+
+    // 返回首页按钮功能
+    returnBtn.addEventListener('click', () => {
+        // 停止倒计时
+        stopTimer();
+        window.location.href = '../2025-exam.html';
+    });
+</script>
+</body>
+</html>
