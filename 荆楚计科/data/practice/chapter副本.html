@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>荆楚计科备考联盟-计算机工程学习平台</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: sticky;
+            top: 0;
+            background-color: #fff;
+            z-index: 100;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            color: #1a73e8;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #616161;
+            font-size: 1.1rem;
+        }
+
+        .page {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            display: none;
+            animation: fadeIn 0.5s ease;
+            position: relative;
+        }
+
+        .active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .instructions {
+            text-align: left;
+            margin-bottom: 30px;
+        }
+
+        .instructions h2 {
+            color: #1a73e8;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #e8eaf6;
+            padding-bottom: 10px;
+        }
+
+        .instructions ul {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        .instructions li {
+            margin-bottom: 8px;
+            padding-left: 10px;
+            position: relative;
+        }
+
+        .instructions li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #1a73e8;
+        }
+
+        button {
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.1s;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        button:hover {
+            background-color: #1557b0;
+            transform: translateY(-1px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .question-container {
+            display: flex;
+            margin-top: 20px;
+        }
+
+        .question-list {
+            flex: 0 0 20%;
+            padding-right: 20px;
+            border-right: 1px solid #e8eaf6;
+            height: 600px;
+            overflow-y: auto;
+        }
+
+        .question-list::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .question-list::-webkit-scrollbar-thumb {
+            background-color: #90caf9;
+            border-radius: 4px;
+        }
+
+        .question-list-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 5px;
+        }
+
+        .question-item {
+            background-color: #e8eaf6;
+            border-radius: 4px;
+            padding: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .question-item:hover {
+            background-color: #90caf9;
+            transform: scale(1.05);
+        }
+
+        .question-item.active {
+            background-color: #1a73e8;
+            color: white;
+        }
+
+        .question-item.marked {
+            background-color: #ffeb3b;
+            color: #333;
+        }
+
+        .question-item.selected {
+            background-color: #81c784;
+            color: white;
+        }
+
+        .question-content {
+            flex: 0 0 80%;
+        }
+
+        .question {
+            margin-bottom: 25px;
+            background-color: #e3f2fd; /* 题目背景为蓝色 */
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .question h3 {
+            color: #1a73e8;
+            margin-bottom: 15px;
+            font-size: 1.25rem;
+        }
+
+        .options {
+            list-style: none;
+        }
+
+        .options li {
+            background-color: #f5f7fa;
+            border: 1px solid #e8eaf6;
+            border-radius: 5px;
+            padding: 12px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+        }
+
+        .options li:hover {
+            background-color: #e8eaf6;
+            border-color: #90caf9;
+        }
+
+        .option-label {
+            margin-right: 10px;
+            font-weight: bold;
+            color: #1a73e8;
+        }
+
+        .selected {
+            background-color: #90caf9;
+            border-color: #1a73e8;
+            color: white;
+        }
+
+        .correct {
+            background-color: #a5d6a7;
+            border-color: #2e7d32;
+            color: #1b5e20;
+        }
+
+        .wrong {
+            background-color: #ffcdd2;
+            border-color: #c62828;
+            color: #b71c1c;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e8eaf6;
+        }
+
+        .result {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .result h2 {
+            color: #1a73e8;
+            margin-bottom: 20px;
+        }
+
+        .score-display {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #2e7d32;
+            margin-bottom: 20px;
+        }
+
+        .score-display span {
+            font-size: 1.5rem;
+            color: #616161;
+        }
+
+        .explanation {
+            background-color: #f5f7fa;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+
+        .explanation h4 {
+            color: #1a73e8;
+            margin-bottom: 10px;
+        }
+
+        .explanation p {
+            margin-bottom: 10px;
+        }
+
+        .back-btn {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .back-btn:hover {
+            background-color: #1557b0;
+        }
+
+        .random-info {
+            background-color: #fff3e0;
+            border-left: 3px solid #ff9800;
+            padding: 10px 15px;
+            margin-bottom: 20px;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .random-info h4 {
+            color: #ff9800;
+            margin-bottom: 5px;
+        }
+
+        .keyboard-tip {
+            font-size: 0.9rem;
+            color: #616161;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .timer {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #1a73e8;
+        }
+
+        .return-btn {
+            margin-top: 20px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>荆楚计科备考联盟-计算机工程学习平台</h1>
+        <p>测试您的计算机知识</p>
+    </div>
+
+    <!-- 考试须知页面 -->
+    <div id="instructions-page" class="page active">
+        <div class="instructions">
+            <h2>考试须知</h2>
+            <ul>
+                <li>本场考试将从题库中随机抽取50道选择题</li>
+                <li>考试时间为25分钟，请合理安排时间</li>
+                <li>每道题有四个选项，只有一个正确答案，每题3分</li>
+                <li>答题过程中请勿刷新页面，否则将导致考试异常</li>
+                <li>点击题目列表中的题目编号可以快速切换题目</li>
+                <li>完成答题后，请点击"交卷"按钮提交试卷</li>
+                <li>键盘快捷键：数字键1=上一题，数字键2=下一题，数字键3=标记/取消标记</li>
+                <li>标记的题目在列表中显示为黄色</li>
+            </ul>
+            <div class="random-info">
+                <h4>随机抽题说明</h4>
+                <p>系统将从题库中随机抽取50道题，确保每次考试题目不同</p>
+            </div>
+            <button id="start-btn">开始考试</button>
+            <button id="return-btn" class="return-btn">返回首页</button>
+        </div>
+    </div>
+
+    <!-- 做题页面 -->
+    <div id="questions-page" class="page">
+        <div class="timer" id="timer">25:00</div>
+        <div class="question-container">
+            <div class="question-list">
+                <div class="question-list-grid" id="question-list">
+                    <!-- 题目列表将通过JavaScript动态生成 -->
+                </div>
+            </div>
+            <div class="question-content">
+                <div id="question-content">
+
+                </div>
+                <div class="navigation">
+                    <button id="prev-btn">上一题</button>
+                    <button id="mark-btn">标记</button>
+                    <button id="next-btn">下一题</button>
+                    <button id="submit-btn">交卷</button>
+                </div>
+                <p class="keyboard-tip">快捷键：数字键1=上一题，数字键2=下一题，数字键3=标记/取消标记</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 交卷页面 -->
+    <div id="submit-page" class="page">
+        <h2>确认交卷</h2>
+        <p>您确定要交卷吗？交卷后将无法修改答案。</p>
+        <div class="navigation">
+            <button id="cancel-submit-btn">取消</button>
+            <button id="confirm-submit-btn">确认交卷</button>
+        </div>
+    </div>
+
+    <!-- 成绩结算页面 -->
+    <div id="result-page" class="page">
+        <div class="result">
+            <h2>考试成绩</h2>
+            <div class="score-display">
+                <span>您的得分：</span>0<span>分</span>
+            </div>
+            <button id="view-explanation-btn">查看题目解析</button>
+        </div>
+    </div>
+
+    <!-- 题目解析页面 -->
+    <div id="explanation-page" class="page">
+        <h2>题目解析</h2>
+        <div id="explanation-content">
+            <!-- 题目解析将通过JavaScript动态生成 -->
+        </div>
+        <button class="back-btn" id="back-to-instructions-btn">返回考试须知</button>
+    </div>
+</div>
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const returnBtn = document.getElementById('return-btn');
+        const currentPath = window.location.pathname;
+        const pathSegments = currentPath.split('/');
+        pathSegments.pop(); // 移除当前文件名
+        if (pathSegments.length > 0) {
+            pathSegments.pop(); // 移除当前文件夹名
+        }
+        const newPath = pathSegments.join('/') + '/index.html';
+        returnBtn.href = newPath;
+    });
+
+    // 题库
+    const questionBank = [
+    ];
+
+    // 随机抽取50题
+    let questions = [];
+    function getRandomQuestions() {
+        // 打乱题库顺序
+        const shuffled = [...questionBank].sort(() => 0.5 - Math.random());
+        // 取前50题
+        return shuffled.slice(0, 50);
+    }
+
+    // 用户答案存储
+    const userAnswers = [];
+
+    // 题目标记状态
+    const questionMarks = [];
+
+    // 当前题目索引
+    let currentQuestionIndex = 0;
+
+
+    let remainingTime = 25 * 60;
+
+
+    let timerInterval;
+
+    // 页面元素
+    const pages = {
+        instructions: document.getElementById('instructions-page'),
+        questions: document.getElementById('questions-page'),
+        submit: document.getElementById('submit-page'),
+        result: document.getElementById('result-page'),
+        explanation: document.getElementById('explanation-page')
+    };
+
+    // 按钮元素
+    const startBtn = document.getElementById('start-btn');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const submitBtn = document.getElementById('submit-btn');
+    const cancelSubmitBtn = document.getElementById('cancel-submit-btn');
+    const confirmSubmitBtn = document.getElementById('confirm-submit-btn');
+    const viewExplanationBtn = document.getElementById('view-explanation-btn');
+    const backToInstructionsBtn = document.getElementById('back-to-instructions-btn');
+    const markBtn = document.getElementById('mark-btn');
+    const returnBtn = document.getElementById('return-btn');
+
+    // 页面切换函数
+    function showPage(pageId) {
+        for (const page in pages) {
+            pages[page].classList.remove('active');
+        }
+        pages[pageId].classList.add('active');
+    }
+
+    // 初始化题目列表
+    function initQuestionList() {
+        const questionList = document.getElementById('question-list');
+        questionList.innerHTML = '';
+
+        for (let i = 0; i < questions.length; i++) {
+            const questionItem = document.createElement('div');
+            questionItem.className = 'question-item';
+            questionItem.dataset.index = i;
+            questionItem.textContent = i + 1; // 按顺序显示题目编号
+
+            // 根据标记状态设置样式
+            if (questionMarks[i]) {
+                questionItem.classList.add('marked');
+            }
+
+            // 根据是否已选择设置样式
+            if (userAnswers[i] !== undefined) {
+                questionItem.classList.add('selected');
+            }
+
+            questionItem.addEventListener('click', () => {
+                currentQuestionIndex = i;
+                updateQuestionContent();
+                updateQuestionList();
+            });
+
+            questionList.appendChild(questionItem);
+        }
+    }
+
+    // 更新题目列表的选中状态
+    function updateQuestionList() {
+        const questionItems = document.querySelectorAll('.question-item');
+        questionItems.forEach((item, index) => {
+            if (index === currentQuestionIndex) {
+                item.classList.add('active');
+            } else {
+                item.classList.remove('active');
+            }
+
+            // 根据是否已选择设置样式
+            if (userAnswers[index] !== undefined) {
+                item.classList.add('selected');
+            } else {
+                item.classList.remove('selected');
+            }
+        });
+    }
+
+    // 更新题目内容
+    function updateQuestionContent() {
+        const question = questions[currentQuestionIndex];
+        const questionContent = document.getElementById('question-content');
+        questionContent.innerHTML = `
+                <div class="question">
+                    <span class="question-number">第${currentQuestionIndex + 1}题</span>
+                    <h3>${question.question}</h3>
+                    <ul class="options">
+                        ${question.options.map((option) => `
+                            <li data-value="${option.value}">
+                                <span class="option-label">${option.value}</span>
+                                ${option.text}
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+            `;
+
+        // 设置已选选项的样式
+        const options = questionContent.querySelectorAll('.options li');
+        options.forEach((option) => {
+            const value = option.dataset.value;
+            if (userAnswers[currentQuestionIndex] === value) {
+                option.classList.add('selected');
+            } else {
+                option.classList.remove('selected');
+            }
+
+            option.addEventListener('click', () => {
+                userAnswers[currentQuestionIndex] = value;
+                options.forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
+                updateQuestionList();
+            });
+        });
+
+        updateQuestionList();
+    }
+
+    // 计算分数（每题3分）
+    function calculateScore() {
+        let score = 0;
+        for (let i = 0; i < questions.length; i++) {
+            if (userAnswers[i] === questions[i].correctAnswer) {
+                score += 3; // 每题3分
+            }
+        }
+        return score;
+    }
+
+    // 显示题目解析
+    function showExplanations() {
+        const explanationContent = document.getElementById('explanation-content');
+        explanationContent.innerHTML = '';
+
+        for (let i = 0; i < questions.length; i++) {
+            const question = questions[i];
+            const userAnswer = userAnswers[i];
+            const isCorrect = userAnswer === question.correctAnswer;
+
+            const questionDiv = document.createElement('div');
+            questionDiv.innerHTML = `
+                    <h3>第${i + 1}题：${question.question}</h3>
+                    <p>正确答案：${question.correctAnswer}</p>
+                    <p>您的答案：${userAnswer !== undefined ? userAnswer : '未作答'}</p>
+                    <p>${isCorrect ? '回答正确' : '回答错误'}</p>
+                    <div class="explanation">
+                        <h4>解析：</h4>
+                        <p>${question.explanation}</p>
+                    </div>
+                `;
+
+            // 设置正确/错误样式
+            const options = questionDiv.querySelectorAll('.options li');
+            options.forEach((option) => {
+                const value = option.dataset.value;
+                if (value === question.correctAnswer) {
+                    option.classList.add('correct');
+                }
+                if (value === userAnswer && !isCorrect) {
+                    option.classList.add('wrong');
+                }
+            });
+
+            explanationContent.appendChild(questionDiv);
+        }
+    }
+
+    // 更新倒计时显示
+    function updateTimerDisplay() {
+        const minutes = Math.floor(remainingTime / 60);
+        const seconds = remainingTime % 60;
+        const timerDisplay = document.getElementById('timer');
+        timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }
+
+    // 开始倒计时
+    function startTimer() {
+        timerInterval = setInterval(() => {
+            remainingTime--;
+            updateTimerDisplay();
+
+            if (remainingTime <= 0) {
+                clearInterval(timerInterval);
+                // 时间到，自动交卷
+                showPage('submit');
+            }
+        }, 1000);
+    }
+
+    // 停止倒计时
+    function stopTimer() {
+        clearInterval(timerInterval);
+    }
+
+    // 键盘快捷键功能
+    document.addEventListener('keydown', (event) => {
+        if (pages.questions.classList.contains('active')) {
+            if (event.key === '1') { // 数字键1=上一题
+                if (currentQuestionIndex > 0) {
+                    currentQuestionIndex--;
+                    updateQuestionContent();
+                }
+            } else if (event.key === '2') { // 数字键2=下一题
+                if (currentQuestionIndex < questions.length - 1) {
+                    currentQuestionIndex++;
+                    updateQuestionContent();
+                }
+            } else if (event.key === '3') { // 数字键3=标记/取消标记
+                questionMarks[currentQuestionIndex] = !questionMarks[currentQuestionIndex];
+                const questionItems = document.querySelectorAll('.question-item');
+                questionItems[currentQuestionIndex].classList.toggle('marked');
+            }
+        }
+    });
+
+    // 标记按钮功能
+    markBtn.addEventListener('click', () => {
+        questionMarks[currentQuestionIndex] = !questionMarks[currentQuestionIndex];
+        const questionItems = document.querySelectorAll('.question-item');
+        questionItems[currentQuestionIndex].classList.toggle('marked');
+    });
+
+    // 事件监听
+    startBtn.addEventListener('click', () => {
+        // 随机抽取50题
+        questions = getRandomQuestions();
+        // 重置用户答案
+        userAnswers.length = 0;
+        questionMarks.length = 0;
+        for (let i = 0; i < questions.length; i++) {
+            userAnswers.push(undefined);
+            questionMarks.push(false);
+        }
+        currentQuestionIndex = 0;
+        remainingTime = 25 * 60;
+        updateTimerDisplay();
+        startTimer();
+        showPage('questions');
+        initQuestionList();
+        updateQuestionContent();
+    });
+
+    prevBtn.addEventListener('click', () => {
+        if (currentQuestionIndex > 0) {
+            currentQuestionIndex--;
+            updateQuestionContent();
+        }
+    });
+
+    nextBtn.addEventListener('click', () => {
+        if (currentQuestionIndex < questions.length - 1) {
+            currentQuestionIndex++;
+            updateQuestionContent();
+        }
+    });
+
+    submitBtn.addEventListener('click', () => {
+        stopTimer();
+        showPage('submit');
+    });
+
+    cancelSubmitBtn.addEventListener('click', () => {
+        showPage('questions');
+    });
+
+    confirmSubmitBtn.addEventListener('click', () => {
+        const score = calculateScore();
+        document.querySelector('.score-display').innerHTML = `
+                <span>您的得分：</span>${score}<span>分</span>
+            `;
+        showPage('result');
+    });
+
+    viewExplanationBtn.addEventListener('click', () => {
+        showExplanations();
+        showPage('explanation');
+    });
+
+    backToInstructionsBtn.addEventListener('click', () => {
+        stopTimer();
+        showPage('instructions');
+    });
+
+    // 返回首页按钮功能
+    returnBtn.addEventListener('click', () => {
+        // 停止倒计时
+        stopTimer();
+        window.location.href = '../Multiple_choice_questions.html';
+    });
+</script>
+</body>
+</html>

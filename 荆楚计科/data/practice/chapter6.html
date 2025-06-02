@@ -1,0 +1,5340 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>荆楚计科备考联盟-计算机工程学习平台</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: sticky;
+            top: 0;
+            background-color: #fff;
+            z-index: 100;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            color: #1a73e8;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #616161;
+            font-size: 1.1rem;
+        }
+
+        .page {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            display: none;
+            animation: fadeIn 0.5s ease;
+            position: relative;
+        }
+
+        .active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .instructions {
+            text-align: left;
+            margin-bottom: 30px;
+        }
+
+        .instructions h2 {
+            color: #1a73e8;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #e8eaf6;
+            padding-bottom: 10px;
+        }
+
+        .instructions ul {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        .instructions li {
+            margin-bottom: 8px;
+            padding-left: 10px;
+            position: relative;
+        }
+
+        .instructions li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #1a73e8;
+        }
+
+        button {
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.1s;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        button:hover {
+            background-color: #1557b0;
+            transform: translateY(-1px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .question-container {
+            display: flex;
+            margin-top: 20px;
+        }
+
+        .question-list {
+            flex: 0 0 20%;
+            padding-right: 20px;
+            border-right: 1px solid #e8eaf6;
+            height: 600px;
+            overflow-y: auto;
+        }
+
+        .question-list::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .question-list::-webkit-scrollbar-thumb {
+            background-color: #90caf9;
+            border-radius: 4px;
+        }
+
+        .question-list-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 5px;
+        }
+
+        .question-item {
+            background-color: #e8eaf6;
+            border-radius: 4px;
+            padding: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .question-item:hover {
+            background-color: #90caf9;
+            transform: scale(1.05);
+        }
+
+        .question-item.active {
+            background-color: #1a73e8;
+            color: white;
+        }
+
+        .question-item.marked {
+            background-color: #ffeb3b;
+            color: #333;
+        }
+
+        .question-item.selected {
+            background-color: #81c784;
+            color: white;
+        }
+
+        .question-content {
+            flex: 0 0 80%;
+        }
+
+        .question {
+            margin-bottom: 25px;
+            background-color: #e3f2fd; /* 题目背景为蓝色 */
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .question h3 {
+            color: #1a73e8;
+            margin-bottom: 15px;
+            font-size: 1.25rem;
+        }
+
+        .options {
+            list-style: none;
+        }
+
+        .options li {
+            background-color: #f5f7fa;
+            border: 1px solid #e8eaf6;
+            border-radius: 5px;
+            padding: 12px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+        }
+
+        .options li:hover {
+            background-color: #e8eaf6;
+            border-color: #90caf9;
+        }
+
+        .option-label {
+            margin-right: 10px;
+            font-weight: bold;
+            color: #1a73e8;
+        }
+
+        .selected {
+            background-color: #90caf9;
+            border-color: #1a73e8;
+            color: white;
+        }
+
+        .correct {
+            background-color: #a5d6a7;
+            border-color: #2e7d32;
+            color: #1b5e20;
+        }
+
+        .wrong {
+            background-color: #ffcdd2;
+            border-color: #c62828;
+            color: #b71c1c;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e8eaf6;
+        }
+
+        .result {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .result h2 {
+            color: #1a73e8;
+            margin-bottom: 20px;
+        }
+
+        .score-display {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #2e7d32;
+            margin-bottom: 20px;
+        }
+
+        .score-display span {
+            font-size: 1.5rem;
+            color: #616161;
+        }
+
+        .explanation {
+            background-color: #f5f7fa;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+
+        .explanation h4 {
+            color: #1a73e8;
+            margin-bottom: 10px;
+        }
+
+        .explanation p {
+            margin-bottom: 10px;
+        }
+
+        .back-btn {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .back-btn:hover {
+            background-color: #1557b0;
+        }
+
+        .random-info {
+            background-color: #fff3e0;
+            border-left: 3px solid #ff9800;
+            padding: 10px 15px;
+            margin-bottom: 20px;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .random-info h4 {
+            color: #ff9800;
+            margin-bottom: 5px;
+        }
+
+        .keyboard-tip {
+            font-size: 0.9rem;
+            color: #616161;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .timer {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #1a73e8;
+        }
+
+        .return-btn {
+            margin-top: 20px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>荆楚计科备考联盟-计算机工程学习平台</h1>
+        <p>测试您的计算机知识</p>
+    </div>
+
+    <!-- 考试须知页面 -->
+    <div id="instructions-page" class="page active">
+        <div class="instructions">
+            <h2>考试须知</h2>
+            <ul>
+                <li>本场考试将从题库中随机抽取50道选择题</li>
+                <li>考试时间为25分钟，请合理安排时间</li>
+                <li>每道题有四个选项，只有一个正确答案，每题3分</li>
+                <li>答题过程中请勿刷新页面，否则将导致考试异常</li>
+                <li>点击题目列表中的题目编号可以快速切换题目</li>
+                <li>完成答题后，请点击"交卷"按钮提交试卷</li>
+                <li>键盘快捷键：数字键1=上一题，数字键2=下一题，数字键3=标记/取消标记</li>
+                <li>标记的题目在列表中显示为黄色</li>
+            </ul>
+            <div class="random-info">
+                <h4>随机抽题说明</h4>
+                <p>系统将从题库中随机抽取50道题，确保每次考试题目不同</p>
+            </div>
+            <button id="start-btn">开始考试</button>
+            <button id="return-btn" class="return-btn">返回首页</button>
+        </div>
+    </div>
+
+    <!-- 做题页面 -->
+    <div id="questions-page" class="page">
+        <div class="timer" id="timer">25:00</div>
+        <div class="question-container">
+            <div class="question-list">
+                <div class="question-list-grid" id="question-list">
+                    <!-- 题目列表将通过JavaScript动态生成 -->
+                </div>
+            </div>
+            <div class="question-content">
+                <div id="question-content">
+
+                </div>
+                <div class="navigation">
+                    <button id="prev-btn">上一题</button>
+                    <button id="mark-btn">标记</button>
+                    <button id="next-btn">下一题</button>
+                    <button id="submit-btn">交卷</button>
+                </div>
+                <p class="keyboard-tip">快捷键：数字键1=上一题，数字键2=下一题，数字键3=标记/取消标记</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 交卷页面 -->
+    <div id="submit-page" class="page">
+        <h2>确认交卷</h2>
+        <p>您确定要交卷吗？交卷后将无法修改答案。</p>
+        <div class="navigation">
+            <button id="cancel-submit-btn">取消</button>
+            <button id="confirm-submit-btn">确认交卷</button>
+        </div>
+    </div>
+
+    <!-- 成绩结算页面 -->
+    <div id="result-page" class="page">
+        <div class="result">
+            <h2>考试成绩</h2>
+            <div class="score-display">
+                <span>您的得分：</span>0<span>分</span>
+            </div>
+            <button id="view-explanation-btn">查看题目解析</button>
+        </div>
+    </div>
+
+    <!-- 题目解析页面 -->
+    <div id="explanation-page" class="page">
+        <h2>题目解析</h2>
+        <div id="explanation-content">
+            <!-- 题目解析将通过JavaScript动态生成 -->
+        </div>
+        <button class="back-btn" id="back-to-instructions-btn">返回考试须知</button>
+    </div>
+</div>
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const returnBtn = document.getElementById('return-btn');
+        const currentPath = window.location.pathname;
+        const pathSegments = currentPath.split('/');
+        pathSegments.pop(); // 移除当前文件名
+        if (pathSegments.length > 0) {
+            pathSegments.pop(); // 移除当前文件夹名
+        }
+        const newPath = pathSegments.join('/') + '/index.html';
+        returnBtn.href = newPath;
+    });
+
+    // 题库
+    const questionBank = [
+        {
+            "id": 1,
+            "question": "( )属于一种系统软件，缺少它，计算机就无法工作。",
+            "options": [
+                { "value": "A", "text": "汉字系统" },
+                { "value": "B", "text": "操作系统" },
+                { "value": "C", "text": "编译程序" },
+                { "value": "D", "text": "文字处理系统" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "操作系统属于一种系统软件，缺少它，计算机就无法工作。"
+        },
+        {
+            "id": 2,
+            "question": "‘任务栏’中间的任何一个按钮都代表着( ).",
+            "options": [
+                { "value": "A", "text": "一个可执行程序" },
+                { "value": "B", "text": "一个正执行的程序" },
+                { "value": "C", "text": "一个缩小的窗口" },
+                { "value": "D", "text": "一个不工作的窗口" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "任务栏中间的任何一个按钮都代表着一个正执行的程序。"
+        },
+        {
+            "id": 3,
+            "question": "UNIX是国际上最流行的( )操作系统。",
+            "options": [
+                { "value": "A", "text": "单用户操作系统" },
+                { "value": "B", "text": "实时操作系统" },
+                { "value": "C", "text": "批处理操作系统" },
+                { "value": "D", "text": "分时操作系统" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "UNIX是国际上最流行的分时操作系统。"
+        },
+        {
+            "id": 4,
+            "question": "win7中的库实质上是一个( ).",
+            "options": [
+                { "value": "A", "text": "文件" },
+                { "value": "B", "text": "文件夹" },
+                { "value": "C", "text": "快捷方式" },
+                { "value": "D", "text": "硬盘分区" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "win7中的库实质上是一个快捷方式。"
+        },
+        {
+            "id": 5,
+            "question": "Win7中不可以设置的搜索方式是( ).",
+            "options": [
+                { "value": "A", "text": "不搜索文件夹下的子文件夹" },
+                { "value": "B", "text": "搜索部分匹配" },
+                { "value": "C", "text": "搜索文件名" },
+                { "value": "D", "text": "在网络内搜索" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "Win7中不可以设置的搜索方式是在网络内搜索。"
+        },
+        {
+            "id": 6,
+            "question": "Windows 7菜单操作中，如果某个菜单项的颜色暗淡，则表示( ).",
+            "options": [
+                { "value": "A", "text": "只要双击，就能选中" },
+                { "value": "B", "text": "必须连续三击，才能选中" },
+                { "value": "C", "text": "单击被选中后，还会显示出一个方框要求操作者进一步输入信息" },
+                { "value": "D", "text": "在当前情况下，这个菜单项是不可用的，选中它不会有任何反应" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "如果某个菜单项的颜色暗淡，则表示在当前情况下，这个菜单项是不可用的，选中它不会有任何反应。"
+        },
+        {
+            "id": 7,
+            "question": "Windows 7对磁盘信息的管理和使用是以( )为单位的。",
+            "options": [
+                { "value": "A", "text": "文件" },
+                { "value": "B", "text": "扇区" },
+                { "value": "C", "text": "字节" },
+                { "value": "D", "text": "数据" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Windows 7对磁盘信息的管理和使用是以文件为单位的。"
+        },
+        {
+            "id": 8,
+            "question": "Windows 7系统中，下列说法错误的是( ).",
+            "options": [
+                { "value": "A", "text": "允许长文件名" },
+                { "value": "B", "text": "文件名可以有空格" },
+                { "value": "C", "text": "文件名最长可达255个字符" },
+                { "value": "D", "text": "文件名可以用任意字符" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "文件名不能使用任意字符，有些特殊字符是不允许的。"
+        },
+        {
+            "id": 9,
+            "question": "Windows 7是由( )公司开发，具有革命性变化的操作系统。",
+            "options": [
+                { "value": "A", "text": "Intel" },
+                { "value": "B", "text": "IBM" },
+                { "value": "C", "text": "HP" },
+                { "value": "D", "text": "Microsoft" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "Windows 7是由Microsoft公司开发的操作系统。"
+        },
+        {
+            "id": 10,
+            "question": "Windows 7中，利用‘查找’窗口不能按( ).",
+            "options": [
+                { "value": "A", "text": "文件中所包含的文字查找" },
+                { "value": "B", "text": "文件创建日期查找" },
+                { "value": "C", "text": "文件所属类型查找" },
+                { "value": "D", "text": "文件属性查找" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "Windows 7中，利用‘查找’窗口不能按文件属性查找。"
+        },
+        {
+            "id": 11,
+            "question": "Windows 7中，任务栏的主要功能是( ).",
+            "options": [
+                { "value": "A", "text": "显示当前窗口的图标" },
+                { "value": "B", "text": "显示系统的所有功能" },
+                { "value": "C", "text": "显示所有已打开过的窗口图标" },
+                { "value": "D", "text": "实现任务间的切换" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "任务栏的主要功能是实现任务间的切换。"
+        },
+        {
+            "id": 12,
+            "question": "Windows7 推出的第一大特色， 就是最近使用的项目列表， 能够帮助用户迅速地访问历史记录，它被称为( ).",
+            "options": [
+                { "value": "A", "text": "跳转列表" },
+                { "value": "B", "text": "Aero 特效" },
+                { "value": "C", "text": "Flip 3D" },
+                { "value": "D", "text": "Windows 家庭组" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Windows7 推出的第一大特色是跳转列表。"
+        },
+        {
+            "id": 13,
+            "question": "Windows 7桌面上有某个应用程序的快捷方式图标，要运行该程序，可以( ).",
+            "options": [
+                { "value": "A", "text": "右击图标" },
+                { "value": "B", "text": "单击图标" },
+                { "value": "C", "text": "右键双击图标" },
+                { "value": "D", "text": "双击图标" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "要运行桌面上的快捷方式图标，可以双击图标。"
+        },
+        {
+            "id": 14,
+            "question": "Windows7的文件夹结构是一种( ).",
+            "options": [
+                { "value": "A", "text": "关系结构" },
+                { "value": "B", "text": "网状结构" },
+                { "value": "C", "text": "对象结构" },
+                { "value": "D", "text": "树状结构" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "Windows7的文件夹结构是一种树状结构。"
+        },
+        {
+            "id": 15,
+            "question": "Windows7支持即插即用设备，是指( ).",
+            "options": [
+                { "value": "A", "text": "由用户安装驱动程序后，即可使用" },
+                { "value": "B", "text": "网卡、显示卡、声卡等硬件板卡" },
+                { "value": "C", "text": "支持所有的硬件设备" },
+                { "value": "D", "text": "Windows可自动检测计算机上新安装硬件，并安装相关驱动程序" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "Windows7支持即插即用设备，是指Windows可自动检测计算机上新安装硬件，并安装相关驱动程序。"
+        },
+        {
+            "id": 16,
+            "question": "windows7中语言栏不能设置的是( ).",
+            "options": [
+                { "value": "A", "text": "悬浮于桌面上" },
+                { "value": "B", "text": "停靠于桌面" },
+                { "value": "C", "text": "停靠于任务栏" },
+                { "value": "D", "text": "隐藏" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "windows7中语言栏不能设置停靠于桌面。"
+        },
+        {
+            "id": 17,
+            "question": "WINDOWS窗口右上角的×按钮是( ).",
+            "options": [
+                { "value": "A", "text": "最小化按钮" },
+                { "value": "B", "text": "最大化按钮" },
+                { "value": "C", "text": "关闭按钮" },
+                { "value": "D", "text": "选择按钮" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "WINDOWS窗口右上角的×按钮是关闭按钮。"
+        },
+        {
+            "id": 18,
+            "question": "Windows操作系统在逻辑设计上的缺陷或者编写时产生的错误称为( ).",
+            "options": [
+                { "value": "A", "text": "系统漏洞" },
+                { "value": "B", "text": "系统垃圾" },
+                { "value": "C", "text": "系统插件" },
+                { "value": "D", "text": "木马病毒" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Windows操作系统在逻辑设计上的缺陷或者编写时产生的错误称为系统漏洞。"
+        },
+        {
+            "id": 19,
+            "question": "Windows的桌面上可以同时打开多个窗口，其中当前活动窗口是( ).",
+            "options": [
+                { "value": "A", "text": "第一个打开的窗口" },
+                { "value": "B", "text": "第二个打开的窗口" },
+                { "value": "C", "text": "最后打开的窗口" },
+                { "value": "D", "text": "无当前活动窗口" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "当前活动窗口是最后打开的窗口。"
+        },
+        {
+            "id": 20,
+            "question": "Windows的任务栏说法错误的是( ).",
+            "options": [
+                { "value": "A", "text": "可以被隐藏起来" },
+                { "value": "B", "text": "可以改变大小，也可以改变位置" },
+                { "value": "C", "text": "位置是固定的，只能放置在屏幕下方" },
+                { "value": "D", "text": "任务栏被锁定后不能改变大小" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "任务栏的位置不是固定的，可以放置在屏幕的上方、下方、左侧或右侧。"
+        },
+        {
+            "id": 21,
+            "question": "Windows是一个( )操作系统。",
+            "options": [
+                { "value": "A", "text": "多任务" },
+                { "value": "B", "text": "单任务" },
+                { "value": "C", "text": "实时" },
+                { "value": "D", "text": "批处理" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Windows是一个多任务操作系统。"
+        },
+        {
+            "id": 22,
+            "question": "Windows文件和文件夹说法中，正确的是( ).",
+            "options": [
+                { "value": "A", "text": "在一个文件夹中可以有两个同名的文件" },
+                { "value": "B", "text": "在一个文件夹中可以有两个同名文件夹" },
+                { "value": "C", "text": "在一个文件夹中可以有一个文件与一个文件夹同名" },
+                { "value": "D", "text": "在不同文件夹中可以有两个同名文件" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "在不同文件夹中可以有两个同名文件。"
+        },
+        {
+            "id": 23,
+            "question": "Windows中，选取某一菜单项，若该菜单项后面带有省略号（…），则表示( ).",
+            "options": [
+                { "value": "A", "text": "目前不能使用" },
+                { "value": "B", "text": "已被删除" },
+                { "value": "C", "text": "操作中将弹出对话框" },
+                { "value": "D", "text": "操作中将弹出子菜单" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "若菜单项后面带有省略号（…），则表示操作中将弹出对话框。"
+        },
+        {
+            "id": 24,
+            "question": "Windows中，搜索特定的文件或文件夹时，可以使用通配符?或*，其具体含义是( ).",
+            "options": [
+                { "value": "A", "text": "?代表任一个字符，*代表任意一个字符" },
+                { "value": "B", "text": "?代表任意一串字符，*代表任意一个字符" },
+                { "value": "C", "text": "?代表任意一个字符，*代表任意一串字符" },
+                { "value": "D", "text": "?或*都代表任意一串字符" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "?代表任意一个字符，*代表任意一串字符。"
+        },
+        {
+            "id": 25,
+            "question": "WINDOWS中彻底删除文件的操作，正确的是( ).",
+            "options": [
+                { "value": "A", "text": "选定文件后，同时按下SHIFT与DEL键" },
+                { "value": "B", "text": "选定文件后，同时按下CTRL与DEL键" },
+                { "value": "C", "text": "选定文件后，按DEL键" },
+                { "value": "D", "text": "选定文件后，按SHIFT键后松开再按DEL键" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "选定文件后，同时按下SHIFT与DEL键可以彻底删除文件。"
+        },
+        {
+            "id": 26,
+            "question": "按住鼠标左键的同时移动鼠标的操作，叫作( ).",
+            "options": [
+                { "value": "A", "text": "单击" },
+                { "value": "B", "text": "双击" },
+                { "value": "C", "text": "移动" },
+                { "value": "D", "text": "拖动" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "按住鼠标左键的同时移动鼠标的操作叫作拖动。"
+        },
+        {
+            "id": 27,
+            "question": "把D分区上的'游戏'文件夹加入到库中后，( ).",
+            "options": [
+                { "value": "A", "text": "该文件夹会移动到库中" },
+                { "value": "B", "text": "创建了一个指向该文件夹的快捷方式" },
+                { "value": "C", "text": "会把该文件夹复制到库中" },
+                { "value": "D", "text": "不会对该文件夹进行任何操作" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "把文件夹加入到库中后，创建了一个指向该文件夹的快捷方式。"
+        },
+        {
+            "id": 28,
+            "question": "不能将还原窗口最大化的操作是( ).",
+            "options": [
+                { "value": "A", "text": "拖动窗口到屏幕最顶端" },
+                { "value": "B", "text": "单击右上角‘最大化’按钮" },
+                { "value": "C", "text": "右击系统控制图标选择‘最大化’" },
+                { "value": "D", "text": "单击标题栏" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "单击标题栏不能将还原窗口最大化。"
+        },
+        {
+            "id": 29,
+            "question": "不是windows 7默认库的是( ).",
+            "options": [
+                { "value": "A", "text": "文件库" },
+                { "value": "B", "text": "视频库" },
+                { "value": "C", "text": "音乐库" },
+                { "value": "D", "text": "图片库" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "文件库不是windows 7默认库。"
+        },
+        {
+            "id": 30,
+            "question": "把Windows7当前活动窗口的信息复制到剪贴板，应按下( ).",
+            "options": [
+                { "value": "A", "text": "Alt+PrintScreen" },
+                { "value": "B", "text": "Ctrl+PrintScreen" },
+                { "value": "C", "text": "Shift+ PrintScreen" },
+                { "value": "D", "text": "PrintScreen" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "按下Alt+PrintScreen可以将当前活动窗口的信息复制到剪贴板。"
+        },
+        {
+            "id": 31,
+            "question": "不属于windows 7 账户的类型是( ).",
+            "options": [
+                { "value": "A", "text": "来宾账户" },
+                { "value": "B", "text": "标准账户" },
+                { "value": "C", "text": "管理员账户" },
+                { "value": "D", "text": "高级用户账户" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "高级用户账户不属于windows 7 账户的类型。"
+        },
+        {
+            "id": 32,
+            "question": "操作系统按其功能关系分为系统层、管理层和( )三个层次。",
+            "options": [
+                { "value": "A", "text": "数据层" },
+                { "value": "B", "text": "逻辑层" },
+                { "value": "C", "text": "用户层" },
+                { "value": "D", "text": "应用层" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "操作系统按其功能关系分为系统层、管理层和应用层三个层次。"
+        },
+        {
+            "id": 33,
+            "question": "操作滚动条可以( ).",
+            "options": [
+                { "value": "A", "text": "滚动显示菜单项" },
+                { "value": "B", "text": "滚动显示窗口内容" },
+                { "value": "C", "text": "滚动显示状态栏信息" },
+                { "value": "D", "text": "改变窗口在桌面上的位置" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "操作滚动条可以滚动显示窗口内容。"
+        },
+        {
+            "id": 34,
+            "question": "操作系统的五大功能模块是( ).",
+            "options": [
+                { "value": "A", "text": "程序管理、文件管理、编译管理、设备管理、用户管理" },
+                { "value": "B", "text": "磁盘管理、软盘管理、存储器管理、文件管理、批处理管理" },
+                { "value": "C", "text": "运算器管理、控制器管理、打印机管理、磁盘管理、分时管理" },
+                { "value": "D", "text": "处理器管理、存储管理、设备管理、文件管理、作业管理" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "操作系统的五大功能模块是处理器管理、存储管理、设备管理、文件管理、作业管理。"
+        },
+        {
+            "id": 35,
+            "question": "操作系统的功能不包括( ).",
+            "options": [
+                { "value": "A", "text": "将源程序编译成目标程序" },
+                { "value": "B", "text": "负责诊断机器的故障" },
+                { "value": "C", "text": "控制和管理计算机系统的各种硬件和软件资源的使用" },
+                { "value": "D", "text": "负责外设与主机之间的信息交换" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "操作系统的功能不包括将源程序编译成目标程序。"
+        },
+        {
+            "id": 36,
+            "question": "操作系统管理的计算机系统资源包括( ).",
+            "options": [
+                { "value": "A", "text": "CPU、输入/输出" },
+                { "value": "B", "text": "中央处理器、主存储器、输入/输出设备" },
+                { "value": "C", "text": "主机、数据、程序" },
+                { "value": "D", "text": "中央处理器、主存储器、外部设备、程序、数据" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "操作系统管理的计算机系统资源包括中央处理器、主存储器、外部设备、程序、数据。"
+        },
+        {
+            "id": 37,
+            "question": "操作系统管理用户数据的单位是( ).",
+            "options": [
+                { "value": "A", "text": "扇区" },
+                { "value": "B", "text": "文件" },
+                { "value": "C", "text": "磁道" },
+                { "value": "D", "text": "文件夹" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "操作系统管理用户数据的单位是文件。"
+        },
+        {
+            "id": 38,
+            "question": "操作系统进行资源分配的基本单位是( ).",
+            "options": [
+                { "value": "A", "text": "任务" },
+                { "value": "B", "text": "程序" },
+                { "value": "C", "text": "进程" },
+                { "value": "D", "text": "线程" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "操作系统进行资源分配的基本单位是进程。"
+        },
+        {
+            "id": 39,
+            "question": "操作系统将CPU的时间资源划分成极短的时间片，轮流分配给各终端用户，使终端用户单独分享CPU的时间片，有独占计算机的感觉，这种操作系统称为( ).",
+            "options": [
+                { "value": "A", "text": "实时操作系统" },
+                { "value": "B", "text": "批处理操作系统" },
+                { "value": "C", "text": "分时操作系统" },
+                { "value": "D", "text": "分布式操作系统" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "这种操作系统称为分时操作系统。"
+        },
+        {
+            "id": 40,
+            "question": "操作系统是( )的接口。",
+            "options": [
+                { "value": "A", "text": "用户与软件" },
+                { "value": "B", "text": "系统软件与应用软件" },
+                { "value": "C", "text": "主机与外设" },
+                { "value": "D", "text": "用户与计算机" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "操作系统是用户与计算机的接口。"
+        },
+        {
+            "id": 41,
+            "question": "操作系统是对( )进行管理的软件。",
+            "options": [
+                { "value": "A", "text": "硬件" },
+                { "value": "B", "text": "软件" },
+                { "value": "C", "text": "计算机资源" },
+                { "value": "D", "text": "应用程序" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "操作系统是对计算机资源进行管理的软件。"
+        },
+        {
+            "id": 42,
+            "question": "操作系统中存储管理主要是指( ).",
+            "options": [
+                { "value": "A", "text": "外存的管理" },
+                { "value": "B", "text": "所有存储设备的管理" },
+                { "value": "C", "text": "内存的管理" },
+                { "value": "D", "text": "Cache的管理" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "操作系统中存储管理主要是指内存的管理。"
+        },
+        {
+            "id": 43,
+            "question": "单击任务栏上最小化的窗口按钮可以( ).",
+            "options": [
+                { "value": "A", "text": "移动该按钮对应的窗口" },
+                { "value": "B", "text": "关闭该按钮对应的窗口" },
+                { "value": "C", "text": "删除该按钮对应的窗口" },
+                { "value": "D", "text": "使该按钮对应的窗口成为当前窗口" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "单击任务栏上最小化的窗口按钮可以使该按钮对应的窗口成为当前窗口。"
+        },
+        {
+            "id": 44,
+            "question": "当启动多个应用程序后，在任务栏上就会显示这些任务的( ).",
+            "options": [
+                { "value": "A", "text": "名称" },
+                { "value": "B", "text": "大小" },
+                { "value": "C", "text": "图标" },
+                { "value": "D", "text": "占有空间" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "当启动多个应用程序后，在任务栏上就会显示这些任务的图标。"
+        },
+        {
+            "id": 45,
+            "question": "操作系统中的文件管理系统为用户提供( )的功能。",
+            "options": [
+                { "value": "A", "text": "实现虚拟存储" },
+                { "value": "B", "text": "按文件名管理文件" },
+                { "value": "C", "text": "按文件中的关键字存取文件" },
+                { "value": "D", "text": "对文件内容实现检索" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "操作系统中的文件管理系统为用户提供按文件名管理文件的功能。"
+        },
+        {
+            "id": 46,
+            "question": "当前窗口处于最大化状态，双击该窗口标题栏，则相当于单击( ).",
+            "options": [
+                { "value": "A", "text": "最小化" },
+                { "value": "B", "text": "关闭按钮" },
+                { "value": "C", "text": "还原按钮" },
+                { "value": "D", "text": "系统控制按钮" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "当前窗口处于最大化状态，双击该窗口标题栏相当于单击还原按钮。"
+        },
+        {
+            "id": 47,
+            "question": "对话框中，有些项目在文字说明的左边标有一个小方框，当小方框里有‘√’符号时表明( ).",
+            "options": [
+                { "value": "A", "text": "这是一个复选框，而且未被选中" },
+                { "value": "B", "text": "这是一个复选框，而且已被选中" },
+                { "value": "C", "text": "这是一个单选框，而且未被选中" },
+                { "value": "D", "text": "这是一个单选框，而且已被选中" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "当小方框里有‘√’符号时表明这是一个复选框，而且已被选中。"
+        },
+        {
+            "id": 48,
+            "question": "当选定文件或文件夹后，不将文件或文件夹放到‘回收站’中，而直接删除的操作是( ).",
+            "options": [
+                { "value": "A", "text": "按Delete( Del）键" },
+                { "value": "B", "text": "按Shift＋Delete( Del）键" },
+                { "value": "C", "text": "用鼠标直接将文件或文件夹拖放到‘回收站’中" },
+                { "value": "D", "text": "用‘计算机’或'资源管理器'窗口中‘文件’菜单中的删除命令" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "按Shift＋Delete( Del）键可以不将文件或文件夹放到‘回收站’中，而直接删除。"
+        },
+        {
+            "id": 49,
+            "question": "对话框中‘确定’按钮的作用是( ).",
+            "options": [
+                { "value": "A", "text": "确定输入的信息" },
+                { "value": "B", "text": "确认各个选项的设置并关闭对话框" },
+                { "value": "C", "text": "关闭对话框不做任何动作" },
+                { "value": "D", "text": "取消各个选项的设置并关闭对话框" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "对话框中‘确定’按钮的作用是确认各个选项的设置并关闭对话框。"
+        },
+        {
+            "id": 1,
+            "question": "对话框中‘取消’按钮的作用是( ).",
+            "options": [
+                { "value": "A", "text": "取消输入的信息，重新输入" },
+                { "value": "B", "text": "取消各选项的设置恢复原值" },
+                { "value": "C", "text": "取消各选项的设置恢复原值，并关闭对话框" },
+                { "value": "D", "text": "取消‘取消’按钮" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "对话框中‘取消’按钮的作用是取消各选项的设置恢复原值，并关闭对话框。"
+        },
+        {
+            "id": 2,
+            "question": "对于WINDOWS,下面以( )为扩展名的文件是不能运行的。",
+            "options": [
+                { "value": "A", "text": "COM" },
+                { "value": "B", "text": "EXE" },
+                { "value": "C", "text": "BAT" },
+                { "value": "D", "text": "TXT" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "以TXT为扩展名的文件是文本文件，不能直接运行。"
+        },
+        {
+            "id": 3,
+            "question": "非法的Windows文件名为( ).",
+            "options": [
+                { "value": "A", "text": "X+Y" },
+                { "value": "B", "text": "X-Y" },
+                { "value": "C", "text": "X*Y" },
+                { "value": "D", "text": "X÷Y" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "在Windows文件名中，不能使用特殊字符如*。"
+        },
+        {
+            "id": 4,
+            "question": "关闭当前窗口可以使用的组合键是( ).",
+            "options": [
+                { "value": "A", "text": "Ctrl+F1" },
+                { "value": "B", "text": "Alt+F4" },
+                { "value": "C", "text": "Ctrl+Esc" },
+                { "value": "D", "text": "Ctrl+Tab" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "关闭当前窗口可以使用的组合键是Alt+F4。"
+        },
+        {
+            "id": 5,
+            "question": "非正常关闭Windows操作系统，可能会( ).",
+            "options": [
+                { "value": "A", "text": "系统消失" },
+                { "value": "B", "text": "硬件损坏" },
+                { "value": "C", "text": "无任何影响" },
+                { "value": "D", "text": "丢失数据" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "非正常关闭Windows操作系统可能会导致丢失数据。"
+        },
+        {
+            "id": 6,
+            "question": "关于Windows7的文件组织结构，下列说法中错误的是( ).",
+            "options": [
+                { "value": "A", "text": "每个子文件夹都有一个‘父文件夹’" },
+                { "value": "B", "text": "每个文件夹都可包含若干‘子文件夹’和文件" },
+                { "value": "C", "text": "每个文件夹都有一个唯一的名字" },
+                { "value": "D", "text": "文件夹一定不能重名" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "文件夹在不同路径下可以重名。"
+        },
+        {
+            "id": 7,
+            "question": "关于Windows的窗口，下列叙述中正确的是( ).",
+            "options": [
+                { "value": "A", "text": "关闭窗口是结束相应的程序任务，并不释放其占用的内存空间" },
+                { "value": "B", "text": "最小化窗口是结束相应的程序任务，并不释放其占用的内存空间" },
+                { "value": "C", "text": "关闭窗口是结束相应的程序任务，并释放其占用的内存空间" },
+                { "value": "D", "text": "最小化窗口并不结束相应的程序任务，但释放其占用的内存空间" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "关闭窗口是结束相应的程序任务，并释放其占用的内存空间。"
+        },
+        {
+            "id": 8,
+            "question": "关于Windows的桌面，下列说法错误的是( ).",
+            "options": [
+                { "value": "A", "text": "可以将桌面最小化" },
+                { "value": "B", "text": "可以任意排列桌面上的图标" },
+                { "value": "C", "text": "可以设置桌面背景" },
+                { "value": "D", "text": "桌面总是占据整个屏幕" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "桌面不能被最小化。"
+        },
+        {
+            "id": 9,
+            "question": "关于Windows文件命名的规定，正确的是( ).",
+            "options": [
+                { "value": "A", "text": "文件名可用允许的字符、数字或汉字命名" },
+                { "value": "B", "text": "文件名可用字符、数字或汉字命名，文件名最多使用8个字符" },
+                { "value": "C", "text": "文件名中不能有空格和扩展名间隔符'.'" },
+                { "value": "D", "text": "文件名可用所有的字符、数字或汉字命名" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "文件名可用允许的字符、数字或汉字命名。"
+        },
+        {
+            "id": 10,
+            "question": "关于安全模式说法错误的是( ).",
+            "options": [
+                { "value": "A", "text": "启动windows操作系统时，要进入安全模式应按 F8" },
+                { "value": "B", "text": "安全模式是Windows用于修复操作系统错误的专用模式" },
+                { "value": "C", "text": "以安全模式方式启动，可以帮助用户排除问题，修复系统错误" },
+                { "value": "D", "text": "进入安全模式目的是安装杀毒软件" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "进入安全模式的目的不仅仅是安装杀毒软件，还包括排除问题和修复系统错误。"
+        },
+        {
+            "id": 11,
+            "question": "关于Windows启动时的说法错误的是( ).",
+            "options": [
+                { "value": "A", "text": "启动windows操作系统时，按F8可进入安全模式" },
+                { "value": "B", "text": "启动windows操作系统时，可选择登录账户" },
+                { "value": "C", "text": "用户账户登录时必须输入密码" },
+                { "value": "D", "text": "用户账户登录密码可在控制面板中设置" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "用户账户登录时不一定必须输入密码，可以设置为自动登录。"
+        },
+        {
+            "id": 12,
+            "question": "关于对话框的说法，下列中正确的是( ).",
+            "options": [
+                { "value": "A", "text": "对话框的位置不能移动，对话框的大小不能改变" },
+                { "value": "B", "text": "对话框的位置不能移动，对话框的大小能改变" },
+                { "value": "C", "text": "对话框的位置能移动，对话框的大小也能改变" },
+                { "value": "D", "text": "对话框的位置能移动，对话框的大小不能改变" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "对话框的位置能移动，但大小通常不能改变。"
+        },
+        {
+            "id": 13,
+            "question": "关于快捷方式，叙述不正确的是( ).",
+            "options": [
+                { "value": "A", "text": "快捷方式是指向一个程序或文档的指针" },
+                { "value": "B", "text": "快捷方式是该对象本身" },
+                { "value": "C", "text": "快捷方式包含了指向对象的信息" },
+                { "value": "D", "text": "快捷方式可以删除、复制和移动" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "快捷方式不是该对象本身，而是指向该对象的指针。"
+        },
+        {
+            "id": 14,
+            "question": "关于库的概念，下列理解正确的是( ).",
+            "options": [
+                { "value": "A", "text": "网络中共享的文件可以直接加入到库中" },
+                { "value": "B", "text": "已加入到库中的文件夹被删除后，仍然可以在库中被打开，但会提示该文件夹不可用" },
+                { "value": "C", "text": "可以把文件加入到库中" },
+                { "value": "D", "text": "已加入到库中的文件夹被删除后，就断开了库中新建的链接" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "已加入到库中的文件夹被删除后，就断开了库中新建的链接。"
+        },
+        {
+            "id": 15,
+            "question": "计算机系统中，最贴近硬件的系统软件是( ).",
+            "options": [
+                { "value": "A", "text": "语言处理程序" },
+                { "value": "B", "text": "数据库管理系统" },
+                { "value": "C", "text": "服务性程序" },
+                { "value": "D", "text": "操作系统" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "操作系统是最贴近硬件的系统软件。"
+        },
+        {
+            "id": 16,
+            "question": "计算机窗口中出现了滚动条，表示( ).",
+            "options": [
+                { "value": "A", "text": "窗口中有未显示的对象" },
+                { "value": "B", "text": "窗口中有隐藏了的对象" },
+                { "value": "C", "text": "窗口可以改变大小" },
+                { "value": "D", "text": "窗口不能拖动位置" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "计算机窗口中出现了滚动条，表示窗口中有未显示的对象。"
+        },
+        {
+            "id": 17,
+            "question": "将鼠标指针移到窗口的( )位置上拖曳，可以移动窗口。",
+            "options": [
+                { "value": "A", "text": "工具栏" },
+                { "value": "B", "text": "标题栏" },
+                { "value": "C", "text": "状态栏" },
+                { "value": "D", "text": "编辑栏" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "将鼠标指针移到窗口的标题栏位置上拖曳，可以移动窗口。"
+        },
+        {
+            "id": 18,
+            "question": "快捷方式确切的含义是( ).",
+            "options": [
+                { "value": "A", "text": "特殊文件夹" },
+                { "value": "B", "text": "某文件的副本" },
+                { "value": "C", "text": "各类可执行文件" },
+                { "value": "D", "text": "指向某对象的指针" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "快捷方式确切的含义是指向某对象的指针。"
+        },
+        {
+            "id": 19,
+            "question": "每当运行一个WINDOWS的应用程序，系统都会在( )增加一个按钮。",
+            "options": [
+                { "value": "A", "text": "标题栏" },
+                { "value": "B", "text": "菜单栏" },
+                { "value": "C", "text": "任务栏" },
+                { "value": "D", "text": "工具栏" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "每当运行一个WINDOWS的应用程序，系统都会在任务栏增加一个按钮。"
+        },
+        {
+            "id": 20,
+            "question": "屏幕保护程序的作用是( ).",
+            "options": [
+                { "value": "A", "text": "保护用户的眼睛" },
+                { "value": "B", "text": "保护用户的身体" },
+                { "value": "C", "text": "保护计算机系统的显示器" },
+                { "value": "D", "text": "保护整个计算机系统" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "屏幕保护程序的作用是保护计算机系统的显示器。"
+        },
+        {
+            "id": 21,
+            "question": "任务栏中‘应用程序按钮’的主要作用是( ).",
+            "options": [
+                { "value": "A", "text": "切换应用程序在前台或后台工作" },
+                { "value": "B", "text": "打开或关闭应用程序" },
+                { "value": "C", "text": "应用程序的快捷图标" },
+                { "value": "D", "text": "应用程序正常工作的指示器" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "任务栏中‘应用程序按钮’的主要作用是切换应用程序在前台或后台工作。"
+        },
+        {
+            "id": 22,
+            "question": "如果鼠标器突然失灵，要结束一个正在运行的应用程序（任务），可用的组合键是( ).",
+            "options": [
+                { "value": "A", "text": "[Alt]+[F4]" },
+                { "value": "B", "text": "[Ctrl]+[F4]" },
+                { "value": "C", "text": "[Shift]+[F4]" },
+                { "value": "D", "text": "[Alt]+[Shift]+[F4]" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "如果鼠标器突然失灵，要结束一个正在运行的应用程序（任务），可用的组合键是[Alt]+[F4]。"
+        },
+        {
+            "id": 23,
+            "question": "能管理计算机的硬件和软件资源,为应用程序开发和运行提供高效率平台的是( ).",
+            "options": [
+                { "value": "A", "text": "操作系统" },
+                { "value": "B", "text": "数据库管理系统" },
+                { "value": "C", "text": "CPU" },
+                { "value": "D", "text": "工具软件" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "操作系统能管理计算机的硬件和软件资源，为应用程序开发和运行提供高效率平台。"
+        },
+        {
+            "id": 24,
+            "question": "如果用户在同一时间可以运行多个应用程序（每个应用程序被称作一个任务），则这样的操作系统被称为( ).",
+            "options": [
+                { "value": "A", "text": "单任务操作系统" },
+                { "value": "B", "text": "多任务操作系统" },
+                { "value": "C", "text": "批处理操作系统" },
+                { "value": "D", "text": "多道操作系统" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "如果用户在同一时间可以运行多个应用程序（每个应用程序被称作一个任务），则这样的操作系统被称为多任务操作系统。"
+        },
+        {
+            "id": 25,
+            "question": "若有一文件夹里已有文本文档ABC，若在该文件夹中新建ABC文件夹则( ).",
+            "options": [
+                { "value": "A", "text": "弹出无法操作对话框" },
+                { "value": "B", "text": "无任何对话框出现" },
+                { "value": "C", "text": "弹出是否替换对话框" },
+                { "value": "D", "text": "自动命名ABC(1)" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "在Windows中，文件夹和文件可以同名，因此不会弹出任何对话框。"
+        },
+        {
+            "id": 26,
+            "question": "设置文件夹共享属性时,可以选择的三种访问类型为完全控制、更改和( ).",
+            "options": [
+                { "value": "A", "text": "共享" },
+                { "value": "B", "text": "读取" },
+                { "value": "C", "text": "不完全" },
+                { "value": "D", "text": "删除" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "设置文件夹共享属性时，可以选择的三种访问类型为完全控制、更改和读取。"
+        },
+        {
+            "id": 27,
+            "question": "设置了屏幕保护程序后,如用户在一段时间( )WINDOWS将执行屏幕保护程序。",
+            "options": [
+                { "value": "A", "text": "没有按键盘" },
+                { "value": "B", "text": "没有移动鼠标器" },
+                { "value": "C", "text": "既没有按键盘,也没有移动鼠标器" },
+                { "value": "D", "text": "没有使用打印机" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "设置了屏幕保护程序后，如用户在一段时间内既没有按键盘，也没有移动鼠标器，WINDOWS将执行屏幕保护程序。"
+        },
+        {
+            "id": 28,
+            "question": "同时按下ALT+TAB键之后，就会出现的列表框是( ).",
+            "options": [
+                { "value": "A", "text": "用户列表框" },
+                { "value": "B", "text": "硬件列表框" },
+                { "value": "C", "text": "任务列表框" },
+                { "value": "D", "text": "设置列表框" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "同时按下ALT+TAB键之后，会出现任务列表框。"
+        },
+        {
+            "id": 29,
+            "question": "为了清除磁盘中存在的分散且不连续的储存空间,需使用Windows的系统工具( ).",
+            "options": [
+                { "value": "A", "text": "磁盘扫描程序" },
+                { "value": "B", "text": "磁盘清理程序" },
+                { "value": "C", "text": "磁盘碎片整理程序" },
+                { "value": "D", "text": "磁盘压缩" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "为了清除磁盘中存在的分散且不连续的储存空间，需使用磁盘碎片整理程序。"
+        },
+        {
+            "id": 30,
+            "question": "系统启动后,操作系统将常驻( )中。",
+            "options": [
+                { "value": "A", "text": "硬盘" },
+                { "value": "B", "text": "内存" },
+                { "value": "C", "text": "外存" },
+                { "value": "D", "text": "缓存" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "系统启动后，操作系统将常驻内存中。"
+        },
+        {
+            "id": 31,
+            "question": "文件的扩展名通常表示( ).",
+            "options": [
+                { "value": "A", "text": "文件大小" },
+                { "value": "B", "text": "常见文件的日期" },
+                { "value": "C", "text": "文件类型" },
+                { "value": "D", "text": "文件版本" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "文件的扩展名通常表示文件类型。"
+        },
+        {
+            "id": 32,
+            "question": "下列不能进行文件夹重命名操作的是( ).",
+            "options": [
+                { "value": "A", "text": "用‘资源管理器’中‘文件’菜单中‘重命名’" },
+                { "value": "B", "text": "选定文件后再单击文件名一次" },
+                { "value": "C", "text": "鼠标右击文件，在弹出的快捷菜单中选择‘重命名’" },
+                { "value": "D", "text": "选定文件后再按F4" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "选定文件后再按F4不能进行文件夹重命名操作。"
+        },
+        {
+            "id": 33,
+            "question": "下列不是windows7中桌面图标排序方式的是( ).",
+            "options": [
+                { "value": "A", "text": "名称" },
+                { "value": "B", "text": "大小" },
+                { "value": "C", "text": "类型" },
+                { "value": "D", "text": "详细信息" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "详细信息不是windows7中桌面图标排序方式。"
+        },
+        {
+            "id": 34,
+            "question": "下列不是操作系统的是( ).",
+            "options": [
+                { "value": "A", "text": "Java" },
+                { "value": "B", "text": "UNIX" },
+                { "value": "C", "text": "Windows7" },
+                { "value": "D", "text": "DOS" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Java不是操作系统，而是一种编程语言。"
+        },
+        {
+            "id": 35,
+            "question": "下列不是写字板可以保存的格式是( ).",
+            "options": [
+                { "value": "A", "text": "文本文件" },
+                { "value": "B", "text": "RTF文件" },
+                { "value": "C", "text": "Unicode文本文件" },
+                { "value": "D", "text": "html格式文件" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "写字板可以保存文本文件、RTF文件和Unicode文本文件，但不能保存html格式文件。"
+        },
+        {
+            "id": 36,
+            "question": "下列不属于windows桌面图标排序方式的是( ).",
+            "options": [
+                { "value": "A", "text": "名称" },
+                { "value": "B", "text": "项目类型" },
+                { "value": "C", "text": "修改日期" },
+                { "value": "D", "text": "自动" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "自动不属于windows桌面图标排序方式。"
+        },
+        {
+            "id": 37,
+            "question": "下列不正确的文件名是( ).",
+            "options": [
+                { "value": "A", "text": "VI!A.AVI" },
+                { "value": "B", "text": "CE#D.EXE" },
+                { "value": "C", "text": "L@CD.SYS" },
+                { "value": "D", "text": "A|.DLL" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "文件名中不能使用特殊字符如|。"
+        },
+        {
+            "id": 38,
+            "question": "下列不是计算机窗口中文件查看方式的是( ).",
+            "options": [
+                { "value": "A", "text": "详细信息" },
+                { "value": "B", "text": "列表" },
+                { "value": "C", "text": "层叠平铺" },
+                { "value": "D", "text": "大图标显示" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "层叠平铺不是计算机窗口中文件查看方式。"
+        },
+        {
+            "id": 39,
+            "question": "下列各说法中，属于Windows 7特点的是( ).",
+            "options": [
+                { "value": "A", "text": "行命令工作方式" },
+                { "value": "B", "text": "窗口界面" },
+                { "value": "C", "text": "不支持多媒体功能" },
+                { "value": "D", "text": "批处理工作方式" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "Windows 7的特点是窗口界面。"
+        },
+        {
+            "id": 40,
+            "question": "下列关闭一个窗口的方法中，不正确的是( ).",
+            "options": [
+                { "value": "A", "text": "单击窗口在右上角的‘X’按钮" },
+                { "value": "B", "text": "双击窗口左上角的‘控制菜单’图标" },
+                { "value": "C", "text": "按Alt+F4键" },
+                { "value": "D", "text": "双击标题栏上的标题" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "双击标题栏上的标题不能关闭窗口。"
+        },
+        {
+            "id": 41,
+            "question": "下列关于Windows的叙述中,错误的是( ).",
+            "options": [
+                { "value": "A", "text": "删除应用程序快捷图标时,会连同其所对应的程序文件一同删除" },
+                { "value": "B", "text": "在'资源管理器'窗口中,右键单击一个硬盘或软盘图标,弹出的是相同的菜单" },
+                { "value": "C", "text": "在'资源管理器'窗口中删除目录时,可将此目录下的所有文件及子目录一同删除" },
+                { "value": "D", "text": "应用Windows'文档驱动'功能,双击某类扩展名的文件可启动相关的应启动相关的应用程序" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "删除应用程序快捷图标时，不会连同其所对应的程序文件一同删除。"
+        },
+        {
+            "id": 42,
+            "question": "下列关于Windows'回收站'的叙述中,错误的是( ).",
+            "options": [
+                { "value": "A", "text": "'回收站'可以暂时或永久存放硬盘上被删除的信息" },
+                { "value": "B", "text": "放入'回收站'的信息可以恢复" },
+                { "value": "C", "text": "'回收站'所占据的空间是可以调整的" },
+                { "value": "D", "text": "'回收站'可以存放U盘上被删除的信息" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "'回收站'通常不存放U盘上被删除的信息。"
+        },
+        {
+            "id": 43,
+            "question": "下列关于操作系统主要功能的描述中，不正确的是( ).",
+            "options": [
+                { "value": "A", "text": "处理器管理" },
+                { "value": "B", "text": "作业管理" },
+                { "value": "C", "text": "文件管理" },
+                { "value": "D", "text": "数据管理" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "操作系统的主要功能不包括数据管理。"
+        },
+        {
+            "id": 44,
+            "question": "下列关于库的认识，正确的是( ).",
+            "options": [
+                { "value": "A", "text": "库中的文件夹是不能共享的" },
+                { "value": "B", "text": "库中删除过的文件夹是不能再加入库的" },
+                { "value": "C", "text": "库中的文件夹是可以删除的" },
+                { "value": "D", "text": "在库中删除文件夹后，原来的文件夹就被删除了" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "库中的文件夹是可以删除的。"
+        },
+        {
+            "id": 45,
+            "question": "下列哪一个不是多用户的操作系统( ).",
+            "options": [
+                { "value": "A", "text": "Linux" },
+                { "value": "B", "text": "UNIX" },
+                { "value": "C", "text": "DOS" },
+                { "value": "D", "text": "Windows Server 2008" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "DOS不是多用户的操作系统。"
+        },
+        {
+            "id": 46,
+            "question": "下列哪个系统图标不允许改名( ).",
+            "options": [
+                { "value": "A", "text": "网络" },
+                { "value": "B", "text": "IE浏览器" },
+                { "value": "C", "text": "计算机" },
+                { "value": "D", "text": "回收站" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "回收站图标不允许改名。"
+        },
+        {
+            "id": 47,
+            "question": "下列哪一个不是进程的结构组成( ).",
+            "options": [
+                { "value": "A", "text": "程序" },
+                { "value": "B", "text": "进程控制块" },
+                { "value": "C", "text": "触发条件" },
+                { "value": "D", "text": "数据" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "触发条件不是进程的结构组成。"
+        },
+        {
+            "id": 48,
+            "question": "进程由各个部分组成，下列项目中( )不属于进程的组成部分。",
+            "options": [
+                { "value": "A", "text": "进程控制块" },
+                { "value": "B", "text": "程序模块" },
+                { "value": "C", "text": "就绪队列" },
+                { "value": "D", "text": "数据集合" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "就绪队列不属于进程的组成部分。"
+        },
+        {
+            "id": 49,
+            "question": "下列哪一个不是进程的特征( ).",
+            "options": [
+                { "value": "A", "text": "动态性" },
+                { "value": "B", "text": "单一性" },
+                { "value": "C", "text": "并发性" },
+                { "value": "D", "text": "独立性" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "单一性不是进程的特征。"
+        },
+        {
+            "id": 50,
+            "question": "下列哪一个不是网络操作系统( ).",
+            "options": [
+                { "value": "A", "text": "DOS" },
+                { "value": "B", "text": "Windows 2000 server" },
+                { "value": "C", "text": "Unix" },
+                { "value": "D", "text": "Netware" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "DOS不是网络操作系统。"
+        },
+        {
+            "id": 1,
+            "question": "下列哪一个不是手机操作系统( ).",
+            "options": [
+                { "value": "A", "text": "iOS" },
+                { "value": "B", "text": "Android" },
+                { "value": "C", "text": "Symbian" },
+                { "value": "D", "text": "linux" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "Linux不是手机操作系统，而是一种通用的操作系统。"
+        },
+        {
+            "id": 2,
+            "question": "下列哪一个操作系统不是微软公司开发的操作系统( ).",
+            "options": [
+                { "value": "A", "text": "windows server 2003" },
+                { "value": "B", "text": "win7" },
+                { "value": "C", "text": "Linux" },
+                { "value": "D", "text": "Vista" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "Linux不是微软公司开发的操作系统。"
+        },
+        {
+            "id": 3,
+            "question": "下列哪一个操作系统不能用于笔记本电脑( ).",
+            "options": [
+                { "value": "A", "text": "Linux" },
+                { "value": "B", "text": "Windows 8" },
+                { "value": "C", "text": "Windows 10" },
+                { "value": "D", "text": "Android" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "Android主要用于移动设备，不适用于笔记本电脑。"
+        },
+        {
+            "id": 4,
+            "question": "下列哪一个是目前装机数量最大的手机操作系统( ).",
+            "options": [
+                { "value": "A", "text": "iOS" },
+                { "value": "B", "text": "Android" },
+                { "value": "C", "text": "Symbian" },
+                { "value": "D", "text": "BlackBerry OS" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "Android是目前装机数量最大的手机操作系统。"
+        },
+        {
+            "id": 5,
+            "question": "下列文件中，是备份文件的是( ).",
+            "options": [
+                { "value": "A", "text": "MCDOS.DLL" },
+                { "value": "B", "text": "SO.SYS" },
+                { "value": "C", "text": "UTEC.EXE" },
+                { "value": "D", "text": "TOTO.BAK" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "备份文件通常以.BAK扩展名结尾。"
+        },
+        {
+            "id": 6,
+            "question": "下列四项中，不属于win7中文件属性的是( ).",
+            "options": [
+                { "value": "A", "text": "系统" },
+                { "value": "B", "text": "隐藏" },
+                { "value": "C", "text": "文档" },
+                { "value": "D", "text": "只读" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "文档不是Windows 7中文件的属性。"
+        },
+        {
+            "id": 7,
+            "question": "下列有关Windows操作系统文件的说法中,错误的是( ).",
+            "options": [
+                { "value": "A", "text": "同一文件夹中允许有不同名但内容相同的文件" },
+                { "value": "B", "text": "同一文件夹中允许有不同名且不同内容的文件" },
+                { "value": "C", "text": "同一文件夹中允许有同名的文件" },
+                { "value": "D", "text": "不同文件夹中允许出现同名的文件" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "同一文件夹中不允许有同名的文件。"
+        },
+        {
+            "id": 8,
+            "question": "下面关于'系统更新'说法正确的是( ).",
+            "options": [
+                { "value": "A", "text": "系统更新后,计算机就可以免受计算机病毒的攻击" },
+                { "value": "B", "text": "系统更新等于安装了最新版本的操作系统" },
+                { "value": "C", "text": "系统更新是要付费的,否则是一种盗版行为" },
+                { "value": "D", "text": "之所以要系统更新,是因为操作系统有不完善的地方" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "系统更新是因为操作系统有不完善的地方，需要修复漏洞或提升性能。"
+        },
+        {
+            "id": 9,
+            "question": "下面文件类型中，不属于音频文件的是( ).",
+            "options": [
+                { "value": "A", "text": "WAV" },
+                { "value": "B", "text": "MP3" },
+                { "value": "C", "text": "MIDI" },
+                { "value": "D", "text": "MOV" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "MOV是一种视频文件格式，不属于音频文件。"
+        },
+        {
+            "id": 10,
+            "question": "下面是关于WINDOWS文件名的叙述,错误的是( ).",
+            "options": [
+                { "value": "A", "text": "文件名中允许使用汉字" },
+                { "value": "B", "text": "文件名中允许使用多个圆点分隔符" },
+                { "value": "C", "text": "文件名中允许使用空格" },
+                { "value": "D", "text": "文件名中允许使用竖线(|)" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "文件名中不允许使用竖线(|)等特殊字符。"
+        },
+        {
+            "id": 11,
+            "question": "下面有关Windows中的TrueType字体的说法错误的是( ).",
+            "options": [
+                { "value": "A", "text": "TrueType字体需要额外的内存" },
+                { "value": "B", "text": "TrueType字体不可以任意缩放" },
+                { "value": "C", "text": "使用TrueType字体的文档,具有很好的移植性" },
+                { "value": "D", "text": "只要使用相同的应用程序且用相等的分辨率打印,TrueType字体的显示与打印机上打印出来的结果是一样的" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "TrueType字体可以任意缩放。"
+        },
+        {
+            "id": 12,
+            "question": "选定要删除的文件，然后按( )即可删除文件。",
+            "options": [
+                { "value": "A", "text": "Alt键" },
+                { "value": "B", "text": "Ctrl键" },
+                { "value": "C", "text": "Shift键" },
+                { "value": "D", "text": "Delete键" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "按Delete键可以删除文件。"
+        },
+        {
+            "id": 13,
+            "question": "要安装Windows 7，系统磁盘分区必须为( )格式。",
+            "options": [
+                { "value": "A", "text": "NTFS" },
+                { "value": "B", "text": "FAT32" },
+                { "value": "C", "text": "FAT" },
+                { "value": "D", "text": "NTFS32" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "要安装Windows 7，系统磁盘分区必须为NTFS格式。"
+        },
+        {
+            "id": 14,
+            "question": "一个文件路径名为：c:\\groupa\\text1\\293.txt,其中text1是一个( ).",
+            "options": [
+                { "value": "A", "text": "文件夹" },
+                { "value": "B", "text": "根文件夹" },
+                { "value": "C", "text": "文件" },
+                { "value": "D", "text": "文本文件" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "text1是一个文件夹。"
+        },
+        {
+            "id": 15,
+            "question": "以下哪个是国际上最早流行的分时操作系统( ).",
+            "options": [
+                { "value": "A", "text": "UNIX" },
+                { "value": "B", "text": "Linux" },
+                { "value": "C", "text": "Windows" },
+                { "value": "D", "text": "DOS" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "UNIX是国际上最早流行的分时操作系统。"
+        },
+        {
+            "id": 16,
+            "question": "以下四个软件中,能播放音频文件的是( ).",
+            "options": [
+                { "value": "A", "text": "ACDSee" },
+                { "value": "B", "text": "WinRAR" },
+                { "value": "C", "text": "Winzip" },
+                { "value": "D", "text": "Windows Media Player" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "Windows Media Player能播放音频文件。"
+        },
+        {
+            "id": 17,
+            "question": "要将资源管理器中文件夹删除，正确操作方法是( ).",
+            "options": [
+                { "value": "A", "text": "用鼠标右键单击要删除的文件夹，在弹出的菜单选择‘剪切’。" },
+                { "value": "B", "text": "用鼠标右键单击要删除的文件夹，在弹出的菜单选择‘删除’，确认框中选择‘是’。" },
+                { "value": "C", "text": "鼠标左键单击要删除的文件夹，选择‘文件’菜单中的‘删除’，确认框中选择‘否’。" },
+                { "value": "D", "text": "鼠标左键双击要删除的文件夹，选择'文件'菜单中的‘删除’确认框中选择‘否’。" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "用鼠标右键单击要删除的文件夹，在弹出的菜单选择‘删除’，确认框中选择‘是’。"
+        },
+        {
+            "id": 18,
+            "question": "用32位来表示颜色,则可表示的颜色数为( ).",
+            "options": [
+                { "value": "A", "text": "512M" },
+                { "value": "B", "text": "1024M" },
+                { "value": "C", "text": "2048M" },
+                { "value": "D", "text": "4096M" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "32位颜色可以表示的颜色数为2^32，即4096M。"
+        },
+        {
+            "id": 19,
+            "question": "与计算机硬件关系最密切的软件是( ).",
+            "options": [
+                { "value": "A", "text": "编译程序" },
+                { "value": "B", "text": "数据库管理程序" },
+                { "value": "C", "text": "C" },
+                { "value": "D", "text": "OS" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "操作系统(OS)与计算机硬件关系最密切。"
+        },
+        {
+            "id": 20,
+            "question": "在win7计算机窗口中，文件存放的路径会显示在( ).",
+            "options": [
+                { "value": "A", "text": "标题栏" },
+                { "value": "B", "text": "地址栏" },
+                { "value": "C", "text": "导航空格" },
+                { "value": "D", "text": "状态栏" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "文件存放的路径会显示在地址栏。"
+        },
+        {
+            "id": 21,
+            "question": "在‘资源管理器’窗口中，在不同驱动器间移动文件( 夹），操作中应同时按下( )键。",
+            "options": [
+                { "value": "A", "text": "Shift" },
+                { "value": "B", "text": "Ctrl" },
+                { "value": "C", "text": "Alt" },
+                { "value": "D", "text": "空格键" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "在不同驱动器间移动文件时，应同时按下Shift键。"
+        },
+        {
+            "id": 22,
+            "question": "在win7中对于盘符的认识，错误的是( ).",
+            "options": [
+                { "value": "A", "text": "一般情况下，硬盘分区会从C字母开始" },
+                { "value": "B", "text": "一般情况下，字母A、B用来表示软盘" },
+                { "value": "C", "text": "一般情况下，U盘的盘符为G" },
+                { "value": "D", "text": "一般情况下，光驱的盘符会紧接着硬盘最后一个盘符" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "U盘的盘符不一定是G，具体取决于系统分配。"
+        },
+        {
+            "id": 23,
+            "question": "在Windows 7 中，对桌面背景的设置可以通过( ).",
+            "options": [
+                { "value": "A", "text": "鼠标右键单击‘计算机’，选择属性项" },
+                { "value": "B", "text": "鼠标右键单击‘开始’菜单" },
+                { "value": "C", "text": "鼠标右键单击桌面空白区，选择个性化项" },
+                { "value": "D", "text": "鼠标右键单击任务栏空白区，选择属性项" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "对桌面背景的设置可以通过鼠标右键单击桌面空白区，选择个性化项。"
+        },
+        {
+            "id": 24,
+            "question": "在Windows 7 中已经选定了若干文件和文件夹， 用鼠标操作来添加或取消某一个选定，需配合的键为( ).",
+            "options": [
+                { "value": "A", "text": "Esc" },
+                { "value": "B", "text": "Alt" },
+                { "value": "C", "text": "Ctrl" },
+                { "value": "D", "text": "Shift" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "用鼠标操作来添加或取消某一个选定，需配合的键为Ctrl。"
+        },
+        {
+            "id": 25,
+            "question": "在Windows 7的资源管理器复制文件时,如果要在同一个磁盘中将某个文件夹的一些文件复制到另外一个文件夹中,可以将选定的文件( ).",
+            "options": [
+                { "value": "A", "text": "利用鼠标直接拖动" },
+                { "value": "B", "text": "按住[Shift]键的同时利用鼠标拖动" },
+                { "value": "C", "text": "按住[Ctrl]键的同时利用鼠标拖动" },
+                { "value": "D", "text": "按住[Alt]键的同时利用鼠标拖动" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "在同一个磁盘中复制文件时，可以按住[Ctrl]键的同时利用鼠标拖动。"
+        },
+        {
+            "id": 26,
+            "question": "在Windows 7中，菜单项会出现下属级联菜单的标识是( ).",
+            "options": [
+                { "value": "A", "text": "菜单项右侧有一组英文提示" },
+                { "value": "B", "text": "菜单项右侧有一个黑色三角形" },
+                { "value": "C", "text": "菜单项左侧有一个黑色圆点" },
+                { "value": "D", "text": "菜单项左侧有一个‘√’符号" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "菜单项右侧有一个黑色三角形表示会出现下属级联菜单。"
+        },
+        {
+            "id": 27,
+            "question": "在Windows 7菜单操作中，如果某个菜单项的颜色暗淡，则表示( ).",
+            "options": [
+                { "value": "A", "text": "当前该菜单项不可用" },
+                { "value": "B", "text": "当前该菜单项下会有子菜单项" },
+                { "value": "C", "text": "当前该菜单项可用" },
+                { "value": "D", "text": "执行该菜单项会弹出对话框" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "如果某个菜单项的颜色暗淡，则表示当前该菜单项不可用。"
+        },
+        {
+            "id": 28,
+            "question": "在Windows 7中，操作中能弹出对话框的菜单项是( ).",
+            "options": [
+                { "value": "A", "text": "选择了带省略号的菜单项" },
+                { "value": "B", "text": "选择了带向右三角形箭头的菜单项" },
+                { "value": "C", "text": "选择了颜色变灰的菜单项" },
+                { "value": "D", "text": "运行了与对话框对应的应用程序" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "选择了带省略号的菜单项会弹出对话框。"
+        },
+        {
+            "id": 29,
+            "question": "在Windows 7中,关于'剪贴板'的叙述中,不正确的是( ).",
+            "options": [
+                { "value": "A", "text": "只有'剪切'和'复制'才可将信息送到剪贴板中" },
+                { "value": "B", "text": "剪贴板中的信息可被复制多次" },
+                { "value": "C", "text": "剪贴板中的信息可以在其它软件中进行粘贴" },
+                { "value": "D", "text": "剪贴板既能存放文字,还能存放图片等" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "不仅仅是'剪切'和'复制'操作，'删除'操作也可以将信息送到剪贴板中。"
+        },
+        {
+            "id": 30,
+            "question": "在Windows 7中，关于文件夹的描述不正确的是( ).",
+            "options": [
+                { "value": "A", "text": "文件夹是用来组织和管理文件的" },
+                { "value": "B", "text": "‘计算机’是一个文件夹" },
+                { "value": "C", "text": "文件夹中可以存放文件" },
+                { "value": "D", "text": "文件夹中不可以存放文件夹" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "文件夹中可以存放文件夹。"
+        },
+        {
+            "id": 31,
+            "question": "在Windows 7中，若光标变成“I”形状，则表示( ).",
+            "options": [
+                { "value": "A", "text": "当前系统正在访问磁盘" },
+                { "value": "B", "text": "改变窗口的大小" },
+                { "value": "C", "text": "光标出现处可以接收键盘的输入" },
+                { "value": "D", "text": "可以改变窗口的位置" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "光标变成“I”形状表示光标出现处可以接收键盘的输入。"
+        },
+        {
+            "id": 32,
+            "question": "在Windows 7中，计算机的鼠标器在屏幕上产生的标记符号变为一个“绿色圆圈”表明( ).",
+            "options": [
+                { "value": "A", "text": "Windows正在执行任务，请用户稍等" },
+                { "value": "B", "text": "Windows执行的程序出错误，中止其执行" },
+                { "value": "C", "text": "等待用户键入Y或N，以便继续工作" },
+                { "value": "D", "text": "提示用户注意某个事项，并不影响计算机继续工作" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "鼠标器标记符号变为一个'绿色圆圈'表明Windows正在执行任务，请用户稍等。"
+        },
+        {
+            "id": 33,
+            "question": "在Windows 7中，为保护文件不被修改，可将它的属性设置为( ).",
+            "options": [
+                { "value": "A", "text": "存档" },
+                { "value": "B", "text": "只读" },
+                { "value": "C", "text": "隐藏" },
+                { "value": "D", "text": "系统" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "为保护文件不被修改，可将它的属性设置为'只读'。"
+        },
+        {
+            "id": 34,
+            "question": "在Windows 7中，用户建立的文件默认的属性是( ).",
+            "options": [
+                { "value": "A", "text": "隐藏" },
+                { "value": "B", "text": "只读" },
+                { "value": "C", "text": "系统" },
+                { "value": "D", "text": "存档" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "用户建立的文件默认的属性是'存档'。"
+        },
+        {
+            "id": 35,
+            "question": "在Windows 操作系统的对话框中，用户必须并且只能选择其中一项的称为( ).",
+            "options": [
+                { "value": "A", "text": "单选框" },
+                { "value": "B", "text": "列表框" },
+                { "value": "C", "text": "复选框" },
+                { "value": "D", "text": "文本框" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "单选框要求用户必须并且只能选择其中一项。"
+        },
+        {
+            "id": 36,
+            "question": "在Windows 操作环境下，要将整个屏幕画面全部复制到剪贴板中所使用的键是( ).",
+            "options": [
+                { "value": "A", "text": "Alt + F4" },
+                { "value": "B", "text": "Ctrl + Space" },
+                { "value": "C", "text": "Print Screen" },
+                { "value": "D", "text": "Page Up" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "Print Screen键可以将整个屏幕画面复制到剪贴板中。"
+        },
+        {
+            "id": 37,
+            "question": "在Windows 的长文件名在下列符号中不可以使用的字符是( ).",
+            "options": [
+                { "value": "A", "text": "空格" },
+                { "value": "B", "text": "+（加号）" },
+                { "value": "C", "text": "-（减号）" },
+                { "value": "D", "text": "\\（斜杠" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "在Windows的长文件名中，不可以使用斜杠（\\）。"
+        },
+        {
+            "id": 38,
+            "question": "在Windows 系统中，下列叙述正确的是( ).",
+            "options": [
+                { "value": "A", "text": "‘开始’菜单只能用鼠标单击‘开始’按钮才能打开" },
+                { "value": "B", "text": "任务栏的高度是不能改变的" },
+                { "value": "C", "text": "‘开始’菜单是系统生成的，用户不能再进行设置" },
+                { "value": "D", "text": "任务栏可以放在桌面四个边的任意边上" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "任务栏可以放在桌面四个边的任意边上。"
+        },
+        {
+            "id": 39,
+            "question": "在Windows 系统中,由于频繁添加或卸载程序使磁盘碎片太多,机器运行速度减慢,通过使用( )可以达到加快文件的访问速度目的。",
+            "options": [
+                { "value": "A", "text": "磁盘碎片整理程序" },
+                { "value": "B", "text": "磁盘清理程序" },
+                { "value": "C", "text": "磁盘诊断程序" },
+                { "value": "D", "text": "磁盘扫描程序" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "磁盘碎片整理程序可以整理磁盘碎片，加快文件的访问速度。"
+        },
+        {
+            "id": 40,
+            "question": "在Windows 中，对话框允许用户( ).",
+            "options": [
+                { "value": "A", "text": "最大化" },
+                { "value": "B", "text": "移动其位置" },
+                { "value": "C", "text": "最小化" },
+                { "value": "D", "text": "改变其大小" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "对话框允许用户移动其位置。"
+        },
+        {
+            "id": 41,
+            "question": "在Windows 中,可以在'回收站'中恢复的文件是被删除的( ).",
+            "options": [
+                { "value": "A", "text": "U盘上的文件" },
+                { "value": "B", "text": "硬盘某个分区上的文件" },
+                { "value": "C", "text": "光盘上的文件" },
+                { "value": "D", "text": "网络盘上的文件" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "可以在'回收站'中恢复的文件是被删除的硬盘某个分区上的文件。"
+        },
+        {
+            "id": 42,
+            "question": "在Windows 中，若取消已经选定的若干文件或文件夹中的某一个，需先按下( )键，再单击要鼠标左键。",
+            "options": [
+                { "value": "A", "text": "Ctrl" },
+                { "value": "B", "text": "Shift" },
+                { "value": "C", "text": "Alt" },
+                { "value": "D", "text": "Esc" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "若取消已经选定的若干文件或文件夹中的某一个，需先按下Ctrl键，再单击要鼠标左键。"
+        },
+        {
+            "id": 43,
+            "question": "在Windows 中，当一个应用程序窗口被最小化后，该应用程序将( ).",
+            "options": [
+                { "value": "A", "text": "终止运行" },
+                { "value": "B", "text": "继续运行" },
+                { "value": "C", "text": "暂停运行" },
+                { "value": "D", "text": "被删除" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "当一个应用程序窗口被最小化后，该应用程序将继续运行。"
+        },
+        {
+            "id": 44,
+            "question": "在Windows 中，鼠标指针呈双箭头形时，一般表示( ).",
+            "options": [
+                { "value": "A", "text": "可以选择菜单、图标" },
+                { "value": "B", "text": "完成操作" },
+                { "value": "C", "text": "用户等待" },
+                { "value": "D", "text": "边框或四角可以移动" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "鼠标指针呈双箭头形时，一般表示边框或四角可以移动。"
+        },
+        {
+            "id": 45,
+            "question": "在Windows 中，文件名'ABCD.DOC.EXE.TXT'的扩展名是( ).",
+            "options": [
+                { "value": "A", "text": "ABCD" },
+                { "value": "B", "text": "DOC" },
+                { "value": "C", "text": "EXE" },
+                { "value": "D", "text": "TXT" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "文件名'ABCD.DOC.EXE.TXT'的扩展名是TXT。"
+        },
+        {
+            "id": 46,
+            "question": "在WINDOWS 中,用户可以同时启动多个应用程序,在启动了多个应用程序后,用户可以按组合键( )在各应用程序之间进行切换。",
+            "options": [
+                { "value": "A", "text": "ALT+TAB" },
+                { "value": "B", "text": "ALT+SHIFT" },
+                { "value": "C", "text": "CTRL+ALT" },
+                { "value": "D", "text": "CTRL+ESC" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "用户可以按组合键ALT+TAB在各应用程序之间进行切换。"
+        },
+        {
+            "id": 47,
+            "question": "在Windows 中，下列文件名中错误的是( ).",
+            "options": [
+                { "value": "A", "text": "My Program Group" },
+                { "value": "B", "text": "file1.file2.bas" },
+                { "value": "C", "text": "A<B.C" },
+                { "value": "D", "text": "ABC.FOR" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "文件名中不允许使用特殊字符如'<'。"
+        },
+        {
+            "id": 48,
+            "question": "在WINDOWS 中,有些菜单项的右端有一个向右的箭头,则表示该菜单项( ).",
+            "options": [
+                { "value": "A", "text": "将弹出下一级菜单" },
+                { "value": "B", "text": "当前不能选取执行" },
+                { "value": "C", "text": "已被选中" },
+                { "value": "D", "text": "将弹出一个对话框" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "菜单项右端有一个向右的箭头表示将弹出下一级菜单。"
+        },
+        {
+            "id": 49,
+            "question": "在windows7个性化菜单中不能设置的是( ).",
+            "options": [
+                { "value": "A", "text": "桌面背景" },
+                { "value": "B", "text": "窗口颜色" },
+                { "value": "C", "text": "分辨率" },
+                { "value": "D", "text": "声音" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "在windows7个性化菜单中不能设置分辨率。"
+        },
+        {
+            "id": 50,
+            "question": "在windows7控制面板中的查看方式不可能是( ).",
+            "options": [
+                { "value": "A", "text": "类别" },
+                { "value": "B", "text": "大图标" },
+                { "value": "C", "text": "小图标" },
+                { "value": "D", "text": "缩略图" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "在windows7控制面板中的查看方式不可能是缩略图。"
+        },
+        {
+            "id": 1,
+            "question": "在Windows7中，单击“开始”按钮，就可以打开( )。",
+            "options": [
+                { "value": "A", "text": "一个快捷菜单" },
+                { "value": "B", "text": "开始菜单" },
+                { "value": "C", "text": "一个下拉菜单" },
+                { "value": "D", "text": "一个对话框" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "单击开始按钮会打开开始菜单，开始菜单是Windows系统中一个重要的功能区域，用户可以通过它访问系统中的各种程序和设置。"
+        },
+        {
+            "id": 2,
+            "question": "在Windows7中，当任务栏在桌面屏幕的底部时，其右端的“指示器”显示的是( )。",
+            "options": [
+                { "value": "A", "text": "“开始”按钮" },
+                { "value": "B", "text": "用于多个应用程序之间切换的图标" },
+                { "value": "C", "text": "快速启动工具栏" },
+                { "value": "D", "text": "输入法、时钟等" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "任务栏右端的指示器通常显示输入法、时钟等系统信息和状态，方便用户快速查看和操作。"
+        },
+        {
+            "id": 3,
+            "question": "在windows7文件属性中“仅应用于文件夹中的文件”的一种是( )。",
+            "options": [
+                { "value": "A", "text": "系统" },
+                { "value": "B", "text": "只读" },
+                { "value": "C", "text": "存档" },
+                { "value": "D", "text": "隐藏" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "只读属性通常用于文件，当文件设置为只读时，用户可以查看文件内容，但不能对其进行修改。"
+        },
+        {
+            "id": 4,
+            "question": "在Windows7中,剪贴板是程序和文件间用来传递信息的临时存储区,此存储区是( )。",
+            "options": [
+                { "value": "A", "text": "回收站的一部分" },
+                { "value": "B", "text": "硬盘的一部分" },
+                { "value": "C", "text": "内存的一部分" },
+                { "value": "D", "text": "U盘的一部分" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "剪贴板是内存中的一块临时存储区域，用于暂存复制或剪切的内容，以便进行粘贴操作。"
+        },
+        {
+            "id": 5,
+            "question": "在Windows7中，以下文件名( )是错误的。",
+            "options": [
+                { "value": "A", "text": "&file.txt" },
+                { "value": "B", "text": "file*.txt" },
+                { "value": "C", "text": "file.txt" },
+                { "value": "D", "text": "文件.txt" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "文件名中不能包含某些特殊字符，如*、?、<、>、|等，因此file*.txt是错误的文件名。"
+        },
+        {
+            "id": 6,
+            "question": "在windows7中选择全部文件或文件夹，选择( )菜单中“全选”命令。",
+            "options": [
+                { "value": "A", "text": "文件" },
+                { "value": "B", "text": "工具" },
+                { "value": "C", "text": "编辑" },
+                { "value": "D", "text": "设置" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "在Windows系统中，选择全部文件或文件夹通常通过选择编辑菜单中的全选命令来实现。"
+        },
+        {
+            "id": 7,
+            "question": "在Windows操作环境下,要将整个屏幕画面全部复制到剪贴板中应该用( )键。",
+            "options": [
+                { "value": "A", "text": "PrintScreen" },
+                { "value": "B", "text": "PageUp" },
+                { "value": "C", "text": "Alt+F4" },
+                { "value": "D", "text": "Ctrl+Space" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "按下PrintScreen键可以将整个屏幕的画面复制到剪贴板中，方便用户进行截图操作。"
+        },
+        {
+            "id": 8,
+            "question": "在Windows7资源管理器中选定了文件或文件夹后，若要将它们移动到不同驱动器的文件夹中，操作为( )。",
+            "options": [
+                { "value": "A", "text": "按下Ctrl键拖动鼠标" },
+                { "value": "B", "text": "按下Shift键拖动鼠标" },
+                { "value": "C", "text": "直接拖动鼠标" },
+                { "value": "D", "text": "按下Alt键拖动鼠标" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "在Windows资源管理器中，按下Shift键拖动文件或文件夹可以将其移动到不同驱动器的文件夹中。"
+        },
+        {
+            "id": 9,
+            "question": "在Windows操作系统中，鼠标是重要的输入工具，而键盘( )。",
+            "options": [
+                { "value": "A", "text": "无法起作用" },
+                { "value": "B", "text": "仅能配合鼠标，在输入字符中起辅助作用" },
+                { "value": "C", "text": "仅能在菜单操作中运用，不能在窗口中操作" },
+                { "value": "D", "text": "也能完成几乎所有操作" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "在Windows操作系统中，键盘不仅可以配合鼠标输入字符，还可以独立完成几乎所有操作，如快捷键操作等。"
+        },
+        {
+            "id": 10,
+            "question": "在Windows窗口的右上角，可以同时显示的按钮是( )。",
+            "options": [
+                { "value": "A", "text": "最小化、还原和最大化" },
+                { "value": "B", "text": "还原、最大化和关闭" },
+                { "value": "C", "text": "最小化、还原和关闭" },
+                { "value": "D", "text": "还原和最大化" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "在Windows窗口的右上角，通常可以同时显示最小化、还原和关闭按钮。"
+        },
+        {
+            "id": 11,
+            "question": "在Windows环境中，若应用程序出现故障或死机，这时按Ctrl+Alt+Del组合键的作用是( )。",
+            "options": [
+                { "value": "A", "text": "排除故障" },
+                { "value": "B", "text": "关闭所有程序" },
+                { "value": "C", "text": "弹出'任务管理器'窗口" },
+                { "value": "D", "text": "重新启动计算机并进入安全模式" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "在Windows环境中，当应用程序出现故障或死机时，按Ctrl+Alt+Del组合键可以弹出任务管理器窗口，用户可以通过任务管理器结束故障程序。"
+        },
+        {
+            "id": 12,
+            "question": "Windows中要显示目前正在电脑内存中正在运行的程序，可以使用( )。",
+            "options": [
+                { "value": "A", "text": "任务管理器" },
+                { "value": "B", "text": "注册表" },
+                { "value": "C", "text": "控制面板中的程序" },
+                { "value": "D", "text": "计算机系统属性" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "任务管理器可以显示当前在电脑内存中运行的所有程序，用户可以通过它查看程序的运行状态和占用资源情况。"
+        },
+        {
+            "id": 13,
+            "question": "在windows文件夹窗口中共有35个文件,用鼠标左键依次单击前5个文件,有( )个文件被选定。",
+            "options": [
+                { "value": "A", "text": "0" },
+                { "value": "B", "text": "1" },
+                { "value": "C", "text": "5" },
+                { "value": "D", "text": "35" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "在Windows文件夹窗口中，用鼠标左键依次单击文件时，只有最后一个被单击的文件会被选定。"
+        },
+        {
+            "id": 14,
+            "question": "在Windows系统中,当用户发出运行一个保存在硬盘中的可执行程序(例如winWord)命令时,该程序将被从硬盘读出并直接装入到( )中之后才开始运行。",
+            "options": [
+                { "value": "A", "text": "外存" },
+                { "value": "B", "text": "主存" },
+                { "value": "C", "text": "寄存器组" },
+                { "value": "D", "text": "U盘" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "程序运行时，需要先从硬盘读出并装入到主存中，然后才能开始运行。"
+        },
+        {
+            "id": 15,
+            "question": "在Windows系统中,若2个纯文件文本分别包含100和200个英文字母,下面关于它们占用磁盘大小的说法中,正确的是( )。",
+            "options": [
+                { "value": "A", "text": "前者大于后者" },
+                { "value": "B", "text": "后者大于前者" },
+                { "value": "C", "text": "两者相同" },
+                { "value": "D", "text": "不确定" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "纯文本文件的大小主要取决于文件中的字符数量和字符编码方式。如果两个文件的字符编码方式相同，那么它们占用的磁盘大小应该是相同的。"
+        },
+        {
+            "id": 16,
+            "question": "在Windows中，( )操作不能关闭窗口。",
+            "options": [
+                { "value": "A", "text": "单击最小化按钮" },
+                { "value": "B", "text": "单击控制菜单的关闭项" },
+                { "value": "C", "text": "单击文件菜单中的退出项" },
+                { "value": "D", "text": "双击控制菜单图标" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "单击最小化按钮只会将窗口最小化，不会关闭窗口。"
+        },
+        {
+            "id": 17,
+            "question": "在Windows中，( )操作将关闭窗口。",
+            "options": [
+                { "value": "A", "text": "单击最小化按钮" },
+                { "value": "B", "text": "双击最小化按钮" },
+                { "value": "C", "text": "单击控制菜单图标" },
+                { "value": "D", "text": "双击控制菜单图标" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "双击控制菜单图标可以关闭窗口。"
+        },
+        {
+            "id": 18,
+            "question": "在Windows中，“任务栏”可以( )。",
+            "options": [
+                { "value": "A", "text": "只能改变位置不能改变大小" },
+                { "value": "B", "text": "只能改变大小不能改变位置" },
+                { "value": "C", "text": "既不能改变位置也不能改变大小" },
+                { "value": "D", "text": "既能改变位置也能改变大小" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "在Windows中，任务栏既可以改变位置，也可以改变大小。"
+        },
+        {
+            "id": 19,
+            "question": "在Windows中,不属于控制面板操作的是( )。",
+            "options": [
+                { "value": "A", "text": "更改桌面背景" },
+                { "value": "B", "text": "添加新硬件" },
+                { "value": "C", "text": "造字" },
+                { "value": "D", "text": "调整鼠标的使用设置" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "造字不属于控制面板的操作，控制面板主要用于系统设置和硬件管理等方面。"
+        },
+        {
+            "id": 20,
+            "question": "在Windows中,关于文件夹的描述不正确的是( )。",
+            "options": [
+                { "value": "A", "text": "文件夹是用来组织和管理文件的" },
+                { "value": "B", "text": "“我的电脑”是一个文件夹" },
+                { "value": "C", "text": "文件夹中可以存放设备文件" },
+                { "value": "D", "text": "文件夹中不可以存放设备文件" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "文件夹中可以存放设备文件，例如打印机、扫描仪等设备的驱动程序文件。"
+        },
+        {
+            "id": 21,
+            "question": "在Windows中，程序窗口最小化后( )。",
+            "options": [
+                { "value": "A", "text": "程序仍能前台运行" },
+                { "value": "B", "text": "程序转为后台运行" },
+                { "value": "C", "text": "程序运行被终止" },
+                { "value": "D", "text": "程序运行被暂时中断，但可随时恢复" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "程序窗口最小化后，程序会转为后台运行，用户可以通过任务栏中的图标切换回该程序。"
+        },
+        {
+            "id": 22,
+            "question": "在Windows中，剪贴板是用来在程序和文件间传递信息的临时存储区,此存储区是( )。",
+            "options": [
+                { "value": "A", "text": "回收站的一部分" },
+                { "value": "B", "text": "硬盘的一部分" },
+                { "value": "C", "text": "内存的一部分" },
+                { "value": "D", "text": "U盘的一部分" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "剪贴板是内存中的一块临时存储区域，用于暂存复制或剪切的内容，以便进行粘贴操作。"
+        },
+        {
+            "id": 23,
+            "question": "在WINDOWS中,经常有一些菜单选项呈暗灰色,这表示( )。",
+            "options": [
+                { "value": "A", "text": "这些项在当前无效" },
+                { "value": "B", "text": "系统运行发生故障" },
+                { "value": "C", "text": "这些项的处理程序已装入" },
+                { "value": "D", "text": "应用程序本身有有缺陷" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "菜单选项呈暗灰色表示这些项在当前状态下是无效的，无法进行操作。"
+        },
+        {
+            "id": 24,
+            "question": "在Windows中，如果单击菜单命令名字前带有的“√”记号，则( )。",
+            "options": [
+                { "value": "A", "text": "弹出子菜单" },
+                { "value": "B", "text": "弹出对话框" },
+                { "value": "C", "text": "“√”变为“×”" },
+                { "value": "D", "text": "“√”记号消失" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "在Windows中，如果单击菜单命令名字前带有的“√”记号，则“√”记号会消失，表示取消该选项的选中状态。"
+        },
+        {
+            "id": 25,
+            "question": "在Windows中，控制菜单图标位于窗口的( )。",
+            "options": [
+                { "value": "A", "text": "左上角" },
+                { "value": "B", "text": "左下角" },
+                { "value": "C", "text": "右上角" },
+                { "value": "D", "text": "右下角" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "控制菜单图标通常位于窗口的左上角，用户可以通过它进行窗口的最小化、最大化、还原等操作。"
+        },
+        {
+            "id": 26,
+            "question": "在WINDOWS中,如果想同时改变窗口的高度或宽度,可以通过拖放( )来实现。",
+            "options": [
+                { "value": "A", "text": "窗口边框" },
+                { "value": "B", "text": "窗口角" },
+                { "value": "C", "text": "滚动条" },
+                { "value": "D", "text": "菜单栏" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "在Windows中，通过拖放窗口角可以同时改变窗口的高度和宽度。"
+        },
+        {
+            "id": 27,
+            "question": "在WINDOWS中,为了查找文件名以“A”字母打头,后跟一字母的所有文件,应当在查找名称框内输入( )。",
+            "options": [
+                { "value": "A", "text": "A" },
+                { "value": "B", "text": "A*" },
+                { "value": "C", "text": "A?" },
+                { "value": "D", "text": "A#" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "在查找名称框内输入A?可以查找文件名以A字母打头，后跟一字母的所有文件。"
+        },
+        {
+            "id": 28,
+            "question": "在Windows中，下列关于“开始菜单”的说法不正确的是( )。",
+            "options": [
+                { "value": "A", "text": "开始菜单中的内容可以在“任务栏和开始菜单属性”对话框中设置" },
+                { "value": "B", "text": "开始菜单中的内容是固定的，用户不能进行调整" },
+                { "value": "C", "text": "右击开始菜单可以打开资源管理器" },
+                { "value": "D", "text": "可以将桌面上的图标用鼠标直接拖曳到开始菜单" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "开始菜单中的内容不是固定的，用户可以在任务栏和开始菜单属性对话框中进行设置和调整。"
+        },
+        {
+            "id": 29,
+            "question": "在Windows中，要在指定的位置上创建一个新的文件夹，下列叙述中正确的是( )。",
+            "options": [
+                { "value": "A", "text": "在“计算机”窗口的“文件”菜单中，使用“文件夹”命令" },
+                { "value": "B", "text": "在“计算机”窗口的“文件”菜单中，使用“新建”命令" },
+                { "value": "C", "text": "在“计算机”窗口的“文件”菜单中，使用“重命名”命令" },
+                { "value": "D", "text": "在“计算机”窗口的“编辑”菜单中，使用“新建”命令" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "在Windows中，可以在计算机窗口的文件菜单中选择新建命令来创建一个新的文件夹。"
+        },
+        {
+            "id": 30,
+            "question": "在Windows中，移动不同驱动器之间的文件，应使用的鼠标操作是( )。",
+            "options": [
+                { "value": "A", "text": "拖曳" },
+                { "value": "B", "text": "Ctrl+拖曳" },
+                { "value": "C", "text": "Shift+拖曳" },
+                { "value": "D", "text": "选定要移动的文件按Ctrl+C，然后打开目标文件夹，最后按Ctrl+V" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "在Windows中，移动不同驱动器之间的文件，应使用Shift+拖曳鼠标的操作。"
+        },
+        {
+            "id": 31,
+            "question": "在Windows中，要使某文件的内容不被修改和删除，可以把该文件的属性设置为( )。",
+            "options": [
+                { "value": "A", "text": "只读" },
+                { "value": "B", "text": "隐藏" },
+                { "value": "C", "text": "存档" },
+                { "value": "D", "text": "系统" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "将文件的属性设置为只读，可以防止文件的内容被修改和删除。"
+        },
+        {
+            "id": 32,
+            "question": "在Windows中发出一个执行程序的指令以后,系统将存储在硬盘的程序和数据读出并且保存到( )后才可以执行。",
+            "options": [
+                { "value": "A", "text": "外存" },
+                { "value": "B", "text": "主存储器" },
+                { "value": "C", "text": "CACHE" },
+                { "value": "D", "text": "寄存器组" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "程序运行时，需要先从硬盘读出并装入到主存储器中，然后才能开始执行。"
+        },
+        {
+            "id": 33,
+            "question": "在Windows中下面的叙述正确的是( )。",
+            "options": [
+                { "value": "A", "text": "“写字板”是字处理软件,不能进行图文处理" },
+                { "value": "B", "text": "“画图”是绘图工具,不能输入文字" },
+                { "value": "C", "text": "“写字板”和“画图”均可以进行文字和图形处理" },
+                { "value": "D", "text": "“记事本”文件可以插入自选图形" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "写字板和画图都可以进行文字和图形处理，写字板主要用于文字编辑，但也支持插入图片等图形元素；画图主要用于绘图，但也支持输入文字。"
+        },
+        {
+            "id": 34,
+            "question": "在Windows资源管理器中选定了文件或文件夹后，若要将它们复制到同一驱动器的另外的文件夹中的操作是( )。",
+            "options": [
+                { "value": "A", "text": "按下Shift键拖动鼠标" },
+                { "value": "B", "text": "按下Ctrl键拖动鼠标" },
+                { "value": "C", "text": "直接拖动鼠标" },
+                { "value": "D", "text": "按下Alt键拖动鼠标" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "在Windows资源管理器中，按下Ctrl键拖动鼠标可以将选定的文件或文件夹复制到同一驱动器的另一个文件夹中。"
+        },
+        {
+            "id": 35,
+            "question": "在第二代计算机期间（1958-1964）内提出一个重要的系统软件的概念是( )。",
+            "options": [
+                { "value": "A", "text": "文件管理系统" },
+                { "value": "B", "text": "网络管理系统" },
+                { "value": "C", "text": "数据库系统" },
+                { "value": "D", "text": "操作系统" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "在第二代计算机期间，操作系统这一重要的系统软件概念被提出，它使得计算机的使用更加方便和高效。"
+        },
+        {
+            "id": 36,
+            "question": "在操作系统中，正在运行的程序的实例被称为( )。",
+            "options": [
+                { "value": "A", "text": "执行程序" },
+                { "value": "B", "text": "任务" },
+                { "value": "C", "text": "线程" },
+                { "value": "D", "text": "进程" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "在操作系统中，正在运行的程序的实例被称为进程，进程是操作系统进行资源分配和调度的基本单位。"
+        },
+        {
+            "id": 37,
+            "question": "在第三代计算机期间内出现了( )。",
+            "options": [
+                { "value": "A", "text": "面向对象的程序设计方法" },
+                { "value": "B", "text": "可视化程序设计方法" },
+                { "value": "C", "text": "结构化程序设计方法" },
+                { "value": "D", "text": "非结构化程序设计方法" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "在第三代计算机期间，结构化程序设计方法出现，它强调程序的结构和模块化，使得程序的编写和维护更加方便。"
+        },
+        {
+            "id": 38,
+            "question": "在第三代计算机期间内出现了( )。",
+            "options": [
+                { "value": "A", "text": "分布操作系统" },
+                { "value": "B", "text": "分时操作系统" },
+                { "value": "C", "text": "网络操作系统" },
+                { "value": "D", "text": "多媒体操作系统" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "在第三代计算机期间，分时操作系统出现，它允许多个用户同时使用计算机，每个用户感觉像是独占计算机一样。"
+        },
+        {
+            "id": 39,
+            "question": "在进行Windows操作过程中，能将当前活动窗口中的信息复制到剪贴板中，应同时按下的组合键是( )。",
+            "options": [
+                { "value": "A", "text": "Alt+Print Screen" },
+                { "value": "B", "text": "Ctrl+Print Screen" },
+                { "value": "C", "text": "Esc+Print Screen" },
+                { "value": "D", "text": "Shift+Print Screen" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "按下Alt+Print Screen组合键可以将当前活动窗口的信息复制到剪贴板中，方便用户进行截图操作。"
+        },
+        {
+            "id": 40,
+            "question": "在计算机窗口中不能实现的操作是( )。",
+            "options": [
+                { "value": "A", "text": "隐藏已知文件类型的扩展名" },
+                { "value": "B", "text": "通过单击打开选中的项目" },
+                { "value": "C", "text": "显示隐藏的文件（夹）和驱动器" },
+                { "value": "D", "text": "始终显示为缩略图，从不显示为图标" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "在计算机窗口中，可以通过设置隐藏已知文件类型的扩展名、通过单击打开选中的项目以及显示隐藏的文件（夹）和驱动器，但无法始终显示为缩略图，从不显示为图标。"
+        },
+        {
+            "id": 41,
+            "question": "在删除硬盘上的文件时,如果不打算将被删除的文件放入“回收站”,应在选定文件后( )。",
+            "options": [
+                { "value": "A", "text": "直接按键盘上的[Delete]键" },
+                { "value": "B", "text": "按住[Ctrl]键的同时按住[Delete]键" },
+                { "value": "C", "text": "按住[Ctrl]键的同时将选定文件拖放到回收站中" },
+                { "value": "D", "text": "按住[Shift]键的同时按住[Delete]键" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "在删除硬盘上的文件时，如果不打算将被删除的文件放入回收站，应在选定文件后按住[Shift]键的同时按住[Delete]键。"
+        },
+        {
+            "id": 42,
+            "question": "在使用计算机时,操作系统对多媒体信息的保存都是以( )为基本单位的。",
+            "options": [
+                { "value": "A", "text": "位" },
+                { "value": "B", "text": "二进制位" },
+                { "value": "C", "text": "字节" },
+                { "value": "D", "text": "文件" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "操作系统对多媒体信息的保存是以文件为基本单位的，文件是操作系统管理信息的基本单位。"
+        },
+        {
+            "id": 43,
+            "question": "在搜索文件或文件夹时，若用户输入“*.*”，则将搜索( )。",
+            "options": [
+                { "value": "A", "text": "所有含有*的文件" },
+                { "value": "B", "text": "所有扩展名中含有*的文件" },
+                { "value": "C", "text": "所有文件" },
+                { "value": "D", "text": "以上都不对" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "在搜索文件或文件夹时，输入“*.*”表示搜索所有文件，其中“*”是通配符，代表任意字符。"
+        },
+        {
+            "id": 44,
+            "question": "在同一驱动器之间的复制操作是( )。",
+            "options": [
+                { "value": "A", "text": "按住Ctrl键不放用鼠标左键拖动" },
+                { "value": "B", "text": "按住Shift键不放用鼠标左键拖动" },
+                { "value": "C", "text": "直接用鼠标左键拖动" },
+                { "value": "D", "text": "按住Alt键不放用鼠标左键拖动" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "在同一驱动器之间进行复制操作时，可以按住Ctrl键不放，然后用鼠标左键拖动文件或文件夹。"
+        },
+        {
+            "id": 45,
+            "question": "在微机中的“DOS”，从软件归类来看，应属于( )。",
+            "options": [
+                { "value": "A", "text": "应用软件" },
+                { "value": "B", "text": "工具软件" },
+                { "value": "C", "text": "系统软件" },
+                { "value": "D", "text": "绿色软件" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "DOS是一种操作系统，从软件归类来看，它属于系统软件，用于管理和控制计算机的硬件资源。"
+        },
+        {
+            "id": 46,
+            "question": "在同一Windows平台上的两个应用程序之间交换数据时,最方便使用的工具是( )。",
+            "options": [
+                { "value": "A", "text": "剪贴板" },
+                { "value": "B", "text": "回收站" },
+                { "value": "C", "text": "虚拟内存" },
+                { "value": "D", "text": "缓存" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "在同一Windows平台上的两个应用程序之间交换数据时，最方便使用的工具是剪贴板，它允许用户复制和粘贴数据。"
+        },
+        {
+            "id": 47,
+            "question": "在资源管理器中,选定多个非连续文件的操作为( )。",
+            "options": [
+                { "value": "A", "text": "按住Shift键,单击每一个要选定的文件图标" },
+                { "value": "B", "text": "按住Ctrl键,单击每一个要选定的文件图标" },
+                { "value": "C", "text": "先选中第一个文件,按住Shift键,再单击最后一个要选定的文件图标" },
+                { "value": "D", "text": "先选中第一个文件,按住Ctrl键,再单击最后一个要选定的文件图标" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "在资源管理器中，选定多个非连续文件的操作是按住Ctrl键，然后单击每一个要选定的文件图标。"
+        },
+        {
+            "id": 48,
+            "question": "在资源管理器中,选择几个连续的文件的方法可以是先单击第一个,再按住( )键单击最后一个。",
+            "options": [
+                { "value": "A", "text": "Ctrl" },
+                { "value": "B", "text": "Shift" },
+                { "value": "C", "text": "Alt" },
+                { "value": "D", "text": "Ctrl+Alt" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "在资源管理器中，选择几个连续的文件的方法是先单击第一个文件，然后按住Shift键，再单击最后一个要选定的文件。"
+        },
+        {
+            "id": 49,
+            "question": "中文Windows的“桌面”指的是( )。",
+            "options": [
+                { "value": "A", "text": "整个屏幕" },
+                { "value": "B", "text": "某个窗口" },
+                { "value": "C", "text": "全部窗口" },
+                { "value": "D", "text": "活动窗口" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "中文Windows的桌面指的是整个屏幕，它是用户与计算机系统交互的初始界面。"
+        },
+        {
+            "id": 50,
+            "question": "最早的计算机上并没有操作系统，第一个操作系统出现在第( )代计算机上。",
+            "options": [
+                { "value": "A", "text": "一" },
+                { "value": "B", "text": "二" },
+                { "value": "C", "text": "三" },
+                { "value": "D", "text": "四" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "第一个操作系统出现在第二代计算机上，它标志着计算机软件技术的一个重要进步。"
+        },
+        {
+            "id": 1,
+            "question": "以下文件格式中，不属于声音文件的是( )。",
+            "options": [
+                {
+                    "value": "A",
+                    "text": "WAV"
+                },
+                {
+                    "value": "B",
+                    "text": "BMP"
+                },
+                {
+                    "value": "C",
+                    "text": "MIDI"
+                },
+                {
+                    "value": "D",
+                    "text": "AIF"
+                }
+            ],
+            "correctAnswer": "B",
+            "explanation": "BMP 是位图图像文件格式，不属于声音文件。"
+        },
+        {
+            "id": 2,
+            "question": "以下文件类型中，不属于图形图像文件的是( )。",
+            "options": [
+                {
+                    "value": "A",
+                    "text": "txt"
+                },
+                {
+                    "value": "B",
+                    "text": "bmp"
+                },
+                {
+                    "value": "C",
+                    "text": "gif"
+                },
+                {
+                    "value": "D",
+                    "text": "jpg"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "txt 是文本文件格式，不属于图形图像文件。"
+        },
+        {
+            "id": 3,
+            "question": "在PowerPoint2010中，模板文档的扩展名是( )。",
+            "options": [
+                {
+                    "value": "A",
+                    "text": "PPTX"
+                },
+                {
+                    "value": "B",
+                    "text": "DOCX"
+                },
+                {
+                    "value": "C",
+                    "text": "POTX"
+                },
+                {
+                    "value": "D",
+                    "text": "XLS"
+                }
+            ],
+            "correctAnswer": "C",
+            "explanation": "POTX 是 PowerPoint 2010 模板文档的扩展名。"
+        },
+        {
+            "id": 4,
+            "question": "在Windows 7中，录音机程序的文件扩展名是( )。",
+            "options": [
+                {
+                    "value": "A",
+                    "text": "MID"
+                },
+                {
+                    "value": "B",
+                    "text": "WMA"
+                },
+                {
+                    "value": "C",
+                    "text": "AVl"
+                },
+                {
+                    "value": "D",
+                    "text": "HTM"
+                }
+            ],
+            "correctAnswer": "B",
+            "explanation": "Windows 7 录音机程序的文件扩展名是 WMA。"
+        },
+        {
+            "id": 5,
+            "question": "在powerpoint 2010中默认的新建文件名是( )。",
+            "options": [
+                {
+                    "value": "A",
+                    "text": "DOCI"
+                },
+                {
+                    "value": "B",
+                    "text": "SHEETI"
+                },
+                {
+                    "value": "C",
+                    "text": "演示文稿1"
+                },
+                {
+                    "value": "D",
+                    "text": "BOOK1"
+                }
+            ],
+            "correctAnswer": "C",
+            "explanation": "在 PowerPoint 2010 中默认的新建文件名是 演示文稿1。"
+        },
+        {
+            "id": 6,
+            "question": "在Windows 7中，文件名MM.txt和mm.txt( )。",
+            "options": [
+                {
+                    "value": "A",
+                    "text": "是同一个文件"
+                },
+                {
+                    "value": "B",
+                    "text": "文件相同但内容不同"
+                },
+                {
+                    "value": "C",
+                    "text": "不确定"
+                },
+                {
+                    "value": "D",
+                    "text": "是两个文件"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "在 Windows 7 中，文件名区分大小写，MM.txt 和 mm.txt 是同一个文件。"
+        },
+        {
+            "id": 7,
+            "question": "在Word中，如果要将文档的扩展名取名为.txt,应在“另存为”对话框的“保存类型”框中选择( )。",
+            "options": [
+                {
+                    "value": "A",
+                    "text": "纯文本"
+                },
+                {
+                    "value": "B",
+                    "text": "Word文档"
+                },
+                {
+                    "value": "C",
+                    "text": "文档模板"
+                },
+                {
+                    "value": "D",
+                    "text": "其它"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "在 Word 中，要将文档保存为.txt格式，需要在“另存为”对话框的“保存类型”框中选择纯文本。"
+        },
+        {
+            "id": 1,
+            "question": "Excel2010工作薄文件的缺省类型是( )。",
+            "options": [
+                { "value": "A", "text": "TXT" },
+                { "value": "B", "text": "DOCX" },
+                { "value": "C", "text": "WPS" },
+                { "value": "D", "text": "XLSX" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "Excel2010工作薄文件的缺省类型是XLSX。"
+        },
+        {
+            "id": 2,
+            "question": "JPEG是一种( )。",
+            "options": [
+                { "value": "A", "text": "静止图像压缩标准" },
+                { "value": "B", "text": "运动图像压缩标准" },
+                { "value": "C", "text": "视频会议编码标准" },
+                { "value": "D", "text": "汉字编码标准" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "JPEG是一种静止图像压缩标准，广泛用于图像文件的存储和传输。"
+        },
+        {
+            "id": 3,
+            "question": "MIDI文件中记录的是( )。",
+            "options": [
+                { "value": "A", "text": "乐谱" },
+                { "value": "B", "text": "MIDI量化等级和采样频率" },
+                { "value": "C", "text": "波形采样" },
+                { "value": "D", "text": "声道" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "MIDI文件中记录的是乐谱信息，它是一种符号化的音乐表示方式，而不是具体的音频采样数据。"
+        },
+        {
+            "id": 4,
+            "question": "PowerPoint 2010演示文稿的扩展名是( )。",
+            "options": [
+                { "value": "A", "text": "．ppt" },
+                { "value": "B", "text": "．pptx" },
+                { "value": "C", "text": "．xslx" },
+                { "value": "D", "text": "．docx" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "PowerPoint 2010演示文稿的扩展名是.pptx。"
+        },
+        {
+            "id": 5,
+            "question": "Windows 7中，文件名中不能包括的符号是( )。",
+            "options": [
+                { "value": "A", "text": "#" },
+                { "value": "B", "text": ">" },
+                { "value": "C", "text": "~" },
+                { "value": "D", "text": ";" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "Windows 7中，文件名中不能包括的符号是>，因为该符号在文件系统中有特殊含义。"
+        },
+        {
+            "id": 6,
+            "question": "Windows MediaPlayer不支持的文件格式是( )。",
+            "options": [
+                { "value": "A", "text": "MPG" },
+                { "value": "B", "text": "AVI" },
+                { "value": "C", "text": "RMVB" },
+                { "value": "D", "text": "MP3" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "Windows MediaPlayer不支持RMVB文件格式。"
+        },
+        {
+            "id": 7,
+            "question": "Windows附件中的“画图”软件，不能用( )格式保存文件。",
+            "options": [
+                { "value": "A", "text": ".bmp" },
+                { "value": "B", "text": ".avi" },
+                { "value": "C", "text": ".jpg" },
+                { "value": "D", "text": ".gif" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "Windows附件中的“画图”软件主要用于处理图像，不能用.avi（视频）格式保存文件。"
+        },
+        {
+            "id": 8,
+            "question": "world.avi的文件类型是( )。",
+            "options": [
+                { "value": "A", "text": "视频文件" },
+                { "value": "B", "text": "文本文件" },
+                { "value": "C", "text": "图像文件" },
+                { "value": "D", "text": "音频文件" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "world.avi的文件类型是视频文件，因为.avi是常见的视频文件扩展名。"
+        },
+        {
+            "id": 9,
+            "question": "编辑一张图片时，分别以不同的格式保存为三个文件pic.bmp、pic.jpg、pic.gif，这三个文件的大小关系是( )。",
+            "options": [
+                { "value": "A", "text": "pic.bmp最大" },
+                { "value": "B", "text": "pic.jpg最大" },
+                { "value": "C", "text": "pic.gif最大" },
+                { "value": "D", "text": "一样大" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "pic.bmp是未压缩的位图格式，文件大小通常最大；pic.jpg是JPEG压缩格式，文件大小较小；pic.gif是GIF格式，文件大小介于两者之间。"
+        },
+        {
+            "id": 10,
+            "question": "Word2010的模板文件的扩展名为( )。",
+            "options": [
+                { "value": "A", "text": "dot" },
+                { "value": "B", "text": "dotx" },
+                { "value": "C", "text": "docx" },
+                { "value": "D", "text": "dotm" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "Word2010的模板文件的扩展名为.dotx。"
+        },
+        {
+            "id": 11,
+            "question": "不是用来存储声音的文件格式是( )。",
+            "options": [
+                { "value": "A", "text": "WAV" },
+                { "value": "B", "text": "AVI" },
+                { "value": "C", "text": "MID" },
+                { "value": "D", "text": "MP3" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "AVI是一种视频文件格式，不是用来存储声音的文件格式。"
+        },
+        {
+            "id": 12,
+            "question": "不属于数字音频格式的是( )。",
+            "options": [
+                { "value": "A", "text": "MIDI格式" },
+                { "value": "B", "text": "CD格式" },
+                { "value": "C", "text": "WAVE格式" },
+                { "value": "D", "text": "AVI格式" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "AVI格式是一种视频文件格式，不属于数字音频格式。"
+        },
+        {
+            "id": 13,
+            "question": "不同的图像文件格式往往具有不同的特性,有一种格式具有图像颜色数目不多、数据量不大、支持透明背景和动画效果、适合在网页上使用等特性,这种图像文件格式是( )。",
+            "options": [
+                { "value": "A", "text": "TIF" },
+                { "value": "B", "text": "GIF" },
+                { "value": "C", "text": "BMP" },
+                { "value": "D", "text": "JPEG" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "GIF格式具有图像颜色数目不多、数据量不大、支持透明背景和动画效果等特性，适合在网页上使用。"
+        },
+        {
+            "id": 14,
+            "question": "存储在计算机中的静态图像的压缩标准是( )。",
+            "options": [
+                { "value": "A", "text": "BMP" },
+                { "value": "B", "text": "JPEG" },
+                { "value": "C", "text": "MPEG" },
+                { "value": "D", "text": "AVI" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "JPEG是存储在计算机中的静态图像的压缩标准。"
+        },
+        {
+            "id": 15,
+            "question": "常用文件类型及其扩展名错误的( )。",
+            "options": [
+                { "value": "A", "text": "图形文件bmp、gif、jpg、piC.png、tif" },
+                { "value": "B", "text": "动画文件avi、mpg、mov、swf" },
+                { "value": "C", "text": "文档文件txt、doc.hlp、wps、rtf、htm、pdf" },
+                { "value": "D", "text": "声音文件wav、mp3、mp5" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "mp5不是声音文件格式，应该是mp4等视频格式。"
+        },
+        {
+            "id": 16,
+            "question": "存储在计算机中的全运动视频图像的压缩标准是( )。",
+            "options": [
+                { "value": "A", "text": "BMP" },
+                { "value": "B", "text": "JPG" },
+                { "value": "C", "text": "MPEG" },
+                { "value": "D", "text": "AVI" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "MPEG是存储在计算机中的全运动视频图像的压缩标准。"
+        },
+        {
+            "id": 17,
+            "question": "根据文件的扩展名，下列文件属于Word文档的是( )。",
+            "options": [
+                { "value": "A", "text": "text.wav" },
+                { "value": "B", "text": "text.txt" },
+                { "value": "C", "text": "text.png" },
+                { "value": "D", "text": "text.docx" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "text.docx是Word文档的扩展名。"
+        },
+        {
+            "id": 18,
+            "question": "记事本程序可用来编辑扩展名为( )的文件。",
+            "options": [
+                { "value": "A", "text": "TXT" },
+                { "value": "B", "text": "COM" },
+                { "value": "C", "text": "EXE" },
+                { "value": "D", "text": "BMP" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "记事本程序可用来编辑扩展名为TXT的文件。"
+        },
+        {
+            "id": 19,
+            "question": "根据文件名的命名规则，下列文件名合法的是( )。",
+            "options": [
+                { "value": "A", "text": "*ABC.TST" },
+                { "value": "B", "text": "ABC?.BAT" },
+                { "value": "C", "text": "AB\\C.COM" },
+                { "value": "D", "text": "ABCD.TXT" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "在Windows文件名中，不能包含*、?、\\等特殊字符，所以ABCD.TXT是合法的文件名。"
+        },
+        {
+            "id": 20,
+            "question": "扩展名为( )的文件，在没有安装PowerPoint 2010的系统中可直接放映。",
+            "options": [
+                { "value": "A", "text": ".pop" },
+                { "value": "B", "text": ".ppz" },
+                { "value": "C", "text": ".pps" },
+                { "value": "D", "text": ".ppt" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "扩展名为.pps的文件是PowerPoint放映文件，在没有安装PowerPoint 2010的系统中也可直接放映。"
+        },
+        {
+            "id": 21,
+            "question": "扩展名为.BAK的文件称为( )。",
+            "options": [
+                { "value": "A", "text": "批处理文件" },
+                { "value": "B", "text": "BASIC文件" },
+                { "value": "C", "text": "临时文件" },
+                { "value": "D", "text": "备份文件" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "扩展名为.BAK的文件通常称为备份文件。"
+        },
+        {
+            "id": 22,
+            "question": "扩展名为bmp的文件一般属于( )。",
+            "options": [
+                { "value": "A", "text": "文本文件" },
+                { "value": "B", "text": "图像文件" },
+                { "value": "C", "text": "声音文件" },
+                { "value": "D", "text": "视频文件" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "扩展名为bmp的文件一般属于图像文件。"
+        },
+        {
+            "id": 23,
+            "question": "确定一个文件的存放位置的是( )。",
+            "options": [
+                { "value": "A", "text": "文件名称" },
+                { "value": "B", "text": "文件属性" },
+                { "value": "C", "text": "文件扩展名" },
+                { "value": "D", "text": "文件路径" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "文件路径确定一个文件的存放位置。"
+        },
+        {
+            "id": 24,
+            "question": "如果要将文档的扩展名取名为.txt,应在'另存为'对话框的'保存类型'框中选择( )。",
+            "options": [
+                { "value": "A", "text": "纯文本" },
+                { "value": "B", "text": "Word文档" },
+                { "value": "C", "text": "文档模板" },
+                { "value": "D", "text": "其它" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "如果要将文档的扩展名取名为.txt，应在'另存为'对话框的'保存类型'框中选择纯文本。"
+        },
+        {
+            "id": 25,
+            "question": "神话.mp3的文件类型是( )。",
+            "options": [
+                { "value": "A", "text": "视频文件" },
+                { "value": "B", "text": "文本文件" },
+                { "value": "C", "text": "图像文件" },
+                { "value": "D", "text": "音频文件" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "神话.mp3的文件类型是音频文件。"
+        },
+        {
+            "id": 26,
+            "question": "利用word2010编辑的文档不可能保存为下列哪种格式的文件( )。",
+            "options": [
+                { "value": "A", "text": ".rtf" },
+                { "value": "B", "text": ".pdf" },
+                { "value": "C", "text": ".wps" },
+                { "value": "D", "text": ".htm" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "利用word2010编辑的文档可以保存为.rtf、.pdf、.htm等格式，但不能直接保存为.wps格式。"
+        },
+        {
+            "id": 27,
+            "question": "数据和程序是以( )形式存储在磁盘上的。",
+            "options": [
+                { "value": "A", "text": "集合" },
+                { "value": "B", "text": "文件" },
+                { "value": "C", "text": "目录" },
+                { "value": "D", "text": "文件夹" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "数据和程序是以文件形式存储在磁盘上的。"
+        },
+        {
+            "id": 28,
+            "question": "双击文件setup.bmp时，默认情况下系统会调用( )程序来打开它。",
+            "options": [
+                { "value": "A", "text": "记事本" },
+                { "value": "B", "text": "画图" },
+                { "value": "C", "text": "WORD" },
+                { "value": "D", "text": "Excel" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "双击文件setup.bmp时，默认情况下系统会调用画图程序来打开它。"
+        },
+        {
+            "id": 29,
+            "question": "通用的动态图像压缩标准是( )。",
+            "options": [
+                { "value": "A", "text": "JPEG" },
+                { "value": "B", "text": "MP3" },
+                { "value": "C", "text": "MPEG" },
+                { "value": "D", "text": "VCD" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "MPEG是通用的动态图像压缩标准。"
+        },
+        {
+            "id": 30,
+            "question": "通常情况下，写字板文件的扩展名为( )。",
+            "options": [
+                { "value": "A", "text": "TXT" },
+                { "value": "B", "text": "BMP" },
+                { "value": "C", "text": "RTF" },
+                { "value": "D", "text": "EXE" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "通常情况下，写字板文件的扩展名为RTF。"
+        },
+        {
+            "id": 31,
+            "question": "同学们通过学校的VOD视频点播系统点播的电影不可能的格式是( )。",
+            "options": [
+                { "value": "A", "text": ".av" },
+                { "value": "B", "text": ".rm" },
+                { "value": "C", "text": ".rmvb" },
+                { "value": "D", "text": ".jpg" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "jpg是图像文件格式，不是视频文件格式，所以同学们通过学校的VOD视频点播系统点播的电影不可能是.jpg格式。"
+        },
+        {
+            "id": 32,
+            "question": "图像数据经有损压缩后，下列说法正确的是( )。",
+            "options": [
+                { "value": "A", "text": "图像的清晰度更高" },
+                { "value": "B", "text": "图像的色彩更鲜艳" },
+                { "value": "C", "text": "图像放大后不会失真" },
+                { "value": "D", "text": "图像所需的存储空间更小" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "图像数据经有损压缩后，图像所需的存储空间会变小，但图像的清晰度、色彩和放大后的效果可能会受到影响。"
+        },
+        {
+            "id": 33,
+            "question": "文件的类型可以根据( )来识别。",
+            "options": [
+                { "value": "A", "text": "文件的大小" },
+                { "value": "B", "text": "文件的用途" },
+                { "value": "C", "text": "文件的扩展名" },
+                { "value": "D", "text": "文件的存放位置" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "文件的类型通常可以根据文件的扩展名来识别。"
+        },
+        {
+            "id": 34,
+            "question": "图像文件的格式不包括( )。",
+            "options": [
+                { "value": "A", "text": "BMP" },
+                { "value": "B", "text": "DOC" },
+                { "value": "C", "text": "GIF" },
+                { "value": "D", "text": "JPEG" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "DOC是文档文件格式，不是图像文件格式。"
+        },
+        {
+            "id": 35,
+            "question": "下列常用文件及其扩展名正确的是( )。",
+            "options": [
+                { "value": "A", "text": "html：压缩文件" },
+                { "value": "B", "text": "RAR：压缩文件" },
+                { "value": "C", "text": "zip：视频文件" },
+                { "value": "D", "text": "mp3：视频文件" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "RAR是压缩文件的扩展名。"
+        },
+        {
+            "id": 36,
+            "question": "下列存储格式属于文字类型的有( )。",
+            "options": [
+                { "value": "A", "text": ".txt" },
+                { "value": "B", "text": ".jpg" },
+                { "value": "C", "text": ".mp3" },
+                { "value": "D", "text": ".gif" }
+            ],
+            "correctAnswer": "A",
+            "explanation": ".txt是文字类型的文件格式。"
+        },
+        {
+            "id": 37,
+            "question": "下列关于CD-ROM光盘的描述中，不正确的是( )。",
+            "options": [
+                { "value": "A", "text": "容量大" },
+                { "value": "B", "text": "保存时间长" },
+                { "value": "C", "text": "传输速度比硬盘慢" },
+                { "value": "D", "text": "可读可写" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "CD-ROM光盘是只读光盘，不可写入数据。"
+        },
+        {
+            "id": 38,
+            "question": "下列说法正确的是( )。",
+            "options": [
+                { "value": "A", "text": "gif格式文件不是图像文件" },
+                { "value": "B", "text": "gif格式文件只能是静态图片" },
+                { "value": "C", "text": "gif格式文件只能是动画" },
+                { "value": "D", "text": "gif格式文件不能添加声音" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "gif格式文件是图像文件，可以是静态图片也可以是动画，但不能添加声音。"
+        },
+        {
+            "id": 39,
+            "question": "下列四种文件格式中，属于音频文件的格式是( )。",
+            "options": [
+                { "value": "A", "text": "WAV格式" },
+                { "value": "B", "text": "MOV格式" },
+                { "value": "C", "text": "MPEG格式" },
+                { "value": "D", "text": "MIC格式" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "WAV格式是音频文件格式。"
+        },
+        {
+            "id": 40,
+            "question": "下列文件的扩展名中，表示动画文件格式的是( )。",
+            "options": [
+                { "value": "A", "text": ".jpg" },
+                { "value": "B", "text": ".avi" },
+                { "value": "C", "text": ".rm" },
+                { "value": "D", "text": ".swf" }
+            ],
+            "correctAnswer": "D",
+            "explanation": ".swf是动画文件格式。"
+        },
+        {
+            "id": 41,
+            "question": "下列属于音频文件格式的是( )。",
+            "options": [
+                { "value": "A", "text": "gif" },
+                { "value": "B", "text": "psd" },
+                { "value": "C", "text": "wav" },
+                { "value": "D", "text": "swf" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "wav是音频文件格式。"
+        },
+        {
+            "id": 42,
+            "question": "下列文件格式存储的图像，在缩放过程中不易失真的是( )。",
+            "options": [
+                { "value": "A", "text": ".bmp" },
+                { "value": "B", "text": ".psd" },
+                { "value": "C", "text": ".jpg" },
+                { "value": "D", "text": ".cdr" }
+            ],
+            "correctAnswer": "D",
+            "explanation": ".cdr是矢量图形文件格式，在缩放过程中不易失真。"
+        },
+        {
+            "id": 43,
+            "question": "下列文件格式中，( )是无损压缩。",
+            "options": [
+                { "value": "A", "text": "GIF" },
+                { "value": "B", "text": "MPEG" },
+                { "value": "C", "text": "JPEG" },
+                { "value": "D", "text": "BMP" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "GIF是一种无损压缩的图像文件格式。"
+        },
+        {
+            "id": 44,
+            "question": "下列文件中，( )是视频文件。",
+            "options": [
+                { "value": "A", "text": "生日快乐.avi" },
+                { "value": "B", "text": "中国心.mp3" },
+                { "value": "C", "text": "2016毕业班.psd" },
+                { "value": "D", "text": "记录.jpg" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "生日快乐.avi是视频文件。"
+        },
+        {
+            "id": 45,
+            "question": "下列文件名中非法的Windows文件名为( )。",
+            "options": [
+                { "value": "A", "text": "X+Y" },
+                { "value": "B", "text": "X*Y" },
+                { "value": "C", "text": "X÷Y" },
+                { "value": "D", "text": "X-Y" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "在Windows文件名中，不能包含*等特殊字符，所以X*Y是非法的文件名。"
+        },
+        {
+            "id": 46,
+            "question": "下列文件中，属于图像文件格式的是( )。",
+            "options": [
+                { "value": "A", "text": "images.swf" },
+                { "value": "B", "text": "images.avi" },
+                { "value": "C", "text": "images.jpg" },
+                { "value": "D", "text": "images.wav" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "images.jpg是图像文件格式。"
+        },
+        {
+            "id": 47,
+            "question": "下面不属图片类型文件的是( )。",
+            "options": [
+                { "value": "A", "text": "BMP" },
+                { "value": "B", "text": "JPG" },
+                { "value": "C", "text": "TXT" },
+                { "value": "D", "text": "GIF" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "TXT不是图片类型文件。"
+        },
+        {
+            "id": 48,
+            "question": "小洪要进行一个多媒体作品的发布，为了使用户能够在只安装Windows系统而没有安装任何工具软件的电脑上运行该多媒体作品，其文件格式应为( )。",
+            "options": [
+                { "value": "A", "text": "PSD" },
+                { "value": "B", "text": "FLA" },
+                { "value": "C", "text": "EXE" },
+                { "value": "D", "text": "PPT" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "EXE是可执行文件格式，可以在只安装Windows系统的电脑上运行。"
+        },
+        {
+            "id": 49,
+            "question": "下面的文件格式( )不是图形图像的存储格式。",
+            "options": [
+                { "value": "A", "text": ".doc" },
+                { "value": "B", "text": ".jpg" },
+                { "value": "C", "text": ".gif" },
+                { "value": "D", "text": ".bmp" }
+            ],
+            "correctAnswer": "A",
+            "explanation": ".doc是文档文件格式，不是图形图像的存储格式。"
+        },
+        {
+            "id": 50,
+            "question": "一个完整的文件名由( )组成。",
+            "options": [
+                { "value": "A", "text": "路径、主文件名和文件的属性" },
+                { "value": "B", "text": "盘符、主文件名和文件的属性" },
+                { "value": "C", "text": "盘符、路径、主文件名和文件的扩展名" },
+                { "value": "D", "text": "主文件名、文件的属性和文件的扩展名" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "一个完整的文件名由盘符、路径、主文件名和文件的扩展名组成。"
+        },
+        {
+            "id": 1,
+            "question": "在Windows7中，要将屏幕分辨率调整到1024*768，进行设置时应选择控制面板中的“外观和个性化”类别下的（ ），其中有调整屏幕分辨率选项",
+            "options": [
+                {"value": "A", "text": "更改主题"},
+                {"value": "B", "text": "更改桌面背景"},
+                {"value": "C", "text": "更改字体"},
+                {"value": "D", "text": "调整屏幕分辨率"}
+            ],
+            "correctAnswer": "D",
+            "explanation": "在Windows7中，调整屏幕分辨率的选项位于控制面板的“外观和个性化”类别下的“调整屏幕分辨率”选项中。"
+        },
+        {
+            "id": 2,
+            "question": "在Windows中，当桌面上有多个窗口存在时，（ ）是活动窗口",
+            "options": [
+                {"value": "A", "text": "所有窗口"},
+                {"value": "B", "text": "标题栏颜色特殊的窗口"},
+                {"value": "C", "text": "位于最后面的窗口"},
+                {"value": "D", "text": "被其他窗口盖住的窗口"}
+            ],
+            "correctAnswer": "B",
+            "explanation": "在Windows中，标题栏颜色特殊的窗口是活动窗口。活动窗口是当前可以进行操作的窗口，其标题栏通常会有不同的颜色或样式来区分。"
+        },
+        {
+            "id": 3,
+            "question": "在查找文件时，通配符*与？的含义是（ ）",
+            "options": [
+                {"value": "A", "text": "*表示任意多个字符，？表示任意一个字符"},
+                {"value": "B", "text": "？表示任意多个字符，*表示任意一个字符"},
+                {"value": "C", "text": "*和？表示乘号和问号"},
+                {"value": "D", "text": "查找*.？与？.*的文件是一致的"}
+            ],
+            "correctAnswer": "A",
+            "explanation": "在查找文件时，通配符*表示任意多个字符，？表示任意一个字符。例如，*.txt表示查找所有扩展名为txt的文件，而？.txt表示查找文件名只有一个字符且扩展名为txt的文件。"
+        },
+        {
+            "id": 4,
+            "question": "正确退出Windows7的方法是（ ）",
+            "options": [
+                {"value": "A", "text": "按一下主机电源开关"},
+                {"value": "B", "text": "一直按住主机电源开关，直到关机"},
+                {"value": "C", "text": "单击桌面上的“关闭”按钮"},
+                {"value": "D", "text": "在“开始”菜单中选择“关闭”命令"}
+            ],
+            "correctAnswer": "D",
+            "explanation": "正确退出Windows7的方法是在“开始”菜单中选择“关闭”命令。这样可以确保系统正常关闭，避免数据丢失或系统损坏。"
+        },
+        {
+            "id": 5,
+            "question": "下列有关Windows操作系统文件的说法中，错误的是（ ）",
+            "options": [
+                {"value": "A", "text": "同一文件夹中允许有不同名但内容相同的文件"},
+                {"value": "B", "text": "同一文件夹中允许有不同名且不能内容的文件"},
+                {"value": "C", "text": "同一文件夹中允许有同名的文件"},
+                {"value": "D", "text": "不同文件夹中允许出现同名的文件"}
+            ],
+            "correctAnswer": "C",
+            "explanation": "在Windows操作系统中，同一文件夹中不允许有同名的文件。文件名必须是唯一的，以避免混淆。不同文件夹中可以有同名的文件。"
+        },
+        {
+            "id": 6,
+            "question": "下列关于库的认识，正确的是（ ）",
+            "options": [
+                {"value": "A", "text": "库中的文件夹是不能共享的"},
+                {"value": "B", "text": "库中删除过的文件夹是不能再加入库的"},
+                {"value": "C", "text": "库中的文件夹是可以删除的"},
+                {"value": "D", "text": "在库中删除文件夹后，原来的文件夹就被删除了"}
+            ],
+            "correctAnswer": "C",
+            "explanation": "库中的文件夹是可以删除的。删除库中的文件夹只是从库中移除该文件夹的链接，并不会删除原始文件夹。"
+        },
+        {
+            "id": 7,
+            "question": "在Windows资源管理器中，选定文件后，打开“文件属性”对话框的操作是（ ）",
+            "options": [
+                {"value": "A", "text": "选择“文件”→“属性”菜单项"},
+                {"value": "B", "text": "选择“编辑”→“属性”菜单项"},
+                {"value": "C", "text": "选择“查看”→“属性”菜单项"},
+                {"value": "D", "text": "选择“工具”→“属性”菜单项"}
+            ],
+            "correctAnswer": "A",
+            "explanation": "在Windows资源管理器中，选定文件后，打开“文件属性”对话框的操作是选择“文件”→“属性”菜单项。"
+        },
+        {
+            "id": 8,
+            "question": "以下Windows7的叙述中，正确的是（ ）",
+            "options": [
+                {"value": "A", "text": "桌面上图标的数量是规定不变的"},
+                {"value": "B", "text": "桌面上图标的数量不超过30个"},
+                {"value": "C", "text": "桌面上的图标可以增加"},
+                {"value": "D", "text": "可以直接删除桌面上的所有图标"}
+            ],
+            "correctAnswer": "C",
+            "explanation": "桌面上的图标可以增加。用户可以根据需要将文件、文件夹或快捷方式添加到桌面上。"
+        },
+        {
+            "id": 9,
+            "question": "下列选项中，通常被称为“上档键”的是（ ）",
+            "options": [
+                {"value": "A", "text": "Shift"},
+                {"value": "B", "text": "Capslock"},
+                {"value": "C", "text": "Backspace"},
+                {"value": "D", "text": "Delete"}
+            ],
+            "correctAnswer": "A",
+            "explanation": "Shift键通常被称为“上档键”，用于输入大写字母或符号。"
+        },
+        {
+            "id": 10,
+            "question": "操作系统的主要功能是对计算机系统的四类资源进行有效的管理，即处理器管理、存储器管理、I/O设备管理和（ ）",
+            "options": [
+                {"value": "A", "text": "软盘读写管理"},
+                {"value": "B", "text": "硬盘读写管理"},
+                {"value": "C", "text": "硬件系统管理"},
+                {"value": "D", "text": "文件系统管理"}
+            ],
+            "correctAnswer": "D",
+            "explanation": "操作系统的主要功能是对计算机系统的四类资源进行有效的管理，即处理器管理、存储器管理、I/O设备管理和文件系统管理。"
+        },
+        {
+            "id": 11,
+            "question": "在Windows7计算机窗口中，文件存放的路径会显示在（ ）",
+            "options": [
+                {"value": "A", "text": "标题栏"},
+                {"value": "B", "text": "地址栏"},
+                {"value": "C", "text": "导航空格"},
+                {"value": "D", "text": "状态栏"}
+            ],
+            "correctAnswer": "B",
+            "explanation": "在Windows7计算机窗口中，文件存放的路径会显示在地址栏中。"
+        },
+        {
+            "id": 12,
+            "question": "在Windows7中，把整个屏幕图面复制到剪贴板的操作是（ ）",
+            "options": [
+                {"value": "A", "text": "PrintScreen"},
+                {"value": "B", "text": "Alt+PrintScreen"},
+                {"value": "C", "text": "Ctrl+Shift"},
+                {"value": "D", "text": "Shift+Space"}
+            ],
+            "correctAnswer": "A",
+            "explanation": "在Windows7中，按下PrintScreen键可以将整个屏幕图面复制到剪贴板。"
+        },
+        {
+            "id": 13,
+            "question": "Windows7中，任务栏的主要功能是（ ）",
+            "options": [
+                {"value": "A", "text": "显示当前窗口的图标"},
+                {"value": "B", "text": "显示系统的所有功能"},
+                {"value": "C", "text": "显示所有已打开过的窗口图标"},
+                {"value": "D", "text": "实现任务间的切换"}
+            ],
+            "correctAnswer": "D",
+            "explanation": "Windows7中，任务栏的主要功能是实现任务间的切换。用户可以通过点击任务栏上的图标快速切换到不同的窗口。"
+        },
+        {
+            "id": 14,
+            "question": "在Windows操作系统的对话框中，用户必须并且只能选择其中一项的称为（ ）",
+            "options": [
+                {"value": "A", "text": "单选框"},
+                {"value": "B", "text": "列表框"},
+                {"value": "C", "text": "复选框"},
+                {"value": "D", "text": "文本框"}
+            ],
+            "correctAnswer": "A",
+            "explanation": "在Windows操作系统的对话框中，用户必须并且只能选择其中一项的称为单选框。"
+        },
+        {
+            "id": 15,
+            "question": "在Windows中，当一个文件更名后，则文件的内容（ ）",
+            "options": [
+                {"value": "A", "text": "完全消失"},
+                {"value": "B", "text": "完全不变"},
+                {"value": "C", "text": "部分改变"},
+                {"value": "D", "text": "全部改变"}
+            ],
+            "correctAnswer": "B",
+            "explanation": "在Windows中，当一个文件更名后，文件的内容完全不变。更名只是改变了文件的名称，不会影响文件的内容。"
+        },
+        {
+            "id": 16,
+            "question": "Windows7中，“日期和时间”对话框中不可以进行（ ）",
+            "options": [
+                {"value": "A", "text": "更改日期和时间"},
+                {"value": "B", "text": "附加时钟"},
+                {"value": "C", "text": "与Internet时间同步"},
+                {"value": "D", "text": "货币格式"}
+            ],
+            "correctAnswer": "D",
+            "explanation": "Windows7中，“日期和时间”对话框中不可以进行货币格式的设置。"
+        },
+        {
+            "id": 17,
+            "question": "Windows7的目录结构采用的是（ ）",
+            "options": [
+                {"value": "A", "text": "树形结构"},
+                {"value": "B", "text": "线性结构"},
+                {"value": "C", "text": "层次结构"},
+                {"value": "D", "text": "网状结构"}
+            ],
+            "correctAnswer": "A",
+            "explanation": "Windows7的目录结构采用的是树形结构。树形结构可以清晰地表示文件和文件夹之间的层次关系。"
+        },
+        {
+            "id": 18,
+            "question": "Windows菜单操作中，如果某个菜单项的颜色暗淡，则表示（ ）",
+            "options": [
+                {"value": "A", "text": "只要双击，就能选中"},
+                {"value": "B", "text": "必须连续三击，才能选中"},
+                {"value": "C", "text": "单击被选中后，还会显示出一个方框要求操作者进一步输入信息"},
+                {"value": "D", "text": "在当前情况下，这项选择是没有意义的，选中它不会有任何反应"}
+            ],
+            "correctAnswer": "D",
+            "explanation": "Windows菜单操作中，如果某个菜单项的颜色暗淡，则表示在当前情况下，这项选择是没有意义的，选中它不会有任何反应。"
+        },
+        {
+            "id": 19,
+            "question": "Windows中的回收站，存放的是（ ）",
+            "options": [
+                {"value": "A", "text": "硬盘上被删除的文件或文件夹"},
+                {"value": "B", "text": "软盘上被删除的文件或文件夹"},
+                {"value": "C", "text": "网上邻居上被删除的文件或文件夹"},
+                {"value": "D", "text": "所有外存储器中被删除的文件或文件夹"}
+            ],
+            "correctAnswer": "A",
+            "explanation": "Windows中的回收站，存放的是硬盘上被删除的文件或文件夹。回收站是一个临时存储被删除文件的地方，用户可以从中恢复文件。"
+        },
+        {
+            "id": 20,
+            "question": "快捷方式确切的含义是（ ）",
+            "options": [
+                {"value": "A", "text": "特殊文件夹"},
+                {"value": "B", "text": "其文件的副本"},
+                {"value": "C", "text": "各类可执行文件"},
+                {"value": "D", "text": "指向某对象的指针"}
+            ],
+            "correctAnswer": "D",
+            "explanation": "快捷方式确切的含义是指向某对象的指针。快捷方式是一个指向目标文件或程序的链接，而不是文件的副本。"
+        },
+        {
+            "id": 21,
+            "question": "如果鼠标器突然失灵，要结束一个正在运行的应用程序（任务），可用的组合键是（ ）",
+            "options": [
+                {"value": "A", "text": "Alt+F4"},
+                {"value": "B", "text": "Ctrl+F4"},
+                {"value": "C", "text": "Shift+F4"},
+                {"value": "D", "text": "Alt+Shift"}
+            ],
+            "correctAnswer": "A",
+            "explanation": "如果鼠标器突然失灵，要结束一个正在运行的应用程序（任务），可以使用Alt+F4组合键。"
+        },
+        {
+            "id": 22,
+            "question": "系统时间值显示在任务栏的（ ）",
+            "options": [
+                {"value": "A", "text": "开始菜单中"},
+                {"value": "B", "text": "快捷启动栏中"},
+                {"value": "C", "text": "窗口按钮栏中"},
+                {"value": "D", "text": "信息栏中"}
+            ],
+            "correctAnswer": "D",
+            "explanation": "系统时间值显示在任务栏的信息栏中。"
+        },
+        {
+            "id": 23,
+            "question": "下列关于操作系统任务管理的说法中，错误的是（ ）",
+            "options": [
+                {"value": "A", "text": "Windows操作系统支持多任务处理技术"},
+                {"value": "B", "text": "并行处理技术可以让多个CPU同时工作，提高计算机效率"},
+                {"value": "C", "text": "多任务处理技术通常是将CPU时间划分成时间片，轮流为多个任务服务"},
+                {"value": "D", "text": "多任务处理技术要求计算机必须配有多个CPU，或者是配有多核的CPU"}
+            ],
+            "correctAnswer": "D",
+            "explanation": "多任务处理技术并不要求计算机必须配有多个CPU，或者是配有多核的CPU。单核CPU也可以通过时间片轮转等方式实现多任务处理。"
+        },
+        {
+            "id": 24,
+            "question": "选中多个文件后，要取消一个文件的选择，应（ ）",
+            "options": [
+                {"value": "A", "text": "直接单击要取消的文件图标"},
+                {"value": "B", "text": "在工作区空白处单击"},
+                {"value": "C", "text": "按住Ctrl键，单击要取消的文件图标"},
+                {"value": "D", "text": "按住Shift键，单击要取消的文件图标"}
+            ],
+            "correctAnswer": "C",
+            "explanation": "选中多个文件后，要取消一个文件的选择，应按住Ctrl键，单击要取消的文件图标。"
+        },
+        {
+            "id": 25,
+            "question": "在Windows7操作系统中，为保护文件不被修改，可将该文档的属性设置为( )",
+            "options": [
+                {"value": "A", "text": "存档"},
+                {"value": "B", "text": "隐藏"},
+                {"value": "C", "text": "系统"},
+                {"value": "D", "text": "只读"}
+            ],
+            "correctAnswer": "D",
+            "explanation": "在Windows7操作系统中，为保护文件不被修改，可将该文档的属性设置为只读。只读属性的文件只能查看，不能进行修改。"
+        },
+        {
+            "id": 26,
+            "question": "在删除文件时如果使用组合键“Shift+Delete”，则（ ）",
+            "options": [
+                {"value": "A", "text": "不删除该文件，文件还在原处"},
+                {"value": "B", "text": "删除文件，文件被放入回收站"},
+                {"value": "C", "text": "删除文件，文件被放入内存"},
+                {"value": "D", "text": "删除文件，文件彻底清除"}
+            ],
+            "correctAnswer": "D",
+            "explanation": "在删除文件时如果使用组合键“Shift+Delete”，则删除文件，文件彻底清除，不会放入回收站。"
+        },
+        {
+            "id": 27,
+            "question": "在Windows资源管理器中，要把文件或文件夹图标设置成“大图标”方式显示，使用的菜单组是（ ）",
+            "options": [
+                {"value": "A", "text": "“文件”菜单"},
+                {"value": "B", "text": "“编辑”菜单"},
+                {"value": "C", "text": "“查看”菜单"},
+                {"value": "D", "text": "“工具”菜单"}
+            ],
+            "correctAnswer": "C",
+            "explanation": "在Windows资源管理器中，要把文件或文件夹图标设置成“大图标”方式显示，使用的菜单组是“查看”菜单。"
+        },
+        {
+            "id": 28,
+            "question": "Windows7支持即插即用设备，是指（ ）",
+            "options": [
+                {"value": "A", "text": "由用户安装驱动程序后，即可使用"},
+                {"value": "B", "text": "网卡、显示卡、声卡等硬盘板卡"},
+                {"value": "C", "text": "支持所有的硬件设备"},
+                {"value": "D", "text": "Windows7可自动检测计算机上新安装硬件，并安装相关驱动程序"}
+            ],
+            "correctAnswer": "D",
+            "explanation": "Windows7支持即插即用设备，是指Windows7可自动检测计算机上新安装硬件，并安装相关驱动程序。"
+        },
+        {
+            "id": 29,
+            "question": "微机上广泛使用的Windows XP是（ ）",
+            "options": [
+                {"value": "A", "text": "多用户多任务操作系统"},
+                {"value": "B", "text": "单用户多任务操作系统"},
+                {"value": "C", "text": "实时操作系统"},
+                {"value": "D", "text": "多用户分时操作系统"}
+            ],
+            "correctAnswer": "B",
+            "explanation": "微机上广泛使用的Windows XP是单用户多任务操作系统。"
+        },
+        {
+            "id": 30,
+            "question": "操作系统中的文件管理系统为用户提供的功能是（ ）",
+            "options": [
+                {"value": "A", "text": "按文件作者存取文件"},
+                {"value": "B", "text": "按文件名管理文件"},
+                {"value": "C", "text": "按文件创建日期存取文件"},
+                {"value": "D", "text": "按文件大小存取文件"}
+            ],
+            "correctAnswer": "B",
+            "explanation": "操作系统中的文件管理系统为用户提供的功能是按文件名管理文件。"
+        },
+        {
+            "id": 31,
+            "question": "基于Linux的操作系统是（ ）",
+            "options": [
+                {"value": "A", "text": "Android"},
+                {"value": "B", "text": "Windows Phone"},
+                {"value": "C", "text": "iOS"},
+                {"value": "D", "text": "Symbian"}
+            ],
+            "correctAnswer": "A",
+            "explanation": "基于Linux的操作系统是Android。"
+        },
+        {
+            "id": 32,
+            "question": "Windows操作系统在逻辑设计上的缺陷或者编写时产生的错误称为（ ）",
+            "options": [
+                {"value": "A", "text": "系统漏洞"},
+                {"value": "B", "text": "系统垃圾"},
+                {"value": "C", "text": "系统插件"},
+                {"value": "D", "text": "木马病毒"}
+            ],
+            "correctAnswer": "A",
+            "explanation": "Windows操作系统在逻辑设计上的缺陷或者编写时产生的错误称为系统漏洞。"
+        },
+        {
+            "id": 33,
+            "question": "中文Windows中包含的汉字库文件是用来解决（ ）问题的",
+            "options": [
+                {"value": "A", "text": "使用者输入的汉字在机内的存储"},
+                {"value": "B", "text": "输入时的键盘编码"},
+                {"value": "C", "text": "汉字识别"},
+                {"value": "D", "text": "输出时转换为显示或打印字模"}
+            ],
+            "correctAnswer": "D",
+            "explanation": "中文Windows中包含的汉字库文件是用来解决输出时转换为显示或打印字模的问题。"
+        },
+        {
+            "id": 34,
+            "question": "apple公司的平板电脑iPad产品使用的操作系统是（ ）",
+            "options": [
+                {"value": "A", "text": "Windows Phone"},
+                {"value": "B", "text": "Android"},
+                {"value": "C", "text": "iOS"},
+                {"value": "D", "text": "Unix"}
+            ],
+            "correctAnswer": "C",
+            "explanation": "apple公司的平板电脑iPad产品使用的操作系统是iOS。"
+        },
+        {
+            "id": 35,
+            "question": "操作系统管理用户数据的单位是（ ）",
+            "options": [
+                {"value": "A", "text": "扇区"},
+                {"value": "B", "text": "文件"},
+                {"value": "C", "text": "磁道"},
+                {"value": "D", "text": "字节"}
+            ],
+            "correctAnswer": "B",
+            "explanation": "操作系统管理用户数据的单位是文件。"
+        },
+        {
+            "id": 36,
+            "question": "在Windows中，回收站是（ ）中的一块区域",
+            "options": [
+                {"value": "A", "text": "内存"},
+                {"value": "B", "text": "硬盘"},
+                {"value": "C", "text": "软盘"},
+                {"value": "D", "text": "高速缓存"}
+            ],
+            "correctAnswer": "B",
+            "explanation": "在Windows中，回收站是硬盘中的一块区域。"
+        },
+        {
+            "id": 37,
+            "question": "操作系统是现代计算机系统不可缺少的组成部分，操作系统负责管理计算机的（ ）",
+            "options": [
+                {"value": "A", "text": "程序"},
+                {"value": "B", "text": "功能"},
+                {"value": "C", "text": "资源"},
+                {"value": "D", "text": "进程"}
+            ],
+            "correctAnswer": "C",
+            "explanation": "操作系统是现代计算机系统不可缺少的组成部分，操作系统负责管理计算机的资源。"
+        },
+        {
+            "id": 38,
+            "question": "操作系统具有存储器管理功能，当内存不够用时，其存储管理程序可以自动“扩充”内存，为用户提供一个容量比实际内存大得多的（ ）",
+            "options": [
+                {"value": "A", "text": "虚拟存储器"},
+                {"value": "B", "text": "脱机缓冲存储器"},
+                {"value": "C", "text": "高速缓冲存储器"},
+                {"value": "D", "text": "离线后备存储器"}
+            ],
+            "correctAnswer": "A",
+            "explanation": "操作系统具有存储器管理功能，当内存不够用时，其存储管理程序可以自动“扩充”内存，为用户提供一个容量比实际内存大得多的虚拟存储器。"
+        },
+        {
+            "id": 39,
+            "question": "正常情况下，下列哪一个操作系统不能用于笔记本电脑（ ）",
+            "options": [
+                {"value": "A", "text": "Linux"},
+                {"value": "B", "text": "Windows 8"},
+                {"value": "C", "text": "Windows 10"},
+                {"value": "D", "text": "Android"}
+            ],
+            "correctAnswer": "D",
+            "explanation": "正常情况下，Android操作系统不能用于笔记本电脑。Android主要用于移动设备，如手机和平板电脑。"
+        },
+        {
+            "id": 40,
+            "question": "在Windows文件夹窗口中有36个文件，用鼠标左键依次单击前5个文件，被选定的文件个数是（）",
+            "options": [
+                {"value": "A", "text": "0"},
+                {"value": "B", "text": "1"},
+                {"value": "C", "text": "5"},
+                {"value": "D", "text": "35"}
+            ],
+            "correctAnswer": "B",
+            "explanation": "在Windows文件夹窗口中，用鼠标左键依次单击前5个文件，只有最后一个被单击的文件会被选中，因此被选定的文件个数是1。"
+        },
+        {
+            "id": 41,
+            "question": "下列选项中属于智能手机操作系统的是（）",
+            "options": [
+                {"value": "A", "text": "Android"},
+                {"value": "B", "text": "Windows server"},
+                {"value": "C", "text": "Windows 7"},
+                {"value": "D", "text": "Mac Os"}
+            ],
+            "correctAnswer": "A",
+            "explanation": "下列选项中属于智能手机操作系统的是Android。"
+        },
+        {
+            "id": 42,
+            "question": "能管理计算机的硬件和软件资源，为应用程序开发和运行提供高效率平台的是（ ）",
+            "options": [
+                {"value": "A", "text": "操作系统"},
+                {"value": "B", "text": "数据库管理系统"},
+                {"value": "C", "text": "资源管理器"},
+                {"value": "D", "text": "系统软件"}
+            ],
+            "correctAnswer": "A",
+            "explanation": "能管理计算机的硬件和软件资源，为应用程序开发和运行提供高效率平台的是操作系统。"
+        },
+        {
+            "id": 43,
+            "question": "多年前一位芬兰大学生人在Internet上公开发布了一种免费操作系统（ ），经过许多人的努力，该操作系统正在不断完善，并被推广应用",
+            "options": [
+                {"value": "A", "text": "Windows XP"},
+                {"value": "B", "text": "Novell"},
+                {"value": "C", "text": "UNIX"},
+                {"value": "D", "text": "Linux"}
+            ],
+            "correctAnswer": "D",
+            "explanation": "多年前一位芬兰大学生（林纳斯·托瓦兹）在Internet上公开发布了一种免费操作系统Linux，经过许多人的努力，该操作系统正在不断完善，并被推广应用。"
+        },
+        {
+            "id": 44,
+            "question": "下列关于Windows的搜索功能，叙述错误的是（ ）",
+            "options": [
+                {"value": "A", "text": "可以按文件名称、修改日期、文件类型等条件进行搜索"},
+                {"value": "B", "text": "搜索到的文件或文件夹只能查看，不能进行其它操作"},
+                {"value": "C", "text": "在“开始”菜单和“资源管理器”中都可以找到搜索功能"},
+                {"value": "D", "text": "除了搜索文件或文件夹，还可以搜索网络上的计算机"}
+            ],
+            "correctAnswer": "B",
+            "explanation": "搜索到的文件或文件夹不仅可以查看，还可以进行复制、移动、删除等操作。因此，选项B的叙述是错误的。"
+        },
+        {
+            "id": 45,
+            "question": "在“记事本”或“写字板”窗口中，对当前编辑的文档进行存储，可以用（ ）快捷键",
+            "options": [
+                {"value": "A", "text": "Alt+F"},
+                {"value": "B", "text": "Alt+S"},
+                {"value": "C", "text": "Ctrl+S"},
+                {"value": "D", "text": "Ctrl+F"}
+            ],
+            "correctAnswer": "C",
+            "explanation": "在“记事本”或“写字板”窗口中，对当前编辑的文档进行存储，可以用Ctrl+S快捷键。"
+        },
+        {
+            "id": 46,
+            "question": "在Word软件中，输入“顶顶大名”后能自动完成“鼎鼎大名”，这主要利用了字处理软件的（ ）",
+            "options": [
+                {"value": "A", "text": "“修正”功能"},
+                {"value": "B", "text": "“替换”功能"},
+                {"value": "C", "text": "“修订”功能"},
+                {"value": "D", "text": "“自动更正”功能"}
+            ],
+            "correctAnswer": "D",
+            "explanation": "在Word软件中，输入“顶顶大名”后能自动完成“鼎鼎大名”，这主要利用了字处理软件的“自动更正”功能。"
+        },
+        {
+            "id": 47,
+            "question": "一般来说，在系统属性的“设备管理器”中某项设备前出现红色叉号，表示（ ）",
+            "options": [
+                {"value": "A", "text": "该设备不存在"},
+                {"value": "B", "text": "该设备目前被禁用"},
+                {"value": "C", "text": "未安装该设备驱动程序或者驱动程序安装不正确"},
+                {"value": "D", "text": "该设备工作正常"}
+            ],
+            "correctAnswer": "B",
+            "explanation": "一般来说，在系统属性的“设备管理器”中某项设备前出现红色叉号，表示该设备目前被禁用。"
+        },
+        {
+            "id": 48,
+            "question": "笔记本电脑无法进行无线连接，查看设备管理器发现无线网卡前有“！”，说明（ ）",
+            "options": [
+                {"value": "A", "text": "无线网卡驱动安装错误"},
+                {"value": "B", "text": "笔记本无无线网卡"},
+                {"value": "C", "text": "电脑中毒"},
+                {"value": "D", "text": "无线网卡被禁用"}
+            ],
+            "correctAnswer": "A",
+            "explanation": "笔记本电脑无法进行无线连接，查看设备管理器发现无线网卡前有“！”，说明无线网卡驱动安装错误。"
+        },
+        {
+            "id": 49,
+            "question": "在查找文件时，通配符*与？的含义是（ ）",
+            "options": [
+                {"value": "A", "text": "*表示任意多个字符，？表示任意一个字符"},
+                {"value": "B", "text": "？表示任意多个字符，*表示任意一个字符"},
+                {"value": "C", "text": "*和？表示乘号和问号"},
+                {"value": "D", "text": "查找*.？与？.*的文件是一致的"}
+            ],
+            "correctAnswer": "A",
+            "explanation": "在查找文件时，通配符*表示任意多个字符，？表示任意一个字符。"
+        },
+        {
+            "id": 50,
+            "question": "下列关于操作系统任务管理的说法中，错误的是（ ）",
+            "options": [
+                {"value": "A", "text": "Windows操作系统支持多任务处理"},
+                {"value": "B", "text": "分时是将CPU时间划分成时间片，轮流为多个程序服务"},
+                {"value": "C", "text": "并行处理可以让多个处现器同时工作，提高计算机系统的效率"},
+                {"value": "D", "text": "同时处理要求计算机必须配备多个CPU"}
+            ],
+            "correctAnswer": "D",
+            "explanation": "同时处理并不一定要求计算机必须配备多个CPU。现代操作系统可以通过多任务处理技术在单个CPU上实现多个任务的同时运行。"
+        },
+        {
+            "id": 1,
+            "question": "Windows系统是( ).",
+            "options": [
+                { "value": "A", "text": "单用户单任务系统" },
+                { "value": "B", "text": "单用户多任务系统" },
+                { "value": "C", "text": "多用户多任务系统" },
+                { "value": "D", "text": "多用户单任务系统" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "Windows系统是单用户多任务系统。"
+        },
+        {
+            "id": 2,
+            "question": "Windows7的目录系统结构是一种( ).",
+            "options": [
+                { "value": "A", "text": "关系结构" },
+                { "value": "B", "text": "网状结构" },
+                { "value": "C", "text": "树状结构" },
+                { "value": "D", "text": "对象结构" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "Windows7的目录系统结构是一种树状结构。"
+        },
+        {
+            "id": 3,
+            "question": "下列操作系统中不是NOS(网络操作系统)的是( ).",
+            "options": [
+                { "value": "A", "text": "DOS" },
+                { "value": "B", "text": "NetWare" },
+                { "value": "C", "text": "Windows NT" },
+                { "value": "D", "text": "Linux" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "DOS不是网络操作系统。"
+        },
+        {
+            "id": 4,
+            "question": "操作系统的功能不包括( ).",
+            "options": [
+                { "value": "A", "text": "将源程序编译成目标程序" },
+                { "value": "B", "text": "负责诊断机器的故障" },
+                { "value": "C", "text": "控制和管理计算机系统的各种硬件和软件资源的使用" },
+                { "value": "D", "text": "负责外设与主机之间的信息交换" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "将源程序编译成目标程序是编译器的功能，不是操作系统的功能。"
+        },
+        {
+            "id": 5,
+            "question": "在Windows 中,可以在'回收站'中恢复的文件是被删除的( ).",
+            "options": [
+                { "value": "A", "text": "U盘上的文件" },
+                { "value": "B", "text": "硬盘某个分区上的文件" },
+                { "value": "C", "text": "光盘上的文件" },
+                { "value": "D", "text": "网络盘上的文件" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "回收站只能恢复硬盘某个分区上被删除的文件。"
+        },
+        {
+            "id": 6,
+            "question": "WINDOWS窗口右上角的×按钮是( ).",
+            "options": [
+                { "value": "A", "text": "最小化按钮" },
+                { "value": "B", "text": "最大化按钮" },
+                { "value": "C", "text": "关闭按钮" },
+                { "value": "D", "text": "选择按钮" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "×按钮是关闭按钮。"
+        },
+        {
+            "id": 7,
+            "question": "下面是关于WINDOWS文件名的叙述,错误的是( ).",
+            "options": [
+                { "value": "A", "text": "文件名中允许使用汉字" },
+                { "value": "B", "text": "文件名中允许使用多个圆点分隔符" },
+                { "value": "C", "text": "文件名中允许使用空格" },
+                { "value": "D", "text": "文件名中允许使用竖线(|)" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "文件名中不允许使用竖线(|)等特殊字符。"
+        },
+        {
+            "id": 8,
+            "question": "WINDOWS中要查看隐藏文件和系统文件,可在资源管理器的哪个菜单中实现( ).",
+            "options": [
+                { "value": "A", "text": "文件" },
+                { "value": "B", "text": "编辑" },
+                { "value": "C", "text": "查看" },
+                { "value": "D", "text": "帮助" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "在'查看'菜单中可以设置显示隐藏文件和系统文件。"
+        },
+        {
+            "id": 9,
+            "question": "在WINDOWS的窗口的右上角可以同时显示的按钮是( ).",
+            "options": [
+                { "value": "A", "text": "最小化.还原和最大化" },
+                { "value": "B", "text": "还原.最大化和关闭" },
+                { "value": "C", "text": "最小化.还原和关闭" },
+                { "value": "D", "text": "还原和最大化" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "窗口右上角可以同时显示最小化、还原和关闭按钮。"
+        },
+        {
+            "id": 10,
+            "question": "在Windows 系统中,由于频繁添加或卸载程序使磁盘碎片太多,机器运行速度减慢,通过使用( )可以达到加快文件的访问速度目的.",
+            "options": [
+                { "value": "A", "text": "磁盘碎片整理程序" },
+                { "value": "B", "text": "磁盘清理程序" },
+                { "value": "C", "text": "磁盘诊断程序" },
+                { "value": "D", "text": "磁盘扫描程序" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "磁盘碎片整理程序可以整理磁盘碎片，加快文件的访问速度。"
+        },
+        {
+            "id": 11,
+            "question": "Windows 7是一个( )操作系统.",
+            "options": [
+                { "value": "A", "text": "单用户单任务" },
+                { "value": "B", "text": "多用户单任务" },
+                { "value": "C", "text": "单用户多任务" },
+                { "value": "D", "text": "多用户多任务" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "Windows 7是一个单用户多任务操作系统。"
+        },
+        {
+            "id": 12,
+            "question": "如果用户在同一时间可以运行多个应用程序(每个应用程序被称作一个任务),则这样的操作系统被称为( ).",
+            "options": [
+                { "value": "A", "text": "单任务操作系统" },
+                { "value": "B", "text": "多任务操作系统" },
+                { "value": "C", "text": "批处理操作系统" },
+                { "value": "D", "text": "多用户操作系统" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "多任务操作系统允许用户在同一时间运行多个应用程序。"
+        },
+        {
+            "id": 13,
+            "question": "下列有关Windows操作系统文件的说法中,错误的是( ).",
+            "options": [
+                { "value": "A", "text": "同一文件夹中允许有不同名但内容相同的文件" },
+                { "value": "B", "text": "同一文件夹中允许有不同名且不同内容的文件" },
+                { "value": "C", "text": "同一文件夹中允许有同名的文件" },
+                { "value": "D", "text": "不同文件夹中允许出现同名的文件" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "同一文件夹中不允许有同名的文件。"
+        },
+        {
+            "id": 14,
+            "question": "在操作系统中以( )为单元对磁盘进行读/写操作.",
+            "options": [
+                { "value": "A", "text": "磁道" },
+                { "value": "B", "text": "字节" },
+                { "value": "C", "text": "扇区" },
+                { "value": "D", "text": "簇" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "操作系统以扇区为单元对磁盘进行读/写操作。"
+        },
+        {
+            "id": 15,
+            "question": "操作系统来管理用户数据的单位是( ).",
+            "options": [
+                { "value": "A", "text": "扇区" },
+                { "value": "B", "text": "文件" },
+                { "value": "C", "text": "磁道" },
+                { "value": "D", "text": "文件夹" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "操作系统以文件为单位管理用户数据。"
+        },
+        {
+            "id": 16,
+            "question": "操作系统将CPU的时间资源划分成极短的时间片,轮流分配给各终端用户,使终端用户单独分享CPU的时间片,有独占计算机的感觉,这种操作系统称为( ).",
+            "options": [
+                { "value": "A", "text": "实时操作系统" },
+                { "value": "B", "text": "批处理操作系统" },
+                { "value": "C", "text": "分时操作系统" },
+                { "value": "D", "text": "分布式操作系统" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "这种操作系统称为分时操作系统。"
+        },
+        {
+            "id": 17,
+            "question": "不属于windows 7 账户的类型是( ).",
+            "options": [
+                { "value": "A", "text": "来宾账户" },
+                { "value": "B", "text": "标准账户" },
+                { "value": "C", "text": "管理员账户" },
+                { "value": "D", "text": "高级用户账户" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "Windows 7中没有高级用户账户这一类型。"
+        },
+        {
+            "id": 18,
+            "question": "在某个文档窗口中,已经进行了多次剪贴操作,当关闭了该文档窗口后,剪贴板中的内容为( ).",
+            "options": [
+                { "value": "A", "text": "第一次剪贴的内容" },
+                { "value": "B", "text": "最后一次剪贴的内容" },
+                { "value": "C", "text": "所有剪贴的内容" },
+                { "value": "D", "text": "空白" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "剪贴板中保留的是最后一次剪贴的内容。"
+        },
+        {
+            "id": 19,
+            "question": "现代操作系统进行资源分配和调度的基本单位是( ).",
+            "options": [
+                { "value": "A", "text": "任务" },
+                { "value": "B", "text": "程序" },
+                { "value": "C", "text": "进程" },
+                { "value": "D", "text": "超线程" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "进程是现代操作系统进行资源分配和调度的基本单位。"
+        },
+        {
+            "id": 20,
+            "question": "操作系统是( )的接口.",
+            "options": [
+                { "value": "A", "text": "用户与软件" },
+                { "value": "B", "text": "系统软件与应用软件" },
+                { "value": "C", "text": "用户与计算机" },
+                { "value": "D", "text": "主机与外设" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "操作系统是用户与计算机之间的接口。"
+        },
+        {
+            "id": 21,
+            "question": "操作系统具有存储器管理功能,当内存不够用时,其存储管理程序可以自动'扩充'内存,为用户提供一个容量比实际内存大得多的( ).",
+            "options": [
+                { "value": "A", "text": "虚拟存储器" },
+                { "value": "B", "text": "脱机缓冲存储器" },
+                { "value": "C", "text": "高速缓冲存储器" },
+                { "value": "D", "text": "离线后备存储器" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "操作系统可以自动扩充内存，提供虚拟存储器。"
+        },
+        {
+            "id": 22,
+            "question": "Windows中可以设置.控制计算机硬件配置和修改显示属性的应用程序是( ).",
+            "options": [
+                { "value": "A", "text": "Word" },
+                { "value": "B", "text": "Excel" },
+                { "value": "C", "text": "资源管理器" },
+                { "value": "D", "text": "控制面板" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "控制面板用于设置和控制计算机硬件配置及修改显示属性。"
+        },
+        {
+            "id": 23,
+            "question": "在资源管理器中,选择几个连续的文件的方法可以是:先单击第一个,再按住( )键单击最后一个.",
+            "options": [
+                { "value": "A", "text": "Ctrl" },
+                { "value": "B", "text": "Shift" },
+                { "value": "C", "text": "Alt" },
+                { "value": "D", "text": "Ctrl+Alt" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "选择连续文件时，先单击第一个文件，再按住Shift键单击最后一个文件。"
+        },
+        {
+            "id": 24,
+            "question": "在WINDOWS中,经常有一些菜单选项呈暗灰色,这表示( ).",
+            "options": [
+                { "value": "A", "text": "这些项在当前无效" },
+                { "value": "B", "text": "系统运行发生故障" },
+                { "value": "C", "text": "这些项的处理程序已装入" },
+                { "value": "D", "text": "应用程序本身有有缺陷" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "暗灰色的菜单选项表示这些项在当前状态下不可用。"
+        },
+        {
+            "id": 25,
+            "question": "Windows 7是一个( )操作系统.",
+            "options": [
+                { "value": "A", "text": "单用户单任务" },
+                { "value": "B", "text": "多用户单任务" },
+                { "value": "C", "text": "单用户多任务" },
+                { "value": "D", "text": "多用户多任务" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "Windows 7是一个单用户多任务操作系统。"
+        },
+        {
+            "id": 26,
+            "question": "按住鼠标左键的同时,移动鼠标的操作,叫作( ).",
+            "options": [
+                { "value": "A", "text": "单击" },
+                { "value": "B", "text": "双击" },
+                { "value": "C", "text": "移动" },
+                { "value": "D", "text": "拖动" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "这种操作叫作拖动。"
+        },
+        {
+            "id": 27,
+            "question": "基于Linux的操作系统是( ).",
+            "options": [
+                { "value": "A", "text": "Android" },
+                { "value": "B", "text": "Windows Phone" },
+                { "value": "C", "text": "iOS" },
+                { "value": "D", "text": "Symbian" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Android是基于Linux的操作系统。"
+        },
+        {
+            "id": 28,
+            "question": "计算机的系统软件中，最贴近硬件的是（ ）",
+            "options": [
+                { "value": "A", "text": "操作系统" },
+                { "value": "B", "text": "各种语言及其处理程序" },
+                { "value": "C", "text": "数据库管理系统" },
+                { "value": "D", "text": "系统支持和服务程序" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "操作系统是最贴近硬件的系统软件。"
+        },
+        {
+            "id": 29,
+            "question": "能弹出对象的快捷菜单的鼠标操作是（ ）",
+            "options": [
+                { "value": "A", "text": "指向" },
+                { "value": "B", "text": "单击" },
+                { "value": "C", "text": "双击" },
+                { "value": "D", "text": "右击" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "右击可以弹出对象的快捷菜单。"
+        },
+        {
+            "id": 30,
+            "question": "在Windows7菜单操作中，如果某个菜单项的颜色暗淡，则表示（ ）",
+            "options": [
+                { "value": "A", "text": "当前该菜单项不可用" },
+                { "value": "B", "text": "当前该菜单项下会有子菜单项" },
+                { "value": "C", "text": "当前该菜单项可用" },
+                { "value": "D", "text": "执行该菜单项会弹出对话框" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "颜色暗淡的菜单项表示当前不可用。"
+        },
+        {
+            "id": 31,
+            "question": "在Windows7中，可以进行窗口切换的快捷键是（ ）",
+            "options": [
+                { "value": "A", "text": "Ctrl+A" },
+                { "value": "B", "text": "Ctrl+Z" },
+                { "value": "C", "text": "Alt+F4" },
+                { "value": "D", "text": "Alt+Tab" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "Alt+Tab是用于窗口切换的快捷键。"
+        },
+        {
+            "id": 32,
+            "question": "在控制面板中，可用于更改屏幕保护程序的是（ ）",
+            "options": [
+                { "value": "A", "text": "显示" },
+                { "value": "B", "text": "系统" },
+                { "value": "C", "text": "文件夹选项" },
+                { "value": "D", "text": "字体" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "在'显示'设置中可以更改屏幕保护程序。"
+        },
+        {
+            "id": 33,
+            "question": "在Windows操作系统的对话框中，用户必须并且只能选择其中一项的称为（ ）",
+            "options": [
+                { "value": "A", "text": "单选框" },
+                { "value": "B", "text": "列表框" },
+                { "value": "C", "text": "复选框" },
+                { "value": "D", "text": "文本框" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "单选框要求用户必须且只能选择其中一项。"
+        },
+        {
+            "id": 34,
+            "question": "美国微软公司开发的Windows7是一个（ ）",
+            "options": [
+                { "value": "A", "text": "单用户单任务操作系统" },
+                { "value": "B", "text": "单用户多任务操作系统" },
+                { "value": "C", "text": "多用户单任务操作系统" },
+                { "value": "D", "text": "多用户多任务操作系统" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "Windows7是一个单用户多任务操作系统。"
+        },
+        {
+            "id": 35,
+            "question": "桌面上用来对整个系统资源进行管理的是（ ）",
+            "options": [
+                { "value": "A", "text": "网络" },
+                { "value": "B", "text": "我的文档" },
+                { "value": "C", "text": "回收站" },
+                { "value": "D", "text": "计算机" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "计算机用于对整个系统资源进行管理。"
+        },
+        {
+            "id": 36,
+            "question": "Windows7中的‘任务栏’上存放的是（ ）",
+            "options": [
+                { "value": "A", "text": "系统正在运行的所有程序按钮" },
+                { "value": "B", "text": "系统中保存的所有程序按钮" },
+                { "value": "C", "text": "系统前台运行的程序按钮" },
+                { "value": "D", "text": "系统后台运行的程序按钮" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "任务栏上存放的是系统正在运行的所有程序按钮。"
+        },
+        {
+            "id": 37,
+            "question": "打开‘开始’菜单的组合键是（ ）",
+            "options": [
+                { "value": "A", "text": "Alt+Esc" },
+                { "value": "B", "text": "Ctrl+Esc" },
+                { "value": "C", "text": "Win+Esc" },
+                { "value": "D", "text": "Win+M" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "Ctrl+Esc是打开‘开始’菜单的组合键。"
+        },
+        {
+            "id": 38,
+            "question": "在Windows7中，要改变屏幕上所有窗口的排列方式，操作方法是（ ）",
+            "options": [
+                { "value": "A", "text": "选择‘开始’菜单‘设置’项后的‘任务栏’命令" },
+                { "value": "B", "text": "选择‘窗口’菜单中的‘全部重排’命令" },
+                { "value": "C", "text": "右击任务栏空白处，在弹出的菜单中进行选择操作" },
+                { "value": "D", "text": "右击工具栏，在弹出的菜单中进行选择操作" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "右击任务栏空白处，在弹出的菜单中可以选择窗口排列方式。"
+        },
+        {
+            "id": 39,
+            "question": "在资源窗口中，双击某个文件夹图标，将（ ）",
+            "options": [
+                { "value": "A", "text": "删除该文件夹" },
+                { "value": "B", "text": "显示该文件夹内容" },
+                { "value": "C", "text": "删除该文件夹文件" },
+                { "value": "D", "text": "复制该文件夹文件" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "双击文件夹图标将显示该文件夹内容。"
+        },
+        {
+            "id": 40,
+            "question": "在Windows7中，双击窗口的标题栏空白处，可以（ ）",
+            "options": [
+                { "value": "A", "text": "复制该窗口" },
+                { "value": "B", "text": "移动该窗口" },
+                { "value": "C", "text": "关闭该窗口" },
+                { "value": "D", "text": "最大化或还原该窗口" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "双击窗口标题栏空白处可以最大化或还原该窗口。"
+        },
+        {
+            "id": 41,
+            "question": "Windows7中，文件名不能包括以下符号（ ）",
+            "options": [
+                { "value": "A", "text": "空格" },
+                { "value": "B", "text": "*" },
+                { "value": "C", "text": "_" },
+                { "value": "D", "text": "#" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "文件名中不允许使用*等特殊字符。"
+        },
+        {
+            "id": 42,
+            "question": "在Windows中，回收站是（ ）中的一块区域",
+            "options": [
+                { "value": "A", "text": "内存" },
+                { "value": "B", "text": "硬盘" },
+                { "value": "C", "text": "软盘" },
+                { "value": "D", "text": "高速缓冲" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "回收站是硬盘中的一块区域。"
+        },
+        {
+            "id": 43,
+            "question": "下列选项中，不能对已选定的文件或文件夹进行更名的是（ ）",
+            "options": [
+                { "value": "A", "text": "单击'文件'菜单中的'重命名'菜单命令，并键入新名" },
+                { "value": "B", "text": "右击要更名的文件或文件夹，选择快捷菜单中的'重命名'命令，并键入新名" },
+                { "value": "C", "text": "双击要更名的文件或文件夹，并键入新名" },
+                { "value": "D", "text": "两次单击要更名的文件或文件夹的名称，并键入新名" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "双击文件或文件夹会打开它，而不是重命名。"
+        },
+        {
+            "id": 44,
+            "question": "在删除文件时，如果使用组合键“Shift+Delete”，则（ ）",
+            "options": [
+                { "value": "A", "text": "不删除该文件，文件还在原处" },
+                { "value": "B", "text": "删除文件，文件被放入回收站" },
+                { "value": "C", "text": "删除文件，文件被放入内存" },
+                { "value": "D", "text": "删除文件，文件彻底清除" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "使用Shift+Delete组合键会直接删除文件，而不放入回收站。"
+        },
+        {
+            "id": 45,
+            "question": "Windows7中，当一个应用程序窗口被最小化后，该应用程序（ ）",
+            "options": [
+                { "value": "A", "text": "被转入后台执行" },
+                { "value": "B", "text": "被暂停执行" },
+                { "value": "C", "text": "被终止执行" },
+                { "value": "D", "text": "继续在前台执行" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "最小化窗口后，应用程序将继续在后台运行。"
+        },
+        {
+            "id": 46,
+            "question": "操作系统的主要功能是（ ）",
+            "options": [
+                { "value": "A", "text": "对用户的数据文件进行管理，为用户提供管理文件方便" },
+                { "value": "B", "text": "对计算机的所有资源进行控制和管理，为用户使用计算机提供方便" },
+                { "value": "C", "text": "对源程序进行编译和运行" },
+                { "value": "D", "text": "对汇编语言程序进行翻译" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "操作系统的主要功能是对计算机的所有资源进行控制和管理，为用户提供方便。"
+        },
+        {
+            "id": 47,
+            "question": "一般地，双击窗口的标题栏可以是窗口的（ ）",
+            "options": [
+                { "value": "A", "text": "关闭" },
+                { "value": "B", "text": "移动" },
+                { "value": "C", "text": "最小化" },
+                { "value": "D", "text": "最大化或还原" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "双击窗口标题栏可以最大化或还原窗口。"
+        },
+        {
+            "id": 48,
+            "question": "以下（ ）操作系统不属于网络操作系统",
+            "options": [
+                { "value": "A", "text": "Netware" },
+                { "value": "B", "text": "Windows7" },
+                { "value": "C", "text": "Unix" },
+                { "value": "D", "text": "Windows 2003 server" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "Windows7虽然有网络功能，但主要不是作为网络操作系统设计的。"
+        },
+        {
+            "id": 49,
+            "question": "在Windows7操作系统中，鼠标指针指向带有‘?’标记的菜单项时，系统会（ ）",
+            "options": [
+                { "value": "A", "text": "打开一个应用程序窗口" },
+                { "value": "B", "text": "打开一个对话框" },
+                { "value": "C", "text": "打开其下一级菜单" },
+                { "value": "D", "text": "打开一个文件夹" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "鼠标指针指向带有‘?’标记的菜单项时，系统会打开一个对话框。"
+        },
+        {
+            "id": 50,
+            "question": "在Windows7中，复制文件使用的组合键是（ ）",
+            "options": [
+                { "value": "A", "text": "Ctrl+X" },
+                { "value": "B", "text": "Ctrl+C" },
+                { "value": "C", "text": "Ctrl+Shift" },
+                { "value": "D", "text": "Ctrl+Space" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "Ctrl+C是复制文件的快捷键。"
+        },
+        {
+            "id": 1,
+            "question": "关于Windows系统的文件组织结构，下列说法正确的是（ ）",
+            "options": [
+                { "value": "A", "text": "每个文件夹都有一个父文件夹" },
+                { "value": "B", "text": "每个文件夹都可以包含若干个子文件夹和文件" },
+                { "value": "C", "text": "同一个文件夹下的子文件夹可以同名" },
+                { "value": "D", "text": "同一个文件夹下不可以同时包含子文件夹和文件" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "每个文件夹都可以包含若干个子文件夹和文件，这是Windows文件组织结构的基本特性。"
+        },
+        {
+            "id": 2,
+            "question": "删除当前输入的错误字符，可直接按下（ ）",
+            "options": [
+                { "value": "A", "text": "Enter键" },
+                { "value": "B", "text": "ESC键" },
+                { "value": "C", "text": "Shift键" },
+                { "value": "D", "text": "BackSpace" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "BackSpace键用于删除当前输入的错误字符。"
+        },
+        {
+            "id": 3,
+            "question": "不是用来存储声音的文件格式是( ).",
+            "options": [
+                { "value": "A", "text": "WAV" },
+                { "value": "B", "text": "AVI" },
+                { "value": "C", "text": "MID" },
+                { "value": "D", "text": "MP3" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "AVI是一种视频文件格式，不是用来存储声音的文件格式。"
+        },
+        {
+            "id": 4,
+            "question": "使用Windows 7中的'录音机'进行录音,一般保存文件的格式为( ).",
+            "options": [
+                { "value": "A", "text": "midi" },
+                { "value": "B", "text": "wav" },
+                { "value": "C", "text": "wma" },
+                { "value": "D", "text": "mp3" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "使用Windows 7中的'录音机'进行录音，一般保存文件的格式为wma。"
+        },
+        {
+            "id": 5,
+            "question": "Android系统采用Linux操作系统内核,在其上可以直接运行的文件扩展名是( ).",
+            "options": [
+                { "value": "A", "text": "exe" },
+                { "value": "B", "text": "rmvb" },
+                { "value": "C", "text": "mp3" },
+                { "value": "D", "text": "apk" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "Android系统采用Linux操作系统内核，在其上可以直接运行的文件扩展名是apk。"
+        },
+        {
+            "id": 6,
+            "question": "Windows Media Player 不支持的文件格式是( ).",
+            "options": [
+                { "value": "A", "text": "MPG" },
+                { "value": "B", "text": "AVI" },
+                { "value": "C", "text": "MP3" },
+                { "value": "D", "text": "RMVB" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "Windows Media Player 不支持RMVB文件格式。"
+        },
+        {
+            "id": 7,
+            "question": "下列哪种格式的文件不被Windows Media Player所支持(或打开)( ).",
+            "options": [
+                { "value": "A", "text": "mpg" },
+                { "value": "B", "text": "wav" },
+                { "value": "C", "text": "exe" },
+                { "value": "D", "text": "midi" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "exe是可执行文件格式，不被Windows Media Player支持。"
+        },
+        {
+            "id": 8,
+            "question": "一个文件路径名为:c:\\jngk\\text\\293.txt,其中text是一个( ).",
+            "options": [
+                { "value": "A", "text": "文件夹" },
+                { "value": "B", "text": "根文件夹" },
+                { "value": "C", "text": "文件" },
+                { "value": "D", "text": "库" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "在路径c:\\jngk\\text\\293.txt中，text是一个文件夹。"
+        },
+        {
+            "id": 9,
+            "question": "对于WINDOWS,下面以( )为扩展名的文件是不能运行的.",
+            "options": [
+                { "value": "A", "text": "COM" },
+                { "value": "B", "text": "EXE" },
+                { "value": "C", "text": "BAT" },
+                { "value": "D", "text": "TXT" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "TXT是文本文件，不能直接运行。"
+        },
+        {
+            "id": 10,
+            "question": "一个文件路径名为D：\\Word\\File\\12.txt,其中File是一个（ ）",
+            "options": [
+                { "value": "A", "text": "根文件夹" },
+                { "value": "B", "text": "文件" },
+                { "value": "C", "text": "文件夹" },
+                { "value": "D", "text": "文本文件" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "在路径D：\\Word\\File\\12.txt中，File是一个文件夹。"
+        },
+        {
+            "id": 11,
+            "question": "一个文件的扩展名通常表示（ ）",
+            "options": [
+                { "value": "A", "text": "文件版本" },
+                { "value": "B", "text": "文件类型" },
+                { "value": "C", "text": "文件大小" },
+                { "value": "D", "text": "由用户自己决定" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "文件的扩展名通常表示文件类型。"
+        },
+        {
+            "id": 12,
+            "question": "一个文件路径名为D：\\TTlx\\File\\12.txt,其中File是一个（ ）",
+            "options": [
+                { "value": "A", "text": "根文件件" },
+                { "value": "B", "text": "文件" },
+                { "value": "C", "text": "文件夹" },
+                { "value": "D", "text": "文本文件" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "在路径D：\\TTlx\\File\\12.txt中，File是一个文件夹。"
+        },
+        {
+            "id": 13,
+            "question": "使用Windows中的'录音机'进行录音，一般保存文件的格式为（ ）",
+            "options": [
+                { "value": "A", "text": "docx" },
+                { "value": "B", "text": "exe" },
+                { "value": "C", "text": "wma" },
+                { "value": "D", "text": "mid" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "使用Windows中的'录音机'进行录音，一般保存文件的格式为wma。"
+        },
+        {
+            "id": 14,
+            "question": "不需借助其他软件，自身可进行解压缩的压缩文件，称为（ ）",
+            "options": [
+                { "value": "A", "text": "自压缩文件" },
+                { "value": "B", "text": "自解压文件" },
+                { "value": "C", "text": "自加压文件" },
+                { "value": "D", "text": "自运行文件" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "不需借助其他软件，自身可进行解压缩的压缩文件，称为自解压文件。"
+        },
+        {
+            "id": 15,
+            "question": "Android系统采用Linux操作系统内核，在其上可以直接运行的文件扩展名是（ ）",
+            "options": [
+                { "value": "A", "text": "exe" },
+                { "value": "B", "text": "rmvb" },
+                { "value": "C", "text": "mp3" },
+                { "value": "D", "text": "apk" }
+            ],
+            "correctAnswer": "D",
+            "explanation": "Android系统采用Linux操作系统内核，在其上可以直接运行的文件扩展名是apk。"
+        },
+        {
+            "id": 16,
+            "question": "一个文件的扩展名通常表示（ ）",
+            "options": [
+                { "value": "A", "text": "文件大小" },
+                { "value": "B", "text": "常见文件的日期" },
+                { "value": "C", "text": "文件类型" },
+                { "value": "D", "text": "文件版本" }
+            ],
+            "correctAnswer": "C",
+            "explanation": "文件的扩展名通常表示文件类型。"
+        },
+        {
+            "id": 17,
+            "question": "以下（ ）文件被称为纯文本文件或ASCII文件",
+            "options": [
+                { "value": "A", "text": "以EXE为扩展名的文件" },
+                { "value": "B", "text": "以TXT为扩展名的文件" },
+                { "value": "C", "text": "以COM为扩展名的文件" },
+                { "value": "D", "text": "以DOC为扩展名的文件" }
+            ],
+            "correctAnswer": "B",
+            "explanation": "以TXT为扩展名的文件通常被称为纯文本文件或ASCII文件。"
+        },
+        {
+            "id": 18,
+            "question": "下列叙述中，不正确的叙述是（ ）",
+            "options": [
+                { "value": "A", "text": "在多级目录结构中，不允许两个不同文件具有相同的名字" },
+                { "value": "B", "text": "绝对路径是指从根目录开始到文件所在目录的路径" },
+                { "value": "C", "text": "磁盘上的文件，若被删除都可以设法恢复" },
+                { "value": "D", "text": "文件名中可以使用空格" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "在多级目录结构中，允许不同目录下的文件具有相同的名字。"
+        },
+        {
+            "id": 19,
+            "question": "文件扩展名是用来区分文件的（ ）",
+            "options": [
+                { "value": "A", "text": "类型" },
+                { "value": "B", "text": "建立时间" },
+                { "value": "C", "text": "大小" },
+                { "value": "D", "text": "建立日期" }
+            ],
+            "correctAnswer": "A",
+            "explanation": "文件扩展名是用来区分文件的类型。"
+        },
+    ];
+
+    // 随机抽取50题
+    let questions = [];
+    function getRandomQuestions() {
+        // 打乱题库顺序
+        const shuffled = [...questionBank].sort(() => 0.5 - Math.random());
+        // 取前50题
+        return shuffled.slice(0, 50);
+    }
+
+    // 用户答案存储
+    const userAnswers = [];
+
+    // 题目标记状态
+    const questionMarks = [];
+
+    // 当前题目索引
+    let currentQuestionIndex = 0;
+
+
+    let remainingTime = 25 * 60;
+
+
+    let timerInterval;
+
+    // 页面元素
+    const pages = {
+        instructions: document.getElementById('instructions-page'),
+        questions: document.getElementById('questions-page'),
+        submit: document.getElementById('submit-page'),
+        result: document.getElementById('result-page'),
+        explanation: document.getElementById('explanation-page')
+    };
+
+    // 按钮元素
+    const startBtn = document.getElementById('start-btn');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const submitBtn = document.getElementById('submit-btn');
+    const cancelSubmitBtn = document.getElementById('cancel-submit-btn');
+    const confirmSubmitBtn = document.getElementById('confirm-submit-btn');
+    const viewExplanationBtn = document.getElementById('view-explanation-btn');
+    const backToInstructionsBtn = document.getElementById('back-to-instructions-btn');
+    const markBtn = document.getElementById('mark-btn');
+    const returnBtn = document.getElementById('return-btn');
+
+    // 页面切换函数
+    function showPage(pageId) {
+        for (const page in pages) {
+            pages[page].classList.remove('active');
+        }
+        pages[pageId].classList.add('active');
+    }
+
+    // 初始化题目列表
+    function initQuestionList() {
+        const questionList = document.getElementById('question-list');
+        questionList.innerHTML = '';
+
+        for (let i = 0; i < questions.length; i++) {
+            const questionItem = document.createElement('div');
+            questionItem.className = 'question-item';
+            questionItem.dataset.index = i;
+            questionItem.textContent = i + 1; // 按顺序显示题目编号
+
+            // 根据标记状态设置样式
+            if (questionMarks[i]) {
+                questionItem.classList.add('marked');
+            }
+
+            // 根据是否已选择设置样式
+            if (userAnswers[i] !== undefined) {
+                questionItem.classList.add('selected');
+            }
+
+            questionItem.addEventListener('click', () => {
+                currentQuestionIndex = i;
+                updateQuestionContent();
+                updateQuestionList();
+            });
+
+            questionList.appendChild(questionItem);
+        }
+    }
+
+    // 更新题目列表的选中状态
+    function updateQuestionList() {
+        const questionItems = document.querySelectorAll('.question-item');
+        questionItems.forEach((item, index) => {
+            if (index === currentQuestionIndex) {
+                item.classList.add('active');
+            } else {
+                item.classList.remove('active');
+            }
+
+            // 根据是否已选择设置样式
+            if (userAnswers[index] !== undefined) {
+                item.classList.add('selected');
+            } else {
+                item.classList.remove('selected');
+            }
+        });
+    }
+
+    // 更新题目内容
+    function updateQuestionContent() {
+        const question = questions[currentQuestionIndex];
+        const questionContent = document.getElementById('question-content');
+        questionContent.innerHTML = `
+                <div class="question">
+                    <span class="question-number">第${currentQuestionIndex + 1}题</span>
+                    <h3>${question.question}</h3>
+                    <ul class="options">
+                        ${question.options.map((option) => `
+                            <li data-value="${option.value}">
+                                <span class="option-label">${option.value}</span>
+                                ${option.text}
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+            `;
+
+        // 设置已选选项的样式
+        const options = questionContent.querySelectorAll('.options li');
+        options.forEach((option) => {
+            const value = option.dataset.value;
+            if (userAnswers[currentQuestionIndex] === value) {
+                option.classList.add('selected');
+            } else {
+                option.classList.remove('selected');
+            }
+
+            option.addEventListener('click', () => {
+                userAnswers[currentQuestionIndex] = value;
+                options.forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
+                updateQuestionList();
+            });
+        });
+
+        updateQuestionList();
+    }
+
+    // 计算分数（每题3分）
+    function calculateScore() {
+        let score = 0;
+        for (let i = 0; i < questions.length; i++) {
+            if (userAnswers[i] === questions[i].correctAnswer) {
+                score += 3; // 每题3分
+            }
+        }
+        return score;
+    }
+
+    // 显示题目解析
+    function showExplanations() {
+        const explanationContent = document.getElementById('explanation-content');
+        explanationContent.innerHTML = '';
+
+        for (let i = 0; i < questions.length; i++) {
+            const question = questions[i];
+            const userAnswer = userAnswers[i];
+            const isCorrect = userAnswer === question.correctAnswer;
+
+            const questionDiv = document.createElement('div');
+            questionDiv.innerHTML = `
+                    <h3>第${i + 1}题：${question.question}</h3>
+                    <p>正确答案：${question.correctAnswer}</p>
+                    <p>您的答案：${userAnswer !== undefined ? userAnswer : '未作答'}</p>
+                    <p>${isCorrect ? '回答正确' : '回答错误'}</p>
+                    <div class="explanation">
+                        <h4>解析：</h4>
+                        <p>${question.explanation}</p>
+                    </div>
+                `;
+
+            // 设置正确/错误样式
+            const options = questionDiv.querySelectorAll('.options li');
+            options.forEach((option) => {
+                const value = option.dataset.value;
+                if (value === question.correctAnswer) {
+                    option.classList.add('correct');
+                }
+                if (value === userAnswer && !isCorrect) {
+                    option.classList.add('wrong');
+                }
+            });
+
+            explanationContent.appendChild(questionDiv);
+        }
+    }
+
+    // 更新倒计时显示
+    function updateTimerDisplay() {
+        const minutes = Math.floor(remainingTime / 60);
+        const seconds = remainingTime % 60;
+        const timerDisplay = document.getElementById('timer');
+        timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }
+
+    // 开始倒计时
+    function startTimer() {
+        timerInterval = setInterval(() => {
+            remainingTime--;
+            updateTimerDisplay();
+
+            if (remainingTime <= 0) {
+                clearInterval(timerInterval);
+                // 时间到，自动交卷
+                showPage('submit');
+            }
+        }, 1000);
+    }
+
+    // 停止倒计时
+    function stopTimer() {
+        clearInterval(timerInterval);
+    }
+
+    // 键盘快捷键功能
+    document.addEventListener('keydown', (event) => {
+        if (pages.questions.classList.contains('active')) {
+            if (event.key === '1') { // 数字键1=上一题
+                if (currentQuestionIndex > 0) {
+                    currentQuestionIndex--;
+                    updateQuestionContent();
+                }
+            } else if (event.key === '2') { // 数字键2=下一题
+                if (currentQuestionIndex < questions.length - 1) {
+                    currentQuestionIndex++;
+                    updateQuestionContent();
+                }
+            } else if (event.key === '3') { // 数字键3=标记/取消标记
+                questionMarks[currentQuestionIndex] = !questionMarks[currentQuestionIndex];
+                const questionItems = document.querySelectorAll('.question-item');
+                questionItems[currentQuestionIndex].classList.toggle('marked');
+            }
+        }
+    });
+
+    // 标记按钮功能
+    markBtn.addEventListener('click', () => {
+        questionMarks[currentQuestionIndex] = !questionMarks[currentQuestionIndex];
+        const questionItems = document.querySelectorAll('.question-item');
+        questionItems[currentQuestionIndex].classList.toggle('marked');
+    });
+
+    // 事件监听
+    startBtn.addEventListener('click', () => {
+        // 随机抽取50题
+        questions = getRandomQuestions();
+        // 重置用户答案
+        userAnswers.length = 0;
+        questionMarks.length = 0;
+        for (let i = 0; i < questions.length; i++) {
+            userAnswers.push(undefined);
+            questionMarks.push(false);
+        }
+        currentQuestionIndex = 0;
+        remainingTime = 25 * 60;
+        updateTimerDisplay();
+        startTimer();
+        showPage('questions');
+        initQuestionList();
+        updateQuestionContent();
+    });
+
+    prevBtn.addEventListener('click', () => {
+        if (currentQuestionIndex > 0) {
+            currentQuestionIndex--;
+            updateQuestionContent();
+        }
+    });
+
+    nextBtn.addEventListener('click', () => {
+        if (currentQuestionIndex < questions.length - 1) {
+            currentQuestionIndex++;
+            updateQuestionContent();
+        }
+    });
+
+    submitBtn.addEventListener('click', () => {
+        stopTimer();
+        showPage('submit');
+    });
+
+    cancelSubmitBtn.addEventListener('click', () => {
+        showPage('questions');
+    });
+
+    confirmSubmitBtn.addEventListener('click', () => {
+        const score = calculateScore();
+        document.querySelector('.score-display').innerHTML = `
+                <span>您的得分：</span>${score}<span>分</span>
+            `;
+        showPage('result');
+    });
+
+    viewExplanationBtn.addEventListener('click', () => {
+        showExplanations();
+        showPage('explanation');
+    });
+
+    backToInstructionsBtn.addEventListener('click', () => {
+        stopTimer();
+        showPage('instructions');
+    });
+
+    // 返回首页按钮功能
+    returnBtn.addEventListener('click', () => {
+        // 停止倒计时
+        stopTimer();
+        window.location.href = '../Multiple_choice_questions.html';
+    });
+</script>
+</body>
+</html>
