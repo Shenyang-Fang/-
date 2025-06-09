@@ -4,6 +4,7 @@
    合作院校人员来源：
    潜江职业教育(集团)学校-职教二部、湖北广播电视学校、蔡甸职业教育中心学校、随县职业技术教育中心、浠水理工学校、光谷英才技工学校、武汉第二职业教育中心
    
+/***********************************************************************************************************/
    With the rapid development of information technology, the computer question bank system has been widely used in the fields of education, training and skills college entrance examination. The question bank system can not only efficiently store and manage a large number of test questions, but also realize functions such as online testing and score analysis according to user needs. However, the design and development of the current question bank system still faces many challenges, such as dynamic update of the question bank, personalized recommendation, and security assurance. Therefore, it is of great theoretical and practical significance to study the design and programming of computer question bank in depth. When designing the question bank, the home page Books Question Bank Non-visual question bank The scheme of the visual question bank.
    Each institution adopts a different design of the question bank scheme, our scheme is HTML5 css3 json format scheme mode, and provides non-visual Python question bank scheme.
    Sources of personnel from partner universities:
